@@ -1,0 +1,6 @@
+build/
+doc/
+release/
+.settings
+.classpath
+.project
