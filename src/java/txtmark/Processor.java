@@ -13,6 +13,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+/**
+ * Markdown processor class.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 public class Processor
 {
     private final Reader reader;
@@ -23,16 +28,38 @@ public class Processor
         this.reader = reader;
     }
 
+    /**
+     * Transforms a input String into XHTML.
+     * 
+     * @param input The String to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final String input) throws IOException
     {
         return process(new StringReader(input));
     }
 
+    /**
+     * Transforms an input file into XHTML using UTF-8 encoding.
+     * 
+     * @param file The File to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final File file) throws IOException
     {
         return process(file, "UTF-8");
     }
 
+    /**
+     * Transforms an input file into XHTML.
+     * 
+     * @param file The File to process. 
+     * @param encoding The encoding to use. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final File file, final String encoding) throws IOException
     {
         final Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
@@ -42,17 +69,39 @@ public class Processor
         return ret;
     }
 
+    /**
+     * Transforms an input stream into XHTML using UTF-8 encoding.
+     * 
+     * @param input The InputStream to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final InputStream input) throws IOException
     {
         return process(input, "UTF-8");
     }
 
+    /**
+     * Transforms an input stream into XHTML.
+     * 
+     * @param input The InputStream to process. 
+     * @param encoding The encoding to use. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final InputStream input, final String encoding) throws IOException
     {
         final Processor p = new Processor(new BufferedReader(new InputStreamReader(input, encoding)));
         return p.process();
     }
 
+    /**
+     * Transforms an input stream into XHTML.
+     * 
+     * @param reader The Reader to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
     public static String process(final Reader reader) throws IOException
     {
         final Processor p = new Processor(!(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader);

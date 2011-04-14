@@ -3,6 +3,20 @@ Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
 See LICENSE.txt for licensing information.
 -------------------------------------------------------
 
+txtmark is yet another markdown processor for the JVM.
+
+Again this is a WIP release.
+
+TODO:
+- HTML entity encoding
+- Inline HTML checking, block-level HTML element processing
+- automatic links
+- testing against the markdown test suite
+- code clean-ups
+
+---
+Markdown is copyright (c) 2004 by John Gruber
+(see <http://daringfireball.net/projects/markdown/>)
 
 ---
 Project link: https://github.com/rjeschke/txtmark
