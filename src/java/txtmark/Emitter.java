@@ -27,7 +27,7 @@ class Emitter
         switch(root.type)
         {
         case RULER:
-            out.append("<hr />");
+            out.append("<hr />\n");
             return;
         case NONE:
         case XML:

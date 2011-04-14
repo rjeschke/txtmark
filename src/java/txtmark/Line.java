@@ -170,9 +170,10 @@ class Line
         if(this.value.charAt(this.leading) == '>')
             return LineType.BQUOTE;
 
-        if(this.leading == 0 && this.value.length() > 2 && (this.value.charAt(0) == '*' || this.value.charAt(0) == '-'))
+        if(this.value.length() - this.leading - this.trailing > 2 
+                && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value.charAt(this.leading) == '_'))
         {
-            if(this.countCharsWs(this.value.charAt(0)) >= 3)
+            if(this.countCharsWs(this.value.charAt(this.leading)) >= 3)
                 return LineType.HR;
         }
 
