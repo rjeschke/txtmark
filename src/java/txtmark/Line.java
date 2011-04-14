@@ -49,6 +49,7 @@ class Line
         }
     }
 
+    // TODO use Util#skipSpaces
     public boolean skipSpaces()
     {
         while(this.pos < this.value.length() && this.value.charAt(this.pos) == ' ')
@@ -56,6 +57,7 @@ class Line
         return this.pos < this.value.length();
     }
 
+    // TODO use Util#readUntil
     public String readUntil(char... end)
     {
         final StringBuilder sb = new StringBuilder();

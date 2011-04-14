@@ -154,116 +154,54 @@ class Emitter
         return -1;
     }
 
-    private int skipSpaces(final String in, int start)
-    {
-        int pos = start;
-        while(pos < in.length() && in.charAt(pos) == ' ' && in.charAt(pos) != '\n')
-            pos++;
-        return pos < in.length() && in.charAt(pos) != '\n' ? pos : -1;
-    }
-
-    private int readUntil(final StringBuilder out, final String in, int start, char... end)
-    {
-        int pos = start;
-        while(pos < in.length() && in.charAt(pos) != '\n')
-        {
-            final char ch = in.charAt(pos);
-            if(ch == '\\' && pos + 1 < in.length())
-            {
-                final char c;
-                switch(c = in.charAt(pos + 1))
-                {
-                case '\\':
-                case '[':
-                case ']':
-                case '(':
-                case ')':
-                case '{':
-                case '}':
-                case '#':
-                case '"':
-                case '\'':
-                case '.':
-                case '>':
-                case '*':
-                case '+':
-                case '-':
-                case '_':
-                case '!':
-                case '`':
-                    out.append(c);
-                    pos++;
-                    break;
-                default:
-                    out.append(ch);
-                    break;
-                }
-            }
-            else
-            {
-                boolean endReached = false;
-                for(int n = 0; n < end.length; n++)
-                {
-                    if(ch == end[n])
-                    {
-                        endReached = true;
-                        break;
-                    }
-                }
-                if(endReached)
-                    break;
-                out.append(ch);
-            }
-            pos++;
-        }
-
-        final char ch = pos < in.length() ? in.charAt(pos) : '\n';
-        for(int n = 0; n < end.length; n++)
-        {
-            if(ch == end[n])
-                return pos;
-        }
-        return -1;
-    }
-
     private int checkLink(final StringBuilder out, final String in, int start, MarkToken token)
     {
         int pos = start + (token == MarkToken.LINK ? 1 : 2);
         final StringBuilder temp = new StringBuilder();
 
         temp.setLength(0);
-        pos = this.readUntil(temp, in, pos, ']');
+        pos = Utils.readUntil(temp, in, pos, ']');
         if(pos < start)
             return -1;
 
         String name = temp.toString(), link = null, comment = null;
 
         pos++;
-        pos = this.skipSpaces(in, pos);
+        pos = Utils.skipSpaces(in, pos);
         if(pos < start)
             return -1;
         if(in.charAt(pos) == '(')
         {
             pos++;
-            temp.setLength(0);
-            pos = this.readUntil(temp, in, pos, ' ', ')');
+            pos = Utils.skipSpaces(in, pos);
             if(pos < start)
                 return -1;
+            temp.setLength(0);
+            boolean useLt = in.charAt(pos) == '<';
+            if(useLt)
+                pos++;
+            pos = Utils.readUntil(temp, in, pos, useLt ? '>' : ' ', ')');
+            if(pos < start)
+                return -1;
+            if(useLt)
+                pos++;
             link = temp.toString();
 
             if(in.charAt(pos) == ' ')
             {
-                pos = this.skipSpaces(in, pos);
+                pos = Utils.skipSpaces(in, pos);
                 if(pos > start && in.charAt(pos) == '"')
                 {
                     pos++;
                     temp.setLength(0);
-                    pos = this.readUntil(temp, in, pos, '"');
+                    pos = Utils.readUntil(temp, in, pos, '"');
                     if(pos < start)
                         return -1;
                     comment = temp.toString();
                     pos++;
-                    this.skipSpaces(link, pos);
+                    pos = Utils.skipSpaces(in, pos);
+                    if(pos == -1)
+                        return -1;
                 }
             }
             if(in.charAt(pos) != ')')
@@ -273,7 +211,7 @@ class Emitter
         {
             pos++;
             temp.setLength(0);
-            pos = this.readUntil(temp, in, pos, ']');
+            pos = Utils.readUntil(temp, in, pos, ']');
             if(pos < start)
                 return -1;
             final String id = temp.length() > 0 ? temp.toString() : name;
@@ -300,7 +238,7 @@ class Emitter
                 out.append('"');
             }
             out.append('>');
-            out.append(name);
+            this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
             out.append("</a>");
         }
         else
@@ -322,6 +260,55 @@ class Emitter
         return pos;
     }
 
+    private int checkEntity(final StringBuilder out, final String in, int start)
+    {
+        final StringBuilder temp = new StringBuilder();
+        int pos = Utils.readUntil(temp, in, start, ';');
+        if(pos < 0 || temp.length() < 3)
+            return -1;
+        out.append('&');
+        if(temp.charAt(1) == '#')
+        {
+            out.append('#');
+            if(temp.charAt(2) == 'x' || temp.charAt(2) == 'X')
+            {
+                if(temp.length() < 4)
+                    return -1;
+                out.append(temp.charAt(2));
+                for(int i = 3; i < temp.length(); i++)
+                {
+                    final char c = temp.charAt(i);
+                    if(!Character.isDigit(c) && !(Character.isLetter(c) && ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))))
+                        return -1;
+                    out.append(c);
+                }
+            }
+            else
+            {
+                for(int i = 2; i < temp.length(); i++)
+                {
+                    final char c;
+                    if(!Character.isDigit(c = temp.charAt(i)))
+                        return -1;
+                    out.append(c);
+                }
+            }
+        }
+        else
+        {
+            for(int i = 1; i < temp.length(); i++)
+            {
+                final char c;
+                if(!Character.isLetter(c = temp.charAt(i)))
+                    return -1;
+                out.append(c);
+            }
+        }
+        out.append(';');
+        
+        return pos;
+    }
+    
     private int recursiveEmitLine(final StringBuilder out, final String in, int start, MarkToken token)
     {
         int pos = start, a, b;
@@ -396,6 +383,22 @@ class Emitter
                     out.append(in.charAt(pos));
                 }
                 break;
+            case HTML:
+                out.append("&lt;");
+                break;
+            case ENTITY:
+                temp.setLength(0);
+                b = this.checkEntity(temp, in, pos);
+                if(b > 0)
+                {
+                    out.append(temp);
+                    pos = b;
+                }
+                else
+                {
+                    out.append("&amp;");
+                }
+                break;
             case ESCAPE:
                 pos++;
                 //$FALL-THROUGH$
@@ -462,6 +465,10 @@ class Emitter
             default:
                 return MarkToken.NONE;
             }
+        case '<':
+            return MarkToken.HTML;
+        case '&':
+            return MarkToken.ENTITY;
         default:
             return MarkToken.NONE;
         }
@@ -529,8 +536,7 @@ class Emitter
                     }
                 }
             }
-            if(line.next != null)
-                out.append('\n');
+            out.append('\n');
             line = line.next;
         }
     }
