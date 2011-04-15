@@ -61,7 +61,7 @@ class Block
             line.value = line.value.substring(start, end + 1);
             line.leading = line.trailing = 0;
         }
-        this.hlDepth = level;
+        this.hlDepth = Math.min(level, 6);
     }
 
     public void removeListIndent()

@@ -2,7 +2,7 @@ package txtmark;
 
 class Utils
 {
-    public static int skipSpaces(final String in, int start)
+    public static int skipSpaces(final String in, final int start)
     {
         int pos = start;
         while(pos < in.length() && (in.charAt(pos) == ' ' || in.charAt(pos) == '\n'))
@@ -40,7 +40,7 @@ class Utils
         }
     }
     
-    public static int readUntil(final StringBuilder out, final String in, int start, char... end)
+    public static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
         while(pos < in.length())
@@ -71,7 +71,29 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
-    public static int readMdLink(final StringBuilder out, final String in, int start)
+    public static int readUntil(final StringBuilder out, final String in, final int start, final char end)
+    {
+        int pos = start;
+        while(pos < in.length())
+        {
+            final char ch = in.charAt(pos);
+            if(ch == '\\' && pos + 1 < in.length())
+            {
+                pos = escape(out, in.charAt(pos + 1), pos);
+            }
+            else
+            {
+                if(ch == end)
+                    break;
+                out.append(ch);
+            }
+            pos++;
+        }
+
+        return (pos == in.length()) ? -1 : pos;
+    }
+
+    public static int readMdLink(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
         int counter = 1;
@@ -110,7 +132,7 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
-    public static int readMdLinkId(final StringBuilder out, final String in, int start)
+    public static int readMdLinkId(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
         int counter = 1;
@@ -153,7 +175,7 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
-    public static int readRawUntil(final StringBuilder out, final String in, int start, char... end)
+    public static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
         while(pos < in.length())
@@ -175,5 +197,72 @@ class Utils
         }
 
         return (pos == in.length()) ? -1 : pos;
+    }
+
+    public static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
+    {
+        int pos = start;
+        while(pos < in.length())
+        {
+            final char ch = in.charAt(pos);
+            if(ch == end)
+                break;
+            out.append(ch);
+            pos++;
+        }
+
+        return (pos == in.length()) ? -1 : pos;
+    }
+
+    public static void appendCode(final StringBuilder out, final String in, final int start, final int end)
+    {
+        for(int i = start; i < end; i++)
+        {
+            final char c;
+            switch(c = in.charAt(i))
+            {
+            case '&':
+                out.append("&amp;");
+                break;
+            case '<':
+                out.append("&lt;");
+                break;
+            case '>':
+                out.append("&gt;");
+                break;
+            default:
+                out.append(c);
+                break;
+            }
+        }
+    }
+
+    public static void appendValue(final StringBuilder out, final String in, final int start, final int end)
+    {
+        for(int i = start; i < end; i++)
+        {
+            final char c;
+            switch(c = in.charAt(i))
+            {
+            case '&':
+                out.append("&amp;");
+                break;
+            case '<':
+                out.append("&lt;");
+                break;
+            case '>':
+                out.append("&gt;");
+                break;
+            case '"':
+                out.append("&quot;");
+                break;
+            case '\'':
+                out.append("&apos;");
+                break;
+            default:
+                out.append(c);
+                break;
+            }
+        }
     }
 }

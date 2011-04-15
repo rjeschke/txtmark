@@ -9,7 +9,8 @@ import java.util.HashMap;
 class Emitter
 {
     private final HashMap<String, LinkRef> linkRefs = new HashMap<String, LinkRef>();
-
+    private final Decorator decorator = new DefaultDecorator();
+    
     public Emitter()
     {
         //
@@ -27,33 +28,31 @@ class Emitter
         switch(root.type)
         {
         case RULER:
-            out.append("<hr />\n");
+            this.decorator.horizontalRuler(out);
             return;
         case NONE:
         case XML:
             break;
         case HEADLINE:
-            out.append("<h");
-            out.append(root.hlDepth);
-            out.append('>');
+            this.decorator.openHeadline(out, root.hlDepth);
             break;
         case PARAGRAPH:
-            out.append("<p>");
+            this.decorator.openParagraph(out);
             break;
         case CODE:
-            out.append("<pre><code>");
+            this.decorator.openCodeBlock(out);
             break;
         case BLOCKQUOTE:
-            out.append("<blockquote>");
+            this.decorator.openBlockquote(out);
             break;
         case UNORDERED_LIST:
-            out.append("<ul>\n");
+            this.decorator.openUnorderedList(out);
             break;
         case ORDERED_LIST:
-            out.append("<ol>\n");
+            this.decorator.openOrderedList(out);
             break;
         case LIST_ITEM:
-            out.append("<li>");
+            this.decorator.openListItem(out);
             break;
         }
 
@@ -78,27 +77,25 @@ class Emitter
         case XML:
             break;
         case HEADLINE:
-            out.append("</h");
-            out.append(root.hlDepth);
-            out.append(">\n");
+            this.decorator.closeHeadline(out, root.hlDepth);
             break;
         case PARAGRAPH:
-            out.append("</p>\n");
+            this.decorator.closeParagraph(out);
             break;
         case CODE:
-            out.append("</code></pre>\n");
+            this.decorator.closeCodeBlock(out);
             break;
         case BLOCKQUOTE:
-            out.append("</blockquote>\n");
+            this.decorator.closeBlockquote(out);
             break;
         case UNORDERED_LIST:
-            out.append("</ul>\n");
+            this.decorator.closeUnorderedList(out);
             break;
         case ORDERED_LIST:
-            out.append("</ol>\n");
+            this.decorator.closeOrderedList(out);
             break;
         case LIST_ITEM:
-            out.append("</li>\n");
+            this.decorator.closeListItem(out);
             break;
         }
     }
@@ -116,58 +113,6 @@ class Emitter
         default:
             this.emitMarkedLines(out, block.lines);
             break;
-        }
-    }
-
-    private void appendCode(final StringBuilder out, final String in, int start, int end)
-    {
-        for(int i = start; i < end; i++)
-        {
-            final char c;
-            switch(c = in.charAt(i))
-            {
-            case '&':
-                out.append("&amp;");
-                break;
-            case '<':
-                out.append("&lt;");
-                break;
-            case '>':
-                out.append("&gt;");
-                break;
-            default:
-                out.append(c);
-                break;
-            }
-        }
-    }
-
-    private void appendValue(final StringBuilder out, final String in, int start, int end)
-    {
-        for(int i = start; i < end; i++)
-        {
-            final char c;
-            switch(c = in.charAt(i))
-            {
-            case '&':
-                out.append("&amp;");
-                break;
-            case '<':
-                out.append("&lt;");
-                break;
-            case '>':
-                out.append("&gt;");
-                break;
-            case '"':
-                out.append("&quot;");
-                break;
-            case '\'':
-                out.append("&apos;");
-                break;
-            default:
-                out.append(c);
-                break;
-            }
         }
     }
 
@@ -280,13 +225,14 @@ class Emitter
 
         if(token == MarkToken.LINK)
         {
-            out.append("<a href=\"");
-            this.appendCode(out, link, 0, link.length());
+            this.decorator.openLink(out);
+            out.append(" href=\"");
+            Utils.appendValue(out, link, 0, link.length());
             out.append('"');
             if(comment != null)
             {
                 out.append(" title=\"");
-                this.appendCode(out, comment, 0, comment.length());
+                Utils.appendValue(out, comment, 0, comment.length());
                 out.append('"');
             }
             out.append('>');
@@ -295,15 +241,16 @@ class Emitter
         }
         else
         {
-            out.append("<img src=\"");
-            this.appendCode(out, link, 0, link.length());
+            this.decorator.openImage(out);
+            out.append(" src=\"");
+            Utils.appendValue(out, link, 0, link.length());
             out.append("\" alt=\"");
-            this.appendCode(out, name, 0, name.length());
+            Utils.appendValue(out, name, 0, name.length());
             out.append('"');
             if(comment != null)
             {
                 out.append(" title=\"");
-                this.appendCode(out, comment, 0, comment.length());
+                Utils.appendValue(out, comment, 0, comment.length());
                 out.append('"');
             }
             out.append(" />");
@@ -312,6 +259,7 @@ class Emitter
         return pos;
     }
 
+    // TODO ... hm ... refactor this
     private int checkHtml(final StringBuilder out, final String in, int start)
     {
         final StringBuilder temp = new StringBuilder();
@@ -326,10 +274,11 @@ class Emitter
             if(pos != -1)
             {
                 final String link = temp.toString();
-                out.append("<a href=\"");
-                this.appendCode(out, link, 0, link.length());
+                this.decorator.openLink(out);
+                out.append(" href=\"");
+                Utils.appendValue(out, link, 0, link.length());
                 out.append("\">");
-                this.appendCode(out, link, 0, link.length());
+                Utils.appendValue(out, link, 0, link.length());
                 out.append("</a>");
                 return pos;
             }
@@ -358,6 +307,16 @@ class Emitter
                         pos = Utils.skipSpaces(in, pos);
                         if(pos == -1)
                             break;
+                        if(in.charAt(pos) == '/')
+                        {
+                            temp.append(" /");
+                            pos++;
+                            break;
+                        }
+                        if(in.charAt(pos) == '>')
+                        {
+                            break;
+                        }
                         temp.append(' ');
                         if(!Character.isLetter(in.charAt(pos)))
                         {
@@ -379,15 +338,11 @@ class Emitter
                         temp.append(lim);
                         pos++;
                     }
-                    if(pos > 0)
+                    if(pos > 0 && pos < in.length() && in.charAt(pos) == '>')
                     {
-                        pos = Utils.readUntil(temp, in, pos, '>');
-                        if(pos > 0)
-                        {
-                            temp.append('>');
-                            out.append(temp);
-                            return pos;
-                        }
+                        temp.append('>');
+                        out.append(temp);
+                        return pos;
                     }
                 }
             }
@@ -398,46 +353,39 @@ class Emitter
     
     private int checkEntity(final StringBuilder out, final String in, int start)
     {
-        final StringBuilder temp = new StringBuilder();
-        int pos = Utils.readUntil(temp, in, start, ';');
-        if(pos < 0 || temp.length() < 3)
+        int pos = Utils.readUntil(out, in, start, ';');
+        if(pos < 0 || out.length() < 3)
             return -1;
-        out.append('&');
-        if(temp.charAt(1) == '#')
+        if(out.charAt(1) == '#')
         {
-            out.append('#');
-            if(temp.charAt(2) == 'x' || temp.charAt(2) == 'X')
+            if(out.charAt(2) == 'x' || out.charAt(2) == 'X')
             {
-                if(temp.length() < 4)
+                if(out.length() < 4)
                     return -1;
-                out.append(temp.charAt(2));
-                for(int i = 3; i < temp.length(); i++)
+                for(int i = 3; i < out.length(); i++)
                 {
-                    final char c = temp.charAt(i);
-                    if(!Character.isDigit(c) && !(Character.isLetter(c) && ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))))
+                    final char c = out.charAt(i);
+                    if((c < '0' || c > '9') && ((c < 'a' || c > 'f') && (c < 'A' || c > 'F')))
                         return -1;
-                    out.append(c);
                 }
             }
             else
             {
-                for(int i = 2; i < temp.length(); i++)
+                for(int i = 2; i < out.length(); i++)
                 {
-                    final char c;
-                    if(!Character.isDigit(c = temp.charAt(i)))
+                    final char c = out.charAt(i);
+                    if(c < '0' || c > '9')
                         return -1;
-                    out.append(c);
                 }
             }
         }
         else
         {
-            for(int i = 1; i < temp.length(); i++)
+            for(int i = 1; i < out.length(); i++)
             {
-                final char c;
-                if(!Character.isLetter(c = temp.charAt(i)))
+                final char c = out.charAt(i);
+                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
                     return -1;
-                out.append(c);
             }
         }
         out.append(';');
@@ -477,9 +425,9 @@ class Emitter
                 b = this.recursiveEmitLine(temp, in, pos + 1, mt);
                 if(b > 0)
                 {
-                    out.append("<em>");
+                    this.decorator.openEmphasis(out);
                     out.append(temp);
-                    out.append("</em>");
+                    this.decorator.closeEmphasis(out);
                     pos = b;
                 }
                 else
@@ -493,9 +441,9 @@ class Emitter
                 b = this.recursiveEmitLine(temp, in, pos + 2, mt);
                 if(b > 0)
                 {
-                    out.append("<strong>");
+                    this.decorator.openStrong(out);
                     out.append(temp);
-                    out.append("</strong>");
+                    this.decorator.closeStrong(out);
                     pos = b + 1;
                 }
                 else
@@ -509,10 +457,17 @@ class Emitter
                 b = this.findToken(in, a, mt);
                 if(b > 0)
                 {
-                    out.append("<code>");
-                    this.appendCode(out, in, a, b);
-                    out.append("</code>");
                     pos = b + (mt == MarkToken.CODE_DOUBLE ? 1 : 0);
+                    while(a < b && in.charAt(a) == ' ')
+                        a++;
+                    if(a < b)
+                    {
+                        while(in.charAt(b - 1) == ' ')
+                            b--;
+                        this.decorator.openCodeSpan(out);
+                        Utils.appendCode(out, in, a, b);
+                        this.decorator.closeCodeSpan(out);
+                    }
                 }
                 else
                 {
