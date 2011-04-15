@@ -15,6 +15,8 @@ class HTML
     private final static HashMap<String, Character> decodeMap = new HashMap<String, Character>();
     private final static HashSet<String> HTML_ELEMENTS = new HashSet<String>();
     private final static HashSet<String> HTML_BLOCK_ELEMENTS = new HashSet<String>();
+    private final static HashSet<String> LINK_PREFIX = new HashSet<String>();
+    private final static String[] LINK_PREFIXES = {"http", "https", "ftp", "ftps"};    
 
     private final static HTMLElement[] BLOCK_ELEMENTS = new HTMLElement[] {
             HTMLElement.address,
@@ -45,10 +47,34 @@ class HTML
             encodeMap.put(chars[i], names[i]);
             decodeMap.put(names[i], chars[i]);
         }
+        for(int i = 0; i < LINK_PREFIXES.length; i++)
+        {
+            LINK_PREFIX.add(LINK_PREFIXES[i]);
+        }
     }
 
     private HTML()
     {
         //
+    }
+    
+    public static boolean isLinkPrefix(final String value)
+    {
+        return LINK_PREFIX.contains(value);
+    }
+    
+    public static boolean isEntity(final String value)
+    {
+        return decodeMap.containsKey(value);
+    }
+    
+    public static boolean isHtmlElement(final String value)
+    {
+        return HTML_ELEMENTS.contains(value);
+    }
+    
+    public static boolean isHtmlBlockElement(final String value)
+    {
+        return HTML_BLOCK_ELEMENTS.contains(value);
     }
 }

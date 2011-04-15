@@ -411,7 +411,7 @@ public class Processor
     {
         final StringBuilder out = new StringBuilder();
 
-        long t0 = System.nanoTime();
+//        long t0 = System.nanoTime();
 
         final Block parent = this.readLines();
         parent.removeSurroundingEmptyLines();
@@ -424,9 +424,8 @@ public class Processor
             block = block.next;
         }
 
-        t0 = System.nanoTime() - t0;
-
-        out.append(String.format("\n<!-- Processing time: %dms -->\n", (int)(t0 * 1e-6)));
+//        t0 = System.nanoTime() - t0;
+//        out.append(String.format("\n<!-- Processing time: %dms -->\n", (int)(t0 * 1e-6)));
 
         return out.toString();
     }

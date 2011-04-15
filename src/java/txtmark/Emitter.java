@@ -142,6 +142,35 @@ class Emitter
         }
     }
 
+    private void appendValue(final StringBuilder out, final String in, int start, int end)
+    {
+        for(int i = start; i < end; i++)
+        {
+            final char c;
+            switch(c = in.charAt(i))
+            {
+            case '&':
+                out.append("&amp;");
+                break;
+            case '<':
+                out.append("&lt;");
+                break;
+            case '>':
+                out.append("&gt;");
+                break;
+            case '"':
+                out.append("&quot;");
+                break;
+            case '\'':
+                out.append("&apos;");
+                break;
+            default:
+                out.append(c);
+                break;
+            }
+        }
+    }
+
     private int findToken(final String in, int start, MarkToken token)
     {
         int pos = start;
@@ -160,17 +189,28 @@ class Emitter
         final StringBuilder temp = new StringBuilder();
 
         temp.setLength(0);
-        pos = Utils.readUntil(temp, in, pos, ']');
+        pos = Utils.readMdLinkId(temp, in, pos);
         if(pos < start)
             return -1;
 
         String name = temp.toString(), link = null, comment = null;
-
-        pos++;
+        final int oldPos = pos++;
         pos = Utils.skipSpaces(in, pos);
         if(pos < start)
-            return -1;
-        if(in.charAt(pos) == '(')
+        {
+            final LinkRef lr = this.linkRefs.get(name.toLowerCase());
+            if(lr != null)
+            {
+                link = lr.link;
+                comment = lr.title;
+                pos = oldPos;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+        else if(in.charAt(pos) == '(')
         {
             pos++;
             pos = Utils.skipSpaces(in, pos);
@@ -178,9 +218,7 @@ class Emitter
                 return -1;
             temp.setLength(0);
             boolean useLt = in.charAt(pos) == '<';
-            if(useLt)
-                pos++;
-            pos = Utils.readUntil(temp, in, pos, useLt ? '>' : ' ', ')');
+            pos = useLt ? Utils.readUntil(temp, in, pos + 1, '>') : Utils.readMdLink(temp, in, pos);
             if(pos < start)
                 return -1;
             if(useLt)
@@ -222,6 +260,20 @@ class Emitter
                 comment = lr.title;
             }
         }
+        else
+        {
+            final LinkRef lr = this.linkRefs.get(name.toLowerCase());
+            if(lr != null)
+            {
+                link = lr.link;
+                comment = lr.title;
+                pos = oldPos;
+            }
+            else
+            {
+                return -1;
+            }
+        }
 
         if(link == null)
             return -1;
@@ -260,6 +312,90 @@ class Emitter
         return pos;
     }
 
+    private int checkHtml(final StringBuilder out, final String in, int start)
+    {
+        final StringBuilder temp = new StringBuilder();
+        int pos;
+
+        // Check for auto links
+        temp.setLength(0);
+        pos = Utils.readUntil(temp, in, start + 1, ':');
+        if(pos != -1 && HTML.isLinkPrefix(temp.toString()))
+        {
+            pos = Utils.readUntil(temp, in, pos, '>');
+            if(pos != -1)
+            {
+                final String link = temp.toString();
+                out.append("<a href=\"");
+                this.appendCode(out, link, 0, link.length());
+                out.append("\">");
+                this.appendCode(out, link, 0, link.length());
+                out.append("</a>");
+                return pos;
+            }
+        }
+        // Check for mailto auto link
+        // TODO
+        
+        // Check for inline html
+        if(start + 2 < in.length())
+        {
+            temp.setLength(0);
+            temp.append('<');
+            pos = start + 1;
+            if(in.charAt(pos) == '/')
+            {
+                temp.append('/');
+                pos++;
+            }
+            if(pos < in.length() && Character.isLetter(in.charAt(pos)))
+            {
+                pos = Utils.readUntil(temp, in, pos, ' ', '/', '>');
+                if(pos > 0)
+                {
+                    while(pos < in.length() && in.charAt(pos) == ' ')
+                    {
+                        pos = Utils.skipSpaces(in, pos);
+                        if(pos == -1)
+                            break;
+                        temp.append(' ');
+                        if(!Character.isLetter(in.charAt(pos)))
+                        {
+                            pos = -1;
+                            break;
+                        }
+                        pos = Utils.readUntil(temp, in, pos, '=');
+                        if(pos == -1)
+                            break;
+                        pos = Utils.readUntil(temp, in, pos, '\'', '"');
+                        if(pos == -1)
+                            break;
+                        final char lim = in.charAt(pos);
+                        temp.append(lim);
+                        pos++;
+                        pos = Utils.readRawUntil(temp, in, pos, lim);
+                        if(pos == -1)
+                            break;
+                        temp.append(lim);
+                        pos++;
+                    }
+                    if(pos > 0)
+                    {
+                        pos = Utils.readUntil(temp, in, pos, '>');
+                        if(pos > 0)
+                        {
+                            temp.append('>');
+                            out.append(temp);
+                            return pos;
+                        }
+                    }
+                }
+            }
+        }        
+    
+        return -1;
+    }
+    
     private int checkEntity(final StringBuilder out, final String in, int start)
     {
         final StringBuilder temp = new StringBuilder();
@@ -384,7 +520,17 @@ class Emitter
                 }
                 break;
             case HTML:
-                out.append("&lt;");
+                temp.setLength(0);
+                b = this.checkHtml(temp, in, pos);
+                if(b > 0)
+                {
+                    out.append(temp);
+                    pos = b;
+                }
+                else
+                {
+                    out.append("&lt;");
+                }
                 break;
             case ENTITY:
                 temp.setLength(0);
@@ -516,7 +662,7 @@ class Emitter
         {
             if(!line.isEmpty)
             {
-                for(int i = 4; i < line.value.length() - line.trailing; i++)
+                for(int i = 4; i < line.value.length(); i++)
                 {
                     final char c;
                     switch(c = line.value.charAt(i))
