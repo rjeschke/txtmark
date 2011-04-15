@@ -1,8 +1,10 @@
 # txtmark - Java markdown processor
 Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
 See LICENSE.txt for licensing information.
+
 ***
-txtmark is yet another markdown processor for the JVM.
+
+txtmark is yet another markdown processor for the JVM.  
 ... and is *damn* fast^^
 
 Again this is a WIP release.
@@ -14,7 +16,9 @@ TODO:
 - see below (markdown test suite)
 
 ### MarkdownTest results so far
+
 ***
+
 Based on [MarkdownTest_1.0_2007-05-09](http://daringfireball.net/projects/downloads/MarkdownTest_1.0_2007-05-09.tgz)
 
 * Amps and angle encoding ... OK
@@ -41,41 +45,43 @@ Based on [MarkdownTest_1.0_2007-05-09](http://daringfireball.net/projects/downlo
 * Tabs ... OK
 * Tidyness ... OK
 
-18 passed; 5 failed.
+18 passed; 5 failed.  
 Benchmark:  2 wallclock secs ( 0.02 usr  0.01 sys +  1.78 cusr  0.68 csys =  2.49 CPU)
 
 ***
 
 1. <h4 id="note0">Note:</h4>
-  Fails because Txtmark doesn't produce empty 'title' image attributes.
-  (IMHO: Images ... OK)
+    Fails because Txtmark doesn't produce empty 'title' image attributes.  
+    (IMHO: Images ... OK)
 
 2. <h4 id="note1">Note:</h4>
-  Fails because of currently missing block-level HTML identification.
+    Fails because of currently missing block-level HTML identification.
 
 3. <h4 id="note2">Note:</h4>
-  What the frell ... this test will continue to FAIL.
-  Sorry, but using unescaped '"' in a link, which should be surrounded
-  by '"' is unacceptable for me ;)
+    What the frell ... this test will continue to FAIL.  
+    Sorry, but using unescaped '"' in a link, which should be surrounded
+    by '"' is unacceptable for me ;)
 
-  Change:
+    Change:
 
         Foo [bar](/url/ "Title with "quotes" inside").
         [bar]: /url/ "Title with "quotes" inside"
 
-  to:
+    to:
 
         Foo [bar](/url/ "Title with \"quotes\" inside").
         [bar]: /url/ "Title with \"quotes\" inside"
 
-  and Txtmark will produce the correct result.
-  (IMHO: Literal quotes in titles ... OK)
+    and Txtmark will produce the correct result.  
+    (IMHO: Literal quotes in titles ... OK)
 
 ### Performance comparison of markdown processors for the JVM
+
 ***
-Based on [this](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).
+
+Based on [this](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).  
 Txtmark's results should not be considered final, they may change in either direction
-during the upcoming releases.
+during the upcoming releases.  
 But I think you get the point.
 
 <table>
@@ -100,6 +106,7 @@ But I think you get the point.
 
 
 ***
+
 [Markdown] is copyright (c) 2004 by John Gruber 
    [Markdown]: http://daringfireball.net/projects/markdown/
 [Actuarius] is copyright (c) 2010 by Christoph Henkelmann
@@ -108,5 +115,7 @@ But I think you get the point.
    [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [PegDown] is copyright (c) 2010 by Mathias Doenitz
    [PegDown]: https://github.com/sirthias/pegdown
+   
 ***
+
 Project link: https://github.com/rjeschke/txtmark
