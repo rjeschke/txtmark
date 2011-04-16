@@ -24,7 +24,9 @@ public class Processor
     private final Reader reader;
     /** The emitter. */
     private final Emitter emitter;
-
+    /** Extension flag. */
+    private boolean useExtensions = false;
+    
     /**
      * Constructor.
      * 
@@ -41,11 +43,18 @@ public class Processor
      * 
      * @param input The String to process. 
      * @return The processed String.
-     * @throws IOException if an IO error occurs
      */
-    public static String process(final String input) throws IOException
+    public static String process(final String input)
     {
-        return process(new StringReader(input));
+        try
+        {
+            return process(new StringReader(input));
+        }
+        catch(IOException e)
+        {
+            // This _can never_ happen
+            return null;
+        }
     }
 
     /**
@@ -53,11 +62,18 @@ public class Processor
      * 
      * @param input The String to process. 
      * @return The processed String.
-     * @throws IOException if an IO error occurs
      */
-    public static String process(final String input, final Decorator decorator) throws IOException
+    public static String process(final String input, final Decorator decorator)
     {
-        return process(new StringReader(input), decorator);
+        try
+        {
+            return process(new StringReader(input), decorator);
+        }
+        catch(IOException e)
+        {
+            // This _can never_ happen
+            return null;
+        }
     }
 
     /**
@@ -305,13 +321,22 @@ public class Processor
                 }
             }
 
-            if(isLinkRef)
+            // To make compiler happy: add != null checks
+            if(isLinkRef && id != null && link != null)
             {
-                // Store linkRef and skip line
-                final LinkRef lr = new LinkRef(link, comment);
-                this.emitter.addLinkRef(id, lr);
-                if(comment == null)
-                    lastLinkRef = lr;
+                if(id.toLowerCase().equals("$profile$"))
+                {
+                    this.useExtensions = link.toLowerCase().equals("extended");
+                    lastLinkRef = null;
+                }
+                else
+                {
+                    // Store linkRef and skip line
+                    final LinkRef lr = new LinkRef(link, comment);
+                    this.emitter.addLinkRef(id, lr);
+                    if(comment == null)
+                        lastLinkRef = lr;
+                }
             }
             else
             {
@@ -397,7 +422,9 @@ public class Processor
                     while(line != null && !line.isEmpty)
                     {
                         final LineType t = line.getLineType();
-                        if(listMode && (t == LineType.OLIST || t == LineType.ULIST))
+                        if((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
+                            break;
+                        if(this.useExtensions && (t == LineType.CODE))
                             break;
                         if(t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2 
                                 || t == LineType.HR || t == LineType.BQUOTE

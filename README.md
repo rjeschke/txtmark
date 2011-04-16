@@ -17,6 +17,88 @@ This is a RC version, tagged v0.5
 
 For an in-depth explanation of the markdown syntax have a look at [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
 
+### Where Txtmark is not like Markdown
+
+***
+
+*   Txtmark does not produce empty `title` attributes in link and image tags.
+
+*   Unescaped `"` in link titles starting with `"` are not recognized and result
+    in unexpected behaviour.
+    
+*   Due to a different list parsing approach some things get interpreted differently:
+
+        * List
+        > Quote
+
+    will produce when processed with Markdown:
+
+        <p><ul>
+        <li>List</p>
+
+        <blockquote>
+         <p>Quote</li>
+        </ul></p>
+        </blockquote>
+
+    and this when produced with Txtmark:
+
+        <ul>
+        <li>List<blockquote><p>Quote</p>
+        </blockquote>
+        </li>
+        </ul>
+
+    Another one:
+
+        * List
+        ====
+
+    will produce when processed with Markdown:
+
+        <h1>* List</h1>
+    
+    and this when produced with Txtmark:
+
+        <ul>
+        <li><h1>List</h1>
+        </li>
+        </ul>
+
+### Txtmark extensions
+
+***
+
+To enable Txtmark's extended markdown parsing you can use the $PROFILE$ mechanism:
+
+    [$PROFILE$]: extended
+
+This seemed to me as the easiest and safest way to enable different behaviours.
+(All other markdown processors will ignore this line.)
+
+#### Behavior changes when using `[$PROFILE$]: extended`
+
+*   Lists and code blocks end a paragraph (inspired by [Actuarius])
+
+    In normal markdown the following:
+
+        This is a paragraph
+        * and this is not a list
+
+    will produce:
+
+        <p>This is a paragraph
+        * and this is not a list</p>
+
+    When using Txtmark extensions this changes to:
+
+        <p>This is a paragraph</p>
+        <ul>
+        <li>and this is not a list</li>
+        </ul>
+
+*    More to come ...
+
 
 ### Markdown conformity
 
