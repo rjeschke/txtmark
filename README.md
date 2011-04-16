@@ -1,10 +1,10 @@
-# txtmark - Java markdown processor
+# Txtmark - Java markdown processor
 Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>  
 See LICENSE.txt for licensing information.
 
 ***
 
-txtmark is yet another markdown processor for the JVM.  
+Txtmark is yet another markdown processor for the JVM.  
 
 *   It is easy to use:
 
@@ -13,7 +13,8 @@ txtmark is yet another markdown processor for the JVM.
 *   It is fast (see below)  
     ... well, it is the fastest markdown processor on the JVM right now.
 
-This is a RC version, tagged v0.5
+*   It does not depend on other libraries, so classpathing `txtmark.jar` is
+    sufficient to use Txtmark in your project.
 
 For an in-depth explanation of the markdown syntax have a look at [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
 
@@ -174,7 +175,7 @@ Based on [this benchmark suite](http://henkelmann.eu/2011/01/10/performance_comp
 
     when processed with Txtmark.
 
-Tested versions:  
+Benchmarked versions:  
 [Actuarius] version: 0.2  
 [PegDown] version: 0.8.5.4  
 [Knockoff] version: 0.7.3-15  
@@ -182,14 +183,15 @@ Tested versions:
 ---
 
 [Markdown] is copyright (c) 2004 by John Gruber  
-   [Markdown]: http://daringfireball.net/projects/markdown/
 [Actuarius] is copyright (c) 2010 by Christoph Henkelmann  
-   [Actuarius]: http://henkelmann.eu/projects/actuarius/
 [Knockoff] is copyright (c) 2009-2011 by Tristan Juricek  
-   [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [PegDown] is copyright (c) 2010 by Mathias Doenitz  
-   [PegDown]: https://github.com/sirthias/pegdown
 
 ***
+
+[Markdown]: http://daringfireball.net/projects/markdown/
+[Actuarius]: http://henkelmann.eu/projects/actuarius/
+[Knockoff]: http://tristanhunt.com/projects/knockoff/
+[PegDown]: https://github.com/sirthias/pegdown
 
 Project link: <https://github.com/rjeschke/txtmark>
