@@ -13,11 +13,11 @@ enum MarkToken
 {
     /** No token. */
     NONE,
-    /** * */
+    /** &#x2a; */
     EM_STAR,            // x*x
     /** _ */
     EM_UNDERSCORE,      // x_x
-    /** ** */
+    /** &#x2a;&#x2a; */
     STRONG_STAR,        // x**x
     /** __ */
     STRONG_UNDERSCORE,  // x__x

@@ -20,9 +20,16 @@ import java.io.StringReader;
  */
 public class Processor
 {
+    /** The reader. */
     private final Reader reader;
+    /** The emitter. */
     private Emitter emitter = new Emitter();
 
+    /**
+     * Constructor.
+     * 
+     * @param reader The input reader.
+     */
     private Processor(Reader reader)
     {
         this.reader = reader;
@@ -108,6 +115,13 @@ public class Processor
         return p.process();
     }
 
+    /**
+     * Reads all lines from our reader.
+     * <p>Takes care of markdown link references.</p>
+     * 
+     * @return A Block containing all lines.
+     * @throws IOException If an IO error occurred.
+     */
     private Block readLines() throws IOException
     {
         final Block block = new Block();
@@ -250,6 +264,11 @@ public class Processor
         return block;
     }
 
+    /**
+     * Initializes a list block by separating it into list item blocks.
+     * 
+     * @param root The Block to process.
+     */
     private void initListBlock(final Block root)
     {
         Line line = root.lines;
@@ -268,6 +287,12 @@ public class Processor
         root.split(root.lineTail).type = BlockType.LIST_ITEM;
     }
 
+    /**
+     * Recursively process the given Block.
+     * 
+     * @param root The Block to process.
+     * @param listMode Flag indicating that we're in a list item block.
+     */
     private void recurse(final Block root, boolean listMode)
     {
         Block block;
@@ -407,6 +432,12 @@ public class Processor
         }
     }
 
+    /**
+     * Does all the processing.
+     * 
+     * @return The processed String.
+     * @throws IOException If an IO error occurred.
+     */
     private String process() throws IOException
     {
         final StringBuilder out = new StringBuilder();

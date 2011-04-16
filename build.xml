@@ -2,8 +2,11 @@
 <project name="txtmark" default="main">
 
   <target name="clean" description="Cleans the build folder">
+    <mkdir dir="build/classes"/>
+    <delete>
+      <fileset dir="build/classes" includes="**/*.*"/>
+    </delete>
     <delete dir="build/jar"/>
-    <delete dir="build/classes"/>
   </target>
 
   <target name="clean_all" depends="clean" description="Cleans the build, doc and release folder">
@@ -17,15 +20,15 @@
   </target>
 
   <target name="doc" description="Generates the JavaDoc">
-  	<mkdir dir="doc"/>
-  	<javadoc
-  		sourcepath="src/java"
-  		access="public"
-  		author="true"
-  		destdir="doc"
-  		encoding="UTF-8"
-  		charset="UTF-8"
-  		link="http://download.oracle.com/javase/6/docs/api/"/>
+      <mkdir dir="doc"/>
+      <javadoc
+          sourcepath="src/java"
+          access="private"
+          author="true"
+          destdir="doc"
+          encoding="UTF-8"
+          charset="UTF-8"
+          link="http://download.oracle.com/javase/6/docs/api/"/>
   </target>
 
   <target name="jar" depends="compile" description="Creates the binary release inside build/jar">
@@ -36,10 +39,10 @@
   <target name="main" depends="clean,jar" description="Executes clean, compile and jar"/>
 
   <target name="release" depends="clean_all,jar,doc" description="Builds the release version">
-  	<mkdir dir="release"/>
-  	<copy file="build/jar/txtmark.jar" toFile="release/txtmark.jar"/>
+      <mkdir dir="release"/>
+      <copy file="build/jar/txtmark.jar" toFile="release/txtmark.jar"/>
     <jar destfile="release/txtmark_javadoc.jar" basedir="doc"/>
-  	<jar destfile="release/txtmark_src.jar" basedir="src/java"/>
+      <jar destfile="release/txtmark_src.jar" basedir="src/java"/>
   </target>
 
 </project>

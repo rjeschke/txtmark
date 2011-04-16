@@ -124,7 +124,7 @@ class Emitter
      * Transforms lines into HTML.
      * 
      * @param out The StringBuilder to write to.
-     * @param root The Block to process.
+     * @param block The Block to process.
      */
     private void emitLines(final StringBuilder out, final Block block)
     {
