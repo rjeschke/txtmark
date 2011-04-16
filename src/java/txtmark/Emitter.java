@@ -237,7 +237,7 @@ class Emitter
         {
             pos++;
             temp.setLength(0);
-            pos = Utils.readUntil(temp, in, pos, ']');
+            pos = Utils.readRawUntil(temp, in, pos, ']');
             if(pos < start)
                 return -1;
             final String id = temp.length() > 0 ? temp.toString() : name;

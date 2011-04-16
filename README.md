@@ -19,7 +19,7 @@ TODO:
 
 ***
 
-Based on [MarkdownTest_1.0_2007-05-09](http://daringfireball.net/projects/downloads/MarkdownTest_1.0_2007-05-09.tgz)
+Based on [MarkdownTest\_1.0\_2007-05-09](http://daringfireball.net/projects/downloads/MarkdownTest_1.0_2007-05-09.tgz)
 
 * Amps and angle encoding ... OK
 * Auto links ... OK
@@ -38,15 +38,14 @@ Based on [MarkdownTest_1.0_2007-05-09](http://daringfireball.net/projects/downlo
 * Links, shortcut references ... OK
 * Literal quotes in titles ... FAILED (see [Note 3](#note2))
 * Markdown Documentation - Basics ... OK
-* Markdown Documentation - Syntax ... OK
+* Markdown Documentation - Syntax ... FAILED (see [Note 2](#note1))
 * Nested blockquotes ... OK
 * Ordered and unordered lists ... OK
 * Strong and em together ... OK
 * Tabs ... OK
 * Tidyness ... OK
 
-18 passed; 5 failed.  
-Benchmark:  2 wallclock secs ( 0.02 usr  0.01 sys +  1.85 cusr  0.74 csys =  2.62 CPU)
+17 passed; 6 failed.
 
 ***
 
@@ -59,8 +58,8 @@ Benchmark:  2 wallclock secs ( 0.02 usr  0.01 sys +  1.85 cusr  0.74 csys =  2.6
 
 3. <h4 id="note2">Note:</h4>
     What the frell ... this test will continue to FAIL.  
-    Sorry, but using unescaped '"' in a link, which should be surrounded
-    by '"' is unacceptable for me ;)
+    Sorry, but using unescaped `"` in a title which should be surrounded
+    by `"` is unacceptable for me ;)
 
     Change:
 
@@ -82,7 +81,7 @@ Benchmark:  2 wallclock secs ( 0.02 usr  0.01 sys +  1.85 cusr  0.74 csys =  2.6
 Based on [this](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).  
 Txtmark's results should not be considered final, they may change in either direction
 during the upcoming releases.  
-But I think you get the point.
+But I think you get the point.  
 
 <table>
   <tr>
@@ -220,7 +219,7 @@ But I think you get the point.
    [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [PegDown] is copyright (c) 2010 by Mathias Doenitz  
    [PegDown]: https://github.com/sirthias/pegdown
-   
+
 ***
 
 Project link: <https://github.com/rjeschke/txtmark>

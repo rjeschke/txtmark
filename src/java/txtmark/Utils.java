@@ -210,36 +210,29 @@ class Utils
         while(pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if(ch == '\\' && pos + 1 < in.length())
+            boolean endReached = false;
+            switch(ch)
             {
-                pos = escape(out, in.charAt(pos + 1), pos);
-            }
-            else
-            {
-                boolean endReached = false;
-                switch(ch)
-                {
-                case '\n':
-                    out.append(' ');
-                    break;
-                case '[':
-                    counter++;
+            case '\n':
+                out.append(' ');
+                break;
+            case '[':
+                counter++;
+                out.append(ch);
+                break;
+            case ']':
+                counter--;
+                if(counter == 0)
+                    endReached = true;
+                else
                     out.append(ch);
-                    break;
-                case ']':
-                    counter--;
-                    if(counter == 0)
-                        endReached = true;
-                    else
-                        out.append(ch);
-                    break;
-                default:
-                    out.append(ch);
-                    break;
-                }
-                if(endReached)
-                    break;
+                break;
+            default:
+                out.append(ch);
+                break;
             }
+            if(endReached)
+                break;
             pos++;
         }
 
