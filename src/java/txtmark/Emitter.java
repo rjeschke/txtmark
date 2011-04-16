@@ -16,12 +16,12 @@ class Emitter
     /** Link references. */
     private final HashMap<String, LinkRef> linkRefs = new HashMap<String, LinkRef>();
     /** The Decorator. */
-    private final Decorator decorator = new DefaultDecorator();
+    private Decorator decorator;
     
     /** Constructor. */
-    public Emitter()
+    public Emitter(final Decorator decorator)
     {
-        //
+        this.decorator = decorator;
     }
 
     /**
@@ -360,62 +360,7 @@ class Emitter
         if(start + 2 < in.length())
         {
             temp.setLength(0);
-            temp.append('<');
-            pos = start + 1;
-            if(in.charAt(pos) == '/')
-            {
-                temp.append('/');
-                pos++;
-            }
-            if(pos < in.length() && Character.isLetter(in.charAt(pos)))
-            {
-                pos = Utils.readUntil(temp, in, pos, ' ', '/', '>');
-                if(pos > 0)
-                {
-                    while(pos < in.length() && in.charAt(pos) == ' ')
-                    {
-                        pos = Utils.skipSpaces(in, pos);
-                        if(pos == -1)
-                            break;
-                        if(in.charAt(pos) == '/')
-                        {
-                            temp.append(" /");
-                            pos++;
-                            break;
-                        }
-                        if(in.charAt(pos) == '>')
-                        {
-                            break;
-                        }
-                        temp.append(' ');
-                        if(!Character.isLetter(in.charAt(pos)))
-                        {
-                            pos = -1;
-                            break;
-                        }
-                        pos = Utils.readUntil(temp, in, pos, '=');
-                        if(pos == -1)
-                            break;
-                        pos = Utils.readUntil(temp, in, pos, '\'', '"');
-                        if(pos == -1)
-                            break;
-                        final char lim = in.charAt(pos);
-                        temp.append(lim);
-                        pos++;
-                        pos = Utils.readRawUntil(temp, in, pos, lim);
-                        if(pos == -1)
-                            break;
-                        temp.append(lim);
-                        pos++;
-                    }
-                    if(pos > 0 && pos < in.length() && in.charAt(pos) == '>')
-                    {
-                        temp.append('>');
-                        out.append(temp);
-                        return pos;
-                    }
-                }
-            }
+            return Utils.readXML(out, in, start);
         }        
     
         return -1;
@@ -712,8 +657,7 @@ class Emitter
             {
                 out.append(line.value);
             }
-            if(line.next != null)
-                out.append('\n');
+            out.append('\n');
             line = line.next;
         }
     }

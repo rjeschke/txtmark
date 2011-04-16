@@ -19,8 +19,26 @@
     <javac srcdir="src/java" destdir="build/classes" target="1.6" includeAntRuntime="false"/>
   </target>
 
-  <target name="doc" description="Generates the JavaDoc">
+  <target name="doc" description="Generates the user JavaDoc">
       <mkdir dir="doc"/>
+      <delete>
+        <fileset dir="doc" includes="**/*.*"/>
+      </delete>
+      <javadoc
+          sourcepath="src/java"
+          access="public"
+          author="true"
+          destdir="doc"
+          encoding="UTF-8"
+          charset="UTF-8"
+          link="http://download.oracle.com/javase/6/docs/api/"/>
+  </target>
+
+  <target name="devdoc" description="Generates the developer JavaDoc">
+      <mkdir dir="doc"/>
+      <delete>
+        <fileset dir="doc" includes="**/*.*"/>
+      </delete>
       <javadoc
           sourcepath="src/java"
           access="private"

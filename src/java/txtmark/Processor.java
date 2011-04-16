@@ -23,20 +23,21 @@ public class Processor
     /** The reader. */
     private final Reader reader;
     /** The emitter. */
-    private Emitter emitter = new Emitter();
+    private final Emitter emitter;
 
     /**
      * Constructor.
      * 
      * @param reader The input reader.
      */
-    private Processor(Reader reader)
+    private Processor(Reader reader, Decorator decorator)
     {
         this.reader = reader;
+        this.emitter = new Emitter(decorator);
     }
 
     /**
-     * Transforms an input String into XHTML.
+     * Transforms an input String into XHTML using the default Decorator.
      * 
      * @param input The String to process. 
      * @return The processed String.
@@ -48,7 +49,19 @@ public class Processor
     }
 
     /**
-     * Transforms an input file into XHTML using UTF-8 encoding.
+     * Transforms an input String into XHTML.
+     * 
+     * @param input The String to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final String input, final Decorator decorator) throws IOException
+    {
+        return process(new StringReader(input), decorator);
+    }
+
+    /**
+     * Transforms an input file into XHTML using UTF-8 encoding and the default Decorator.
      * 
      * @param file The File to process. 
      * @return The processed String.
@@ -60,7 +73,19 @@ public class Processor
     }
 
     /**
-     * Transforms an input file into XHTML.
+     * Transforms an input file into XHTML using UTF-8 encoding.
+     * 
+     * @param file The File to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final File file, final Decorator decorator) throws IOException
+    {
+        return process(file, "UTF-8", decorator);
+    }
+
+    /**
+     * Transforms an input file into XHTML using the default Decorator.
      * 
      * @param file The File to process. 
      * @param encoding The encoding to use. 
@@ -69,11 +94,35 @@ public class Processor
      */
     public static String process(final File file, final String encoding) throws IOException
     {
-        final Reader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
-        final Processor p = new Processor(r);
-        final String ret = p.process();
-        r.close();
+        return process(file, encoding, new DefaultDecorator());
+    }
+
+    /**
+     * Transforms an input file into XHTML.
+     * 
+     * @param file The File to process. 
+     * @param encoding The encoding to use. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final File file, final String encoding, final Decorator decorator) throws IOException
+    {
+        final FileInputStream input = new FileInputStream(file);
+        final String ret = process(input, encoding, decorator);
+        input.close();
         return ret;
+    }
+
+    /**
+     * Transforms an input stream into XHTML using UTF-8 encoding using the default Decorator.
+     * 
+     * @param input The InputStream to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final InputStream input) throws IOException
+    {
+        return process(input, "UTF-8", new DefaultDecorator());
     }
 
     /**
@@ -83,9 +132,23 @@ public class Processor
      * @return The processed String.
      * @throws IOException if an IO error occurs
      */
-    public static String process(final InputStream input) throws IOException
+    public static String process(final InputStream input, final Decorator decorator) throws IOException
     {
-        return process(input, "UTF-8");
+        return process(input, "UTF-8", decorator);
+    }
+
+    /**
+     * Transforms an input stream into XHTML using the default Decorator.
+     * 
+     * @param input The InputStream to process. 
+     * @param encoding The encoding to use. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final InputStream input, final String encoding) throws IOException
+    {
+        final Processor p = new Processor(new BufferedReader(new InputStreamReader(input, encoding)), new DefaultDecorator());
+        return p.process();
     }
 
     /**
@@ -96,9 +159,24 @@ public class Processor
      * @return The processed String.
      * @throws IOException if an IO error occurs
      */
-    public static String process(final InputStream input, final String encoding) throws IOException
+    public static String process(final InputStream input, final String encoding, final Decorator decorator) throws IOException
     {
-        final Processor p = new Processor(new BufferedReader(new InputStreamReader(input, encoding)));
+        final Processor p = new Processor(new BufferedReader(new InputStreamReader(input, encoding)), decorator);
+        return p.process();
+    }
+
+    /**
+     * Transforms an input stream into XHTML using the default Decorator.
+     * 
+     * @param reader The Reader to process. 
+     * @return The processed String.
+     * @throws IOException if an IO error occurs
+     */
+    public static String process(final Reader reader) throws IOException
+    {
+        final Processor p = new Processor(
+                !(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader, 
+                        new DefaultDecorator());
         return p.process();
     }
 
@@ -109,9 +187,11 @@ public class Processor
      * @return The processed String.
      * @throws IOException if an IO error occurs
      */
-    public static String process(final Reader reader) throws IOException
+    public static String process(final Reader reader, final Decorator decorator) throws IOException
     {
-        final Processor p = new Processor(!(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader);
+        final Processor p = new Processor(
+                !(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader, 
+                        decorator);
         return p.process();
     }
 
@@ -319,7 +399,9 @@ public class Processor
                         final LineType t = line.getLineType();
                         if(listMode && (t == LineType.OLIST || t == LineType.ULIST))
                             break;
-                        if(t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2 || t == LineType.HR || t == LineType.BQUOTE)
+                        if(t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2 
+                                || t == LineType.HR || t == LineType.BQUOTE
+                                || t == LineType.XML)
                             break;
                         line = line.next;
                     }
@@ -349,6 +431,16 @@ public class Processor
                 block.type = BlockType.CODE;
                 block.removeSurroundingEmptyLines();
                 break;
+            case XML:
+                if(line.previous != null)
+                {
+                    // FIXME ... this looks wrong
+                    root.split(line.previous);
+                }
+                root.split(line.xmlEndLine).type = BlockType.XML;
+                root.removeLeadingEmptyLines();
+                line = root.lines;
+                break;
             case BQUOTE:
                 while(line != null)
                 {
@@ -366,6 +458,7 @@ public class Processor
             case HR:
                 if(line.previous != null)
                 {
+                    // FIXME ... this looks wrong
                     root.split(line.previous);
                 }
                 root.split(line).type = BlockType.RULER;
@@ -442,8 +535,6 @@ public class Processor
     {
         final StringBuilder out = new StringBuilder();
 
-//        long t0 = System.nanoTime();
-
         final Block parent = this.readLines();
         parent.removeSurroundingEmptyLines();
 
@@ -454,9 +545,6 @@ public class Processor
             this.emitter.emit(out, block);
             block = block.next;
         }
-
-//        t0 = System.nanoTime() - t0;
-//        out.append(String.format("\n<!-- Processing time: %dms -->\n", (int)(t0 * 1e-6)));
 
         return out.toString();
     }

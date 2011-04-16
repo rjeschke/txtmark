@@ -4,6 +4,8 @@
 */
 package txtmark;
 
+import java.util.LinkedList;
+
 /**
  * This class represents a text line.
  * 
@@ -26,7 +28,8 @@ class Line
     public Line previous = null, next = null;
     /** Is previous/next line empty? */
     public boolean prevEmpty, nextEmpty;
-
+    /** Final line of a XML block. */
+    public Line xmlEndLine;
     /** Constructor. */
     public Line()
     {
@@ -243,6 +246,12 @@ class Line
                 return LineType.OLIST;
         }
 
+        if(this.value.charAt(this.leading) == '<')
+        {
+            if(this.checkHTML())
+                return LineType.XML;
+        }
+        
         if(this.next != null && !this.next.isEmpty)
         {
             if((this.next.value.charAt(0) == '-') && (this.next.countChars('-') > 0))
@@ -252,5 +261,134 @@ class Line
         }
 
         return LineType.OTHER;
+    }
+    
+    /**
+     * Reads an XML comment. Sets <code>xmlEndLine</code>.
+     * 
+     * @param firstLine The Line to start reading from.
+     * @param start The starting position.
+     * @return The new position or -1 if it is no valid comment.
+     */
+    private int readXMLComment(final Line firstLine, final int start)
+    {
+        Line line = firstLine;
+        if(start + 3 < line.value.length())
+        {
+            if(line.value.charAt(2) == '-' && line.value.charAt(3) == '-')
+            {
+                int pos = start + 4;
+                while(line != null)
+                {
+                    while(pos < line.value.length() && line.value.charAt(pos) != '-')
+                    {
+                        pos++;
+                    }
+                    if(pos == line.value.length())
+                    {
+                        line = line.next;
+                        pos = 0;
+                    }
+                    else
+                    {
+                        if(pos + 2 < line.value.length())
+                        {
+                            if(line.value.charAt(pos + 1) == '-' && line.value.charAt(pos + 2) == '>')
+                            {
+                                this.xmlEndLine = line;
+                                return pos + 3;
+                            }
+                        }
+                        pos++;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * Checks for a valid HTML block. Sets <code>xmlEndLine</code>.
+     * 
+     * @return <code>true</code> if it is a valid block.
+     */
+    private boolean checkHTML()
+    {
+        final LinkedList<String> tags = new LinkedList<String>();
+        final StringBuilder temp = new StringBuilder();
+        int pos = this.leading;
+        if(this.value.charAt(this.leading + 1) == '!')
+        {
+            if(this.readXMLComment(this, this.leading) > 0)
+                return true;
+        }
+        pos = Utils.readXML(temp, this.value, this.leading);
+        String element, tag;
+        if(pos > -1)
+        {
+            element = temp.toString();
+            temp.setLength(0);
+            Utils.getXMLTag(temp, element);
+            tag = temp.toString().toLowerCase();
+            if(!HTML.isHtmlBlockElement(tag))
+                return false;
+            if(tag.equals("hr"))
+            {
+                this.xmlEndLine = this;
+                return true;
+            }
+            tags.add(tag);
+            
+            Line line = this;
+            while(line != null)
+            {
+                while(pos < line.value.length() && line.value.charAt(pos) != '<')
+                {
+                    pos++;
+                }
+                if(pos >= line.value.length())
+                {
+                    line = line.next;
+                    pos = 0;
+                }
+                else
+                {
+                    temp.setLength(0);
+                    final int newPos = Utils.readXML(temp, line.value, pos);
+                    if(newPos > 0)
+                    {
+                        element = temp.toString();
+                        temp.setLength(0);
+                        Utils.getXMLTag(temp, element);
+                        tag = temp.toString().toLowerCase();
+                        if(HTML.isHtmlBlockElement(tag) && !tag.equals("hr"))
+                        {
+                            if(element.charAt(1) == '/')
+                            {
+                                if(!tags.getLast().equals(tag))
+                                    return false;
+                                tags.removeLast();
+                            }
+                            else
+                            {
+                                tags.addLast(tag);
+                            }
+                        }
+                        if(tags.size() == 0)
+                        {
+                            this.xmlEndLine = line;
+                            break;
+                        }
+                        pos = newPos;
+                    }
+                    else
+                    {
+                        pos++;
+                    }
+                }
+            }
+            return tags.size() == 0;
+        }
+        return false;
     }
 }

@@ -428,4 +428,98 @@ class Utils
             }
         }
     }
+    
+    /**
+     * Extracts the tag from an XML element.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input StringBuilder.
+     */
+    public static void getXMLTag(final StringBuilder out, final StringBuilder in)
+    {
+        int pos = 1;
+        if(in.charAt(1) == '/')
+            pos++;
+        while(Character.isLetterOrDigit(in.charAt(pos)))
+        {
+            out.append(in.charAt(pos++));
+        }
+    }
+    
+    /**
+     * Extracts the tag from an XML element.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     */
+    public static void getXMLTag(final StringBuilder out, final String in)
+    {
+        int pos = 1;
+        if(in.charAt(1) == '/')
+            pos++;
+        while(Character.isLetterOrDigit(in.charAt(pos)))
+        {
+            out.append(in.charAt(pos++));
+        }
+    }
+
+    /**
+     * Reads an XML element.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Starting position.
+     * @return The new position or -1 if this is no valid XML element.
+     */
+    public static int readXML(final StringBuilder out, final String in, final int start)
+    {
+        int pos;
+        if(in.charAt(start + 1) == '/')
+        {
+            out.append("</");
+            pos = start + 2;
+        }
+        else
+        {
+            out.append('<');
+            pos = start + 1;
+        }
+        pos = readRawUntil(out, in, pos, ' ', '/', '>');
+        if(pos == -1) return -1;
+        pos = skipSpaces(in, pos);
+        if(Character.isLetter(in.charAt(pos)))
+        {
+            while(in.charAt(pos) != '/' && in.charAt(pos) != '>')
+            {
+                out.append(' ');
+                pos = readRawUntil(out, in, pos, ' ', '=');
+                if(pos == -1) return -1;
+                pos = skipSpaces(in, pos);
+                if(pos == -1) return -1;
+                out.append('=');
+                pos = skipSpaces(in, pos + 1);
+                if(pos == -1) return -1;
+                final char lim = in.charAt(pos);
+                if(lim != '\'' && lim != '"') return -1;
+                out.append(lim);
+                pos = readRawUntil(out, in, pos + 1, lim);
+                if(pos == -1) return -1;
+                out.append(lim);
+                pos = skipSpaces(in, pos + 1);
+                if(pos == -1) return -1;
+            }
+            
+        }
+        if(in.charAt(pos) == '/')
+        {
+            out.append('/');
+            pos++;
+        }
+        if(in.charAt(pos) == '>')
+        {
+            out.append('>');
+            return pos;
+        }
+        return -1;
+    }
 }

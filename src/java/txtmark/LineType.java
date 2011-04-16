@@ -24,5 +24,7 @@ enum LineType
     /** A block quote. */
     BQUOTE,
     /** A horizontal ruler. */
-    HR
+    HR,
+    /** Start of a XML block. */
+    XML
 }

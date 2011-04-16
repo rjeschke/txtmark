@@ -11,6 +11,7 @@ package txtmark;
  */
 enum HTMLElement
 {
+    NONE,
     a, abbr, acronym, address, applet, area,
     b, base, basefont, bdo, big, blockquote, body, br, button,
     caption, cite, code, col, colgroup,
