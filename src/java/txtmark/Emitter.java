@@ -335,8 +335,26 @@ class Emitter
                 return pos;
             }
         }
+        
         // Check for mailto auto link
-        // TODO
+        temp.setLength(0);
+        pos = Utils.readUntil(temp, in, start + 1, '@');
+        if(pos != -1)
+        {
+            pos = Utils.readUntil(temp, in, pos, '>');
+            if(pos != -1)
+            {
+                final String link = temp.toString();
+                this.decorator.openLink(out);
+                out.append(" href=\"");
+                Utils.appendMailto(out, "mailto:", 0, 7);
+                Utils.appendMailto(out, link, 0, link.length());
+                out.append("\">");
+                Utils.appendMailto(out, link, 0, link.length());
+                out.append("</a>");
+                return pos;
+            }
+        }
         
         // Check for inline html
         if(start + 2 < in.length())
@@ -438,6 +456,7 @@ class Emitter
                         return -1;
                 }
             }
+            out.append(';');
         }
         else
         {
@@ -447,8 +466,9 @@ class Emitter
                 if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
                     return -1;
             }
+            out.append(';');
+            return HTML.isEntity(out.toString()) ? pos : -1;
         }
-        out.append(';');
         
         return pos;
     }

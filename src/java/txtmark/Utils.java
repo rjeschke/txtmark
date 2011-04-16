@@ -11,6 +11,19 @@ package txtmark;
  */
 class Utils
 {
+    /** Random number generator value. */
+    private static int RND = (int)System.nanoTime();
+    
+    /**
+     * LCG random number generator.
+     * 
+     * @return A pseudo random number between 0 and 1023
+     */
+    public static int rnd()
+    {
+        return (RND = RND * 1664525 + 1013904223) >>> 22;
+    }
+    
     /**
      * Skips spaces in the given String.
      * 
@@ -353,6 +366,71 @@ class Utils
                 break;
             default:
                 out.append(c);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Append the given char as a decimal HTML entity.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param value The character.
+     */
+    public static void appendDecEntity(final StringBuilder out, final char value)
+    {
+        out.append("&#");
+        out.append((int)value);
+        out.append(';');
+    }
+    
+    /**
+     * Append the given char as a hexadecimal HTML entity.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param value The character.
+     */
+    public static void appendHexEntity(final StringBuilder out, final char value)
+    {
+        out.append("&#x");
+        out.append(Integer.toHexString(value));
+        out.append(';');
+    }
+
+    /**
+     * Appends the given mailto link using obfuscation.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Input String starting position.
+     * @param end Input String end position.
+     */
+    public static void appendMailto(final StringBuilder out, final String in, final int start, final int end)
+    {
+        for(int i = start; i < end; i++)
+        {
+            final char c;
+            final int r = rnd();
+            switch(c = in.charAt(i))
+            {
+            case '&':
+            case '<':
+            case '>':
+            case '"':
+            case '\'':
+            case '@':
+                if(r < 512)
+                    appendDecEntity(out, c);
+                else
+                    appendHexEntity(out, c);
+                break;
+            default:
+                if(r < 32)
+                    out.append(c);
+                else if(r < 520)
+                    appendDecEntity(out, c);
+                else
+                    appendHexEntity(out, c);
                 break;
             }
         }
