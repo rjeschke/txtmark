@@ -4,20 +4,38 @@
 */
 package txtmark;
 
+/**
+ * This class represents a text line.
+ * 
+ * <p>It also provides methods for processing
+ * and analyzing a line.</p>   
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 class Line
 {
+    /** Current cursor position. */
     public int pos;
+    /** Leading and triling spaces. */
     public int leading = 0, trailing = 0;
+    /** Is this line empty? */
     public boolean isEmpty = true;
+    /** This line's value. */
     public String value =  null;
+    /** Previous and next line. */
     public Line previous = null, next = null;
+    /** Is previous/next line empty? */
     public boolean prevEmpty, nextEmpty;
 
+    /** Constructor. */
     public Line()
     {
         //
     }
 
+    /**
+     * Calculates leading and trailing spaces. Also sets empty if needed.
+     */
     public void init()
     {
         this.leading = 0;
@@ -37,6 +55,9 @@ class Line
         }
     }
 
+    /**
+     * Recalculate leading spaces.
+     */
     public void initLeading()
     {
         this.leading = 0;
@@ -49,6 +70,11 @@ class Line
         }
     }
 
+    /**
+     * Skips spaces.
+     * 
+     * @return <code>false</code> if end of line is reached
+     */
     // TODO use Util#skipSpaces
     public boolean skipSpaces()
     {
@@ -57,6 +83,12 @@ class Line
         return this.pos < this.value.length();
     }
 
+    /**
+     * Reads chars from this line until any 'end' char is reached.
+     * 
+     * @param end Delimiting character(s)
+     * @return The read String or <code>null</code> if no 'end' char was reached.
+     */
     // TODO use Util#readUntil
     public String readUntil(char... end)
     {
@@ -126,6 +158,9 @@ class Line
         return null;
     }
 
+    /**
+     * Marks this line empty. Also sets previous/next line's empty attributes.
+     */
     public void setEmpty()
     {
         this.value = "";
@@ -137,7 +172,13 @@ class Line
             this.next.prevEmpty = true;
     }
 
-    private int countCharsWs(char ch)
+    /**
+     * Counts the amount of 'ch' in this line.
+     * 
+     * @param ch The char to count. 
+     * @return A value > 0 if this line only consists of 'ch' end spaces.
+     */
+    private int countChars(char ch)
     {
         int count = 0;
         for(int i = 0; i < this.value.length(); i++)
@@ -156,6 +197,11 @@ class Line
         return count;
     }
 
+    /**
+     * Gets this line's type.
+     * 
+     * @return The LineType.
+     */
     public LineType getLineType()
     {
         if(this.isEmpty)
@@ -173,7 +219,7 @@ class Line
         if(this.value.length() - this.leading - this.trailing > 2 
                 && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value.charAt(this.leading) == '_'))
         {
-            if(this.countCharsWs(this.value.charAt(this.leading)) >= 3)
+            if(this.countChars(this.value.charAt(this.leading)) >= 3)
                 return LineType.HR;
         }
 
@@ -199,9 +245,9 @@ class Line
 
         if(this.next != null && !this.next.isEmpty)
         {
-            if((this.next.value.charAt(0) == '-') && (this.next.countCharsWs('-') > 0))
+            if((this.next.value.charAt(0) == '-') && (this.next.countChars('-') > 0))
                 return LineType.HEADLINE2;
-            if((this.next.value.charAt(0) == '=') && (this.next.countCharsWs('=') > 0))
+            if((this.next.value.charAt(0) == '=') && (this.next.countChars('=') > 0))
                 return LineType.HEADLINE1;
         }
 

@@ -29,7 +29,7 @@ public class Processor
     }
 
     /**
-     * Transforms a input String into XHTML.
+     * Transforms an input String into XHTML.
      * 
      * @param input The String to process. 
      * @return The processed String.

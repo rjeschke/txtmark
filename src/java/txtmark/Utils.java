@@ -1,7 +1,23 @@
+/*
+* Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+* See LICENSE.txt for licensing information.
+*/
 package txtmark;
 
+/**
+ * Utilities.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 class Utils
 {
+    /**
+     * Skips spaces in the given String.
+     * 
+     * @param in Input String.
+     * @param start Starting position.
+     * @return The new position or -1 if EOL has been reached.
+     */
     public static int skipSpaces(final String in, final int start)
     {
         int pos = start;
@@ -10,6 +26,14 @@ class Utils
         return pos < in.length() ? pos : -1;
     }
 
+    /**
+     * Processed the given escape sequence.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param ch The character.
+     * @param pos Current parsing position.
+     * @return The new position.
+     */
     public static int escape(final StringBuilder out, final char ch, final int pos)
     {
         switch(ch)
@@ -40,6 +64,15 @@ class Utils
         }
     }
     
+    /**
+     * Reads characters until any 'end' character is encountered.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in The Input String.
+     * @param start Starting position.
+     * @param end End characters.
+     * @return The new position or -1 if no 'end' char was found.
+     */
     public static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
@@ -71,6 +104,15 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Reads characters until the 'end' character is encountered.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in The Input String.
+     * @param start Starting position.
+     * @param end End characters.
+     * @return The new position or -1 if no 'end' char was found.
+     */
     public static int readUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
@@ -93,6 +135,14 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Reads a markdown link.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Starting position.
+     * @return The new position or -1 if this is no valid markdown link.
+     */
     public static int readMdLink(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
@@ -132,6 +182,14 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Reads a markdown link ID.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Starting position.
+     * @return The new position or -1 if this is no valid markdown link ID.
+     */
     public static int readMdLinkId(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
@@ -175,6 +233,15 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Reads characters until any 'end' character is encountered, ignoring escape sequences.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in The Input String.
+     * @param start Starting position.
+     * @param end End characters.
+     * @return The new position or -1 if no 'end' char was found.
+     */
     public static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
@@ -199,6 +266,15 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Reads characters until the end character is encountered, ignoring escape sequences.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in The Input String.
+     * @param start Starting position.
+     * @param end End characters.
+     * @return The new position or -1 if no 'end' char was found.
+     */
     public static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
@@ -214,6 +290,14 @@ class Utils
         return (pos == in.length()) ? -1 : pos;
     }
 
+    /**
+     * Appends the given string encoding special HTML characters.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Input String starting position.
+     * @param end Input String end position.
+     */
     public static void appendCode(final StringBuilder out, final String in, final int start, final int end)
     {
         for(int i = start; i < end; i++)
@@ -237,6 +321,14 @@ class Utils
         }
     }
 
+    /**
+     * Appends the given string encoding special HTML characters (used in HTML attribute values).
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Input String starting position.
+     * @param end Input String end position.
+     */
     public static void appendValue(final StringBuilder out, final String in, final int start, final int end)
     {
         for(int i = start; i < end; i++)

@@ -7,8 +7,14 @@ package txtmark;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * HTML utility class.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 class HTML
 {
+    /** List of valid HTML/XML entity names. */
     private final static String[] ENTITY_NAMES = {
         "&Acirc;", "&acirc;", "&acute;", "&AElig;", "&aelig;", "&Agrave;", "&agrave;", "&alefsym;", 
         "&Alpha;", "&alpha;", "&amp;", "&and;", "&ang;", "&apos;", "&Aring;", "&aring;", 
@@ -43,7 +49,7 @@ class HTML
         "&xi;", "&Yacute;", "&yacute;", "&yen;", "&Yuml;", "&yuml;", "&Zeta;", "&zeta;", 
         "&zwj;", "&zwnj;"
     };
-    
+    /** Characters corresponding to ENTITY_NAMES. */
     private final static char[] ENTITY_CHARS = {
         '\u00C2', '\u00E2', '\u00B4', '\u00C6', '\u00E6', '\u00C0', '\u00E0', '\u2135', 
         '\u0391', '\u03B1', '\u0026', '\u2227', '\u2220', '\'', '\u00C5', '\u00E5', 
@@ -78,12 +84,13 @@ class HTML
         '\u03BE', '\u00DD', '\u00FD', '\u00A5', '\u0178', '\u00FF', '\u0396', '\u03B6', 
         '\u200D', '\u200C'
     };
-    
+    /** Valid markdown link prefixes for auto links. */
     private final static String[] LINK_PREFIXES = {
         "http", "https", 
         "ftp", "ftps"
     };
 
+    /** HTML block level elements. */
     private final static HTMLElement[] BLOCK_ELEMENTS = {
         HTMLElement.address,
         HTMLElement.blockquote,
@@ -98,10 +105,15 @@ class HTML
         HTMLElement.ul
     };
 
+    /** Character to entity encoding map. */
     private final static HashMap<Character, String> encodeMap = new HashMap<Character, String>();
+    /** Entity to character decoding map. */
     private final static HashMap<String, Character> decodeMap = new HashMap<String, Character>();
+    /** Set of valid HTML tags. */
     private final static HashSet<String> HTML_ELEMENTS = new HashSet<String>();
+    /** Set of HTML block level tags. */
     private final static HashSet<String> HTML_BLOCK_ELEMENTS = new HashSet<String>();
+    /** Set of valid markdown link prefixes. */
     private final static HashSet<String> LINK_PREFIX = new HashSet<String>();
 
     static
@@ -125,26 +137,43 @@ class HTML
         }
     }
 
+    /** Constructor. (Singleton) */
     private HTML()
     {
         //
     }
     
+    /**
+     * @param value String to check.
+     * @return Returns <code>true</code> if the given String is a link prefix.
+     */
     public static boolean isLinkPrefix(final String value)
     {
         return LINK_PREFIX.contains(value);
     }
     
+    /**
+     * @param value String to check.
+     * @return Returns <code>true</code> if the given String is an entity.
+     */
     public static boolean isEntity(final String value)
     {
         return decodeMap.containsKey(value);
     }
     
+    /**
+     * @param value String to check.
+     * @return Returns <code>true</code> if the given String is a HTML tag.
+     */
     public static boolean isHtmlElement(final String value)
     {
         return HTML_ELEMENTS.contains(value);
     }
     
+    /**
+     * @param value String to check.
+     * @return Returns <code>true</code> if the given String is a HTML block level tag.
+     */
     public static boolean isHtmlBlockElement(final String value)
     {
         return HTML_BLOCK_ELEMENTS.contains(value);

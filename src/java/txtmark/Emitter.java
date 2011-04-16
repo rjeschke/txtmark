@@ -6,21 +6,41 @@ package txtmark;
 
 import java.util.HashMap;
 
+/**
+ * Emitter class responsible for generating HTML output.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 class Emitter
 {
+    /** Link references. */
     private final HashMap<String, LinkRef> linkRefs = new HashMap<String, LinkRef>();
+    /** The Decorator. */
     private final Decorator decorator = new DefaultDecorator();
     
+    /** Constructor. */
     public Emitter()
     {
         //
     }
 
+    /**
+     * Adds a LinkRef to this set of LinkRefs.
+     * 
+     * @param key The key/id.
+     * @param linkRef The LinkRef.
+     */
     public void addLinkRef(final String key, final LinkRef linkRef)
     {
         this.linkRefs.put(key.toLowerCase(), linkRef);
     }
 
+    /**
+     * Transforms the given block recursively into HTML.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param root The Block to process.
+     */
     public void emit(final StringBuilder out, final Block root)
     {
         root.removeSurroundingEmptyLines();
@@ -100,6 +120,12 @@ class Emitter
         }
     }
 
+    /**
+     * Transforms lines into HTML.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param root The Block to process.
+     */
     private void emitLines(final StringBuilder out, final Block block)
     {
         switch(block.type)
@@ -116,6 +142,14 @@ class Emitter
         }
     }
 
+    /**
+     * Finds the position of the given Token in the given String.
+     * 
+     * @param in The String to search on.
+     * @param start The starting character position.
+     * @param token The token to find.
+     * @return The position of the token or -1 if none could be found.
+     */
     private int findToken(final String in, int start, MarkToken token)
     {
         int pos = start;
@@ -128,6 +162,15 @@ class Emitter
         return -1;
     }
 
+    /**
+     * Checks if there is a valid markdown link definition.
+     * 
+     * @param out The StringBuilder containing the generated output.
+     * @param in Input String.
+     * @param start Starting position.
+     * @param token Either LINK or IMAGE.
+     * @return The new position or -1 if there is no valid markdown link.
+     */
     private int checkLink(final StringBuilder out, final String in, int start, MarkToken token)
     {
         int pos = start + (token == MarkToken.LINK ? 1 : 2);
@@ -259,6 +302,15 @@ class Emitter
         return pos;
     }
 
+    /**
+     * Check if there is a valid HTML tag here. 
+     * This method also transforms auto links and mailto auto links.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String. 
+     * @param start Starting position.
+     * @return The new position or -1 if nothing valid has been found.
+     */
     // TODO ... hm ... refactor this
     private int checkHtml(final StringBuilder out, final String in, int start)
     {
@@ -351,6 +403,14 @@ class Emitter
         return -1;
     }
     
+    /**
+     * Check if this is a valid XML/HTML entity.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Starting position
+     * @return The new position or -1 if this entity in invalid.
+     */
     private int checkEntity(final StringBuilder out, final String in, int start)
     {
         int pos = Utils.readUntil(out, in, start, ';');
@@ -393,6 +453,15 @@ class Emitter
         return pos;
     }
     
+    /**
+     * Recursively scans through the given line, taking care of any markdown stuff.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param in Input String.
+     * @param start Start position.
+     * @param token The matching Token (for e.g. '*')
+     * @return The position of the matching Token or -1 if token was NONE or no Token could be found.
+     */
     private int recursiveEmitLine(final StringBuilder out, final String in, int start, MarkToken token)
     {
         int pos = start, a, b;
@@ -512,6 +581,13 @@ class Emitter
         return -1;
     }
 
+    /**
+     * Check if there is any markdown Token.
+     * 
+     * @param in Input String.
+     * @param pos Starting position.
+     * @return The Token.
+     */
     private MarkToken getToken(final String in, final int pos)
     {
         final char c0 = pos > 0 ? in.charAt(pos - 1) : ' ';
@@ -575,6 +651,12 @@ class Emitter
         }
     }
 
+    /**
+     * Writes a set of markdown lines into the StringBuilder.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param lines The lines to write.
+     */
     private void emitMarkedLines(final StringBuilder out, final Line lines)
     {
         final StringBuilder in = new StringBuilder();
@@ -595,6 +677,12 @@ class Emitter
         this.recursiveEmitLine(out, in.toString(), 0, MarkToken.NONE);
     }
 
+    /**
+     * Writes a set of raw lines into the StringBuilder.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param lines The lines to write.
+     */
     private void emitRawLines(final StringBuilder out, final Line lines)
     {
         Line line = lines;
@@ -610,6 +698,12 @@ class Emitter
         }
     }
 
+    /**
+     * Writes a code block into the StringBuilder.
+     * 
+     * @param out The StringBuilder to write to.
+     * @param lines The lines to write.
+     */
     private void emitCodeLines(final StringBuilder out, final Line lines)
     {
         Line line = lines;

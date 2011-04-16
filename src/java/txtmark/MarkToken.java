@@ -4,18 +4,35 @@
 */
 package txtmark;
 
+/**
+ * Markdown token enumeration.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 enum MarkToken
 {
+    /** No token. */
     NONE,
+    /** * */
     EM_STAR,            // x*x
+    /** _ */
     EM_UNDERSCORE,      // x_x
+    /** ** */
     STRONG_STAR,        // x**x
+    /** __ */
     STRONG_UNDERSCORE,  // x__x
+    /** ` */
     CODE_SINGLE,        // `
+    /** `` */
     CODE_DOUBLE,        // ``
+    /** [ */
     LINK,               // [
+    /** &lt; */
     HTML,               // <
+    /** ![ */
     IMAGE,              // ![
+    /** &amp; */
     ENTITY,             // &
+    /** \ */
     ESCAPE              // \x
 }

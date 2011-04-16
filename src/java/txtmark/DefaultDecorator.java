@@ -11,6 +11,12 @@ package txtmark;
  */
 public class DefaultDecorator implements Decorator
 {
+    /** Constructor. */
+    public DefaultDecorator()
+    {
+        // empty
+    }
+    
     /** @see txtmark.Decorator#openParagraph(StringBuilder) */
     @Override
     public void openParagraph(StringBuilder out)

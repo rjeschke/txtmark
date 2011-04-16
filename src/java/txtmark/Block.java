@@ -4,24 +4,41 @@
 */
 package txtmark;
 
+/**
+ * This class represents a block of lines.
+ * 
+ * @author René Jeschke <rene_jeschke@yahoo.de>
+ */
 class Block
 {
+    /** This block's type. */
     public BlockType type = BlockType.NONE;
+    /** Head and tail of linked lines. */
     public Line lines = null, lineTail = null;
-    public Block blocks = null, blockTail = null, blockParent = null;
-    public Block next = null, previous = null;
+    /** Head and tail of child blocks. */
+    public Block blocks = null, blockTail = null;
+    /** Next block. */
+    public Block next = null;
+    /** Depth of headline BlockType. */
     public int hlDepth = 0;
 
+    /** Constructor. */
     public Block()
     {
         //
     }
 
+    /**
+     * @return <code>true</code> if this block contains lines.
+     */
     public boolean hasLines()
     {
         return this.lines != null;
     }
 
+    /**
+     * Removes leading and trailing empty lines.
+     */
     public void removeSurroundingEmptyLines()
     {
         if(this.lines != null)
@@ -31,6 +48,9 @@ class Block
         }
     }
 
+    /**
+     * Sets <code>hlDepth</code> and takes care of '#' chars.
+     */
     public void transfromHeadline()
     {
         if(this.hlDepth > 0)
@@ -64,6 +84,9 @@ class Block
         this.hlDepth = Math.min(level, 6);
     }
 
+    /**
+     * Used for nested lists. Removes list markers and up to 4 leading spaces.
+     */
     public void removeListIndent()
     {
         Line line = this.lines;
@@ -89,6 +112,9 @@ class Block
         }
     }
 
+    /**
+     * Used for nested block quotes. Removes '>' char.
+     */
     public void removeBlockQuotePrefix()
     {
         Line line = this.lines;
@@ -109,6 +135,10 @@ class Block
         }
     }
 
+    /**
+     * Removes leading empty lines.
+     * @return <code>true</code> if an empty line was removed.
+     */
     public boolean removeLeadingEmptyLines()
     {
         boolean wasEmpty = false;
@@ -122,6 +152,9 @@ class Block
         return wasEmpty;
     }
 
+    /**
+     * Removes trailing empty lines.
+     */
     public void removeTrailingEmptyLines()
     {
         Line line = this.lineTail;
@@ -132,6 +165,11 @@ class Block
         }
     }
 
+    /**
+     * Splits this block's lines, creating a new child block having 'line' as it's lineTail.
+     * @param line The line to split from.
+     * @return The newly created Block.
+     */
     public Block split(final Line line)
     {
         final Block block = new Block();
@@ -145,12 +183,10 @@ class Block
         else
             this.lines.previous = null;
 
-        block.blockParent = this;
         if(this.blocks == null)
             this.blocks = this.blockTail = block;
         else
         {
-            block.previous = this.blockTail;
             this.blockTail.next = block;
             this.blockTail = block;
         }
@@ -158,6 +194,11 @@ class Block
         return block;
     }
 
+    /**
+     * Removes the given line from this block.
+     * 
+     * @param line Line to remove.
+     */
     public void removeLine(final Line line)
     {
         if(line.previous == null)
@@ -171,6 +212,11 @@ class Block
         line.previous = line.next = null;
     }
 
+    /**
+     * Appends the given line to this block.
+     * 
+     * @param line Line to append.
+     */
     public void appendLine(final Line line)
     {
         if(this.lineTail == null)

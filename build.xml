@@ -2,7 +2,8 @@
 <project name="txtmark" default="main">
 
   <target name="clean" description="Cleans the build folder">
-    <delete dir="build"/>
+    <delete dir="build/jar"/>
+    <delete dir="build/classes"/>
   </target>
 
   <target name="clean_all" depends="clean" description="Cleans the build, doc and release folder">
