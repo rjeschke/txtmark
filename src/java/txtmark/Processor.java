@@ -534,7 +534,6 @@ public class Processor
     private String process() throws IOException
     {
         final StringBuilder out = new StringBuilder();
-
         final Block parent = this.readLines();
         parent.removeSurroundingEmptyLines();
 
