@@ -20,7 +20,7 @@ For an in-depth explanation of the markdown syntax have a look at [daringfirebal
 
 ### Build instructions
 
-1.  Clone the repo
+1.  Clone the repo or download the sources as [tar] or [zip]
 2.  Install [Apache Ant(TM)](http://ant.apache.org/)
 3.  Do
 
@@ -204,5 +204,7 @@ Benchmarked versions:
 [Actuarius]: http://henkelmann.eu/projects/actuarius/
 [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [PegDown]: https://github.com/sirthias/pegdown
+[tar]: https://github.com/rjeschke/txtmark/tarball/master "branch: master"
+[zip]: https://github.com/rjeschke/txtmark/zipball/master "branch: master"
 
 Project link: <https://github.com/rjeschke/txtmark>
