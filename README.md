@@ -18,6 +18,16 @@ Txtmark is yet another markdown processor for the JVM.
 
 For an in-depth explanation of the markdown syntax have a look at [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
 
+### Build instructions
+
+1.  Clone the repo
+2.  Do
+
+        ant release
+
+    and you will find everything you need inside the `release` folder.
+
+
 ### Where Txtmark is not like Markdown
 
 ***

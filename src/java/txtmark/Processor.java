@@ -398,6 +398,7 @@ public class Processor
      * @param root The Block to process.
      * @param listMode Flag indicating that we're in a list item block.
      */
+    // TODO ... paragraphs and lists seems to be not working correctly
     private void recurse(final Block root, boolean listMode)
     {
         Block block;
@@ -435,7 +436,7 @@ public class Processor
                     final BlockType bt;
                     if(line != null && !line.isEmpty)
                     {
-                        bt = (listMode && root.blocks == null && !wasEmpty) ? BlockType.NONE : BlockType.PARAGRAPH;
+                        bt = (listMode && !wasEmpty) ? BlockType.NONE : BlockType.PARAGRAPH;
                         root.split(line.previous).type = bt;
                         root.removeLeadingEmptyLines();
                     }
@@ -445,7 +446,7 @@ public class Processor
                         root.split(line == null ? root.lineTail : line).type = bt;
                         root.removeLeadingEmptyLines();
                     }
-                    hasParagraph = bt == BlockType.PARAGRAPH;
+                    hasParagraph |= bt == BlockType.PARAGRAPH;
                     line = root.lines;
                 }
                 break;
@@ -542,7 +543,7 @@ public class Processor
 
         if(listMode && hasParagraph)
         {
-            block = root.blocks;
+            block = root;
             while(block != null)
             {
                 if(block.type == BlockType.NONE)
