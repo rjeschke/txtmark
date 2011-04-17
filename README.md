@@ -21,7 +21,8 @@ For an in-depth explanation of the markdown syntax have a look at [daringfirebal
 ### Build instructions
 
 1.  Clone the repo
-2.  Do
+2.  Install [Apache Ant(TM)](http://ant.apache.org/)
+3.  Do
 
         ant release
 
