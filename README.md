@@ -44,7 +44,7 @@ Just put this line into your Txtmark file like you would use reference links.
 
 #### Behavior changes when using `[$PROFILE$]: extended`
 
-*   ##### Lists and code blocks end a paragraph
+*   Lists and code blocks end a paragraph
 
     In normal markdown the following:
 
@@ -63,7 +63,7 @@ Just put this line into your Txtmark file like you would use reference links.
         <li>and this is not a list</li>
         </ul>
 
-*   ##### Text anchors
+*   Text anchors
 
     Headlines and list items may recieve an ID which
     you can refer to using links.
@@ -91,7 +91,7 @@ Just put this line into your Txtmark file like you would use reference links.
     All spaces before `{#` get removed, so you can't
     use an ID and a manual line break in the same line.
     
-*   ##### Auto HTML entities
+*   Auto HTML entities
 
     *   `(C)` becomes `&copy;` - &copy;
     *   `(R)` becomes `&reg;` - &reg;
@@ -103,7 +103,7 @@ Just put this line into your Txtmark file like you would use reference links.
     *   `>>` becomes `&raquo;` - &raquo;
     *   `"Hello"` becomes `&ldquo;Hello&rdquo;` - &ldquo;Hello&rdquo;
 
-*   ##### Underscores (Emphasis)
+*   Underscores (Emphasis)
 
     Underscores in the middle of a word don't result in emphasis.
     
@@ -113,7 +113,7 @@ Just put this line into your Txtmark file like you would use reference links.
     
         Con<em>cat</em>this
 
-*   ##### Superscript
+*   Superscript
 
     You can use `^` to mark a span as superscript.
     
@@ -123,7 +123,7 @@ Just put this line into your Txtmark file like you would use reference links.
     
         2<sup>2</sup> = 4
 
-*   ##### Abbreviations
+*   Abbreviations
 
     Abbreviations are defined like reference links, but using a `*`
     instead of a link and must be single-line only.
