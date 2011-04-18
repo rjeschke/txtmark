@@ -7,6 +7,17 @@ package txtmark;
 /**
  * Default Decorator implementation.
  * 
+ * <p>Example for a user Decorator having a class attribute on &lt;p> tags.</p>
+ * <pre><code>public class MyDecorator extends DefaultDecorator
+ *{
+ *    &#64;Override
+ *    public void openParagraph(StringBuilder out)
+ *    {
+ *        out.append("&lt;p class=\"myclass\">");
+ *    }
+ *}
+ *</code></pre>
+ * 
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 public class DefaultDecorator implements Decorator

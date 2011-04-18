@@ -16,6 +16,10 @@ import java.io.StringReader;
 /**
  * Markdown processor class.
  * 
+ * <p>Example usage:</p>
+ * <pre><code>String result = Processor.process("This is ***TXTMARK***");
+ * </code></pre>
+ * 
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 public class Processor
@@ -326,7 +330,7 @@ public class Processor
             {
                 if(id.toLowerCase().equals("$profile$"))
                 {
-                    this.useExtensions = link.toLowerCase().equals("extended");
+                    this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
                     lastLinkRef = null;
                 }
                 else
@@ -401,7 +405,7 @@ public class Processor
     // TODO ... paragraphs and lists seems to be not working correctly
     private void recurse(final Block root, boolean listMode)
     {
-        Block block;
+        Block block, list;
         Line line = root.lines;
         while(line != null && line.isEmpty) line = line.next;
         if(line == null)
@@ -409,8 +413,6 @@ public class Processor
 
         if(listMode)
             root.removeListIndent();
-
-        boolean hasParagraph = false;
 
         while(line != null)
         {
@@ -446,7 +448,6 @@ public class Processor
                         root.split(line == null ? root.lineTail : line).type = bt;
                         root.removeLeadingEmptyLines();
                     }
-                    hasParagraph |= bt == BlockType.PARAGRAPH;
                     line = root.lines;
                 }
                 break;
@@ -521,34 +522,24 @@ public class Processor
                         break;
                     line = line.next;
                 }
-                block = root.split(line != null ? line.previous : root.lineTail);
-                block.type = type == LineType.OLIST ? BlockType.ORDERED_LIST : BlockType.UNORDERED_LIST;
-                block.lines.prevEmpty = false;
-                block.lineTail.nextEmpty = false;
-                block.removeSurroundingEmptyLines();
-                block.lines.prevEmpty = block.lineTail.nextEmpty = false;
-                this.initListBlock(block);
-                block = block.blocks;
+                list = root.split(line != null ? line.previous : root.lineTail);
+                list.type = type == LineType.OLIST ? BlockType.ORDERED_LIST : BlockType.UNORDERED_LIST;
+                list.lines.prevEmpty = false;
+                list.lineTail.nextEmpty = false;
+                list.removeSurroundingEmptyLines();
+                list.lines.prevEmpty = list.lineTail.nextEmpty = false;
+                this.initListBlock(list);
+                block = list.blocks;
                 while(block != null)
                 {
                     this.recurse(block, true);
                     block = block.next;
                 }
+                list.expandListParagraphs();
                 break;
             default:
                 line = line.next;
                 break;
-            }
-        }
-
-        if(listMode && hasParagraph)
-        {
-            block = root;
-            while(block != null)
-            {
-                if(block.type == BlockType.NONE)
-                    block.type = BlockType.PARAGRAPH;
-                block = block.next;
             }
         }
     }

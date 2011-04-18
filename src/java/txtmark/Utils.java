@@ -512,7 +512,7 @@ class Utils
         }
         if(in.charAt(pos) == '/')
         {
-            out.append('/');
+            out.append(" /");
             pos++;
         }
         if(in.charAt(pos) == '>')

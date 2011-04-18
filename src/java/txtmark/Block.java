@@ -230,4 +230,54 @@ class Block
             this.lineTail = line;
         }
     }
+    
+    /**
+     * Changes all Blocks of type <code>NONE</code> to <code>PARAGRAPH</code> if this Block
+     * is a List and any of the ListItems contains a paragraph.
+     */
+    public void expandListParagraphs()
+    {
+        if(this.type != BlockType.ORDERED_LIST && this.type != BlockType.UNORDERED_LIST)
+        {
+            return;
+        }
+        Block outer = this.blocks, inner;
+        boolean hasParagraph = false;
+        while(outer != null && !hasParagraph)
+        {
+            if(outer.type == BlockType.LIST_ITEM)
+            {
+                inner = outer.blocks;
+                while(inner != null && !hasParagraph)
+                {
+                    if(inner.type == BlockType.PARAGRAPH)
+                    {
+                        hasParagraph = true;
+                    }
+                    inner = inner.next;
+                }
+            }
+            outer = outer.next;
+        }
+        if(hasParagraph)
+        {
+            outer = this.blocks;
+            while(outer != null)
+            {
+                if(outer.type == BlockType.LIST_ITEM)
+                {
+                    inner = outer.blocks;
+                    while(inner != null)
+                    {
+                        if(inner.type == BlockType.NONE)
+                        {
+                            inner.type = BlockType.PARAGRAPH;
+                        }
+                        inner = inner.next;
+                    }
+                }
+                outer = outer.next;
+            }
+        }
+    }
 }

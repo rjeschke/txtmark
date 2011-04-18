@@ -109,8 +109,16 @@ This seemed to me as the easiest and safest way to enable different behaviours.
         <li>and this is not a list</li>
         </ul>
 
-*    More to come ...
+*   Auto HTML entities:
 
+    *   `(C)` becomes `&copy;` - &copy;
+    *   `(R)` becomes `&reg;` - &reg;
+    *   `(TM)` becomes `&trade;` - &trade;
+    *   `--` becomes `&mdash;` - &mdash;
+    *   `...` becomes `&hellip;` - &hellip;
+    *   `<<` becomes `&laquo;` - &laquo;
+    *   `>>` becomes `&raquo;` - &raquo;
+    *   `"Hello"` becomes `&ldquo;Hello&rdquo;` - &ldquo;Hello&rdquo;
 
 ### Markdown conformity
 
@@ -150,41 +158,42 @@ except of two:
 
 Based on [this benchmark suite](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).  
 
+Excerpt from the original post concerning this benchmark suite:
+
+>   Most of these tests are of course unrealistic: Who would write a 
+>   text where each word is a link? Yet they serve an important use:
+>   It makes it possible for the developer to pinpoint the parts of 
+>   the parser where there is most room for improvement. Also, it 
+>   explains why certain texts might render much faster in one 
+>   Processor than in another.
+
+Benchmark system:
+
+*   Ubuntu Linux 10.04 32 Bit
+*   Intel(R) Core(TM) 2 Duo T7500 @ 2.2GHz
+*   Java(TM) SE Runtime Environment (build 1.6.0_24-b07)
+*   Java HotSpot(TM) Server VM (build 19.1-b02, mixed mode)
+
+
 <table>
   <tr><th>Test</th><th colspan="2">Actuarius</th><th colspan="2">PegDown</th><th colspan="2">Knockoff</th><th colspan="2">Txtmark</th></tr>
   <tr><td></td><td>1st Run (ms)</td><td>2nd Run (ms)</td><td>1st Run (ms)</td><td>2nd Run (ms)</td><td>1st Run (ms)</td><td>2nd Run (ms)</td><td>1st Run (ms)</td><td>2nd Run (ms)</td></tr>
-  <tr><td>Plain Paragraphs</td><td>887</td><td>461</td><td>2455</td><td>2236</td><td>764</td><td>568</td><td>89</td><td>47</td></tr>
-  <tr><td>Every Word Emphasized</td><td>2220</td><td>2077</td><td>3411</td><td>3406</td><td>30503</td><td>30514</td><td>72</td><td>66</td></tr>
-  <tr><td>Every Word Strong</td><td>2384</td><td>2270</td><td>2456</td><td>2466</td><td>23639</td><td>23577</td><td>62</td><td>57</td></tr>
-  <tr><td>Every Word Inline Code</td><td>824</td><td>804</td><td>2337</td><td>2237</td><td>23506</td><td>23622</td><td>54</td><td>55</td></tr>
-  <tr><td>Every Word a Fast Link</td><td>3942</td><td>3738</td><td>1164</td><td>1159</td><td>8621</td><td>8595</td><td>89</td><td>68</td></tr>
-  <tr><td>Every Word Consisting of Special XML Chars</td><td>9393</td><td>9312</td><td>7544</td><td>7314</td><td>801</td><td>608</td><td>3587</td><td>3614</td></tr>
-  <tr><td>Every Word wrapped in manual HTML tags</td><td>6843</td><td>6828</td><td>1850</td><td>1859</td><td>8699</td><td>8692</td><td>1169</td><td>1154</td></tr>
-  <tr><td>Every Line with a manual line break</td><td>859</td><td>724</td><td>2968</td><td>2946</td><td>2171</td><td>1990</td><td>58</td><td>56</td></tr>
-  <tr><td>Every word with a full link</td><td>528</td><td>501</td><td>2252</td><td>2280</td><td>3513</td><td>3512</td><td>66</td><td>60</td></tr>
-  <tr><td>Every word with a full image</td><td>395</td><td>374</td><td>2463</td><td>2569</td><td>3757</td><td>3726</td><td>56</td><td>55</td></tr>
-  <tr><td>Every word with a reference link</td><td>19208</td><td>19035</td><td>39183</td><td>38710</td><td>243450</td><td>244943</td><td>1826</td><td>1798</td></tr>
-  <tr><td>Every block a quote</td><td>465</td><td>449</td><td>2687</td><td>2684</td><td>978</td><td>977</td><td>48</td><td>48</td></tr>
-  <tr><td>Every block a codeblock</td><td>151</td><td>134</td><td>597</td><td>601</td><td>270</td><td>262</td><td>36</td><td>27</td></tr>
-  <tr><td>Every block a list</td><td>1209</td><td>1106</td><td>3448</td><td>3432</td><td>1411</td><td>1368</td><td>52</td><td>60</td></tr>
-  <tr><td>All tests together</td><td>6062</td><td>6042</td><td>11556</td><td>11589</td><td>19827</td><td>19637</td><td>452</td><td>448</td></tr>
+  <tr><td>Plain Paragraphs</td><td>1127</td><td>577</td><td>1273</td><td>1037</td><td>740</td><td>400</td><td>157</td><td>64</td></tr>
+  <tr><td>Every Word Emphasized</td><td>1562</td><td>1001</td><td>1523</td><td>1513</td><td>13982</td><td>13221</td><td>54</td><td>46</td></tr>
+  <tr><td>Every Word Strong</td><td>1125</td><td>997</td><td>1115</td><td>1114</td><td>9543</td><td>9647</td><td>44</td><td>41</td></tr>
+  <tr><td>Every Word Inline Code</td><td>382</td><td>277</td><td>1058</td><td>1052</td><td>9116</td><td>9074</td><td>51</td><td>39</td></tr>
+  <tr><td>Every Word a Fast Link</td><td>2257</td><td>1600</td><td>537</td><td>531</td><td>3980</td><td>3410</td><td>109</td><td>55</td></tr>
+  <tr><td>Every Word Consisting of Special XML Chars</td><td>4045</td><td>4270</td><td>2985</td><td>3044</td><td>312</td><td>377</td><td>778</td><td>775</td></tr>
+  <tr><td>Every Word wrapped in manual HTML tags</td><td>3334</td><td>2919</td><td>901</td><td>896</td><td>3863</td><td>3736</td><td>73</td><td>62</td></tr>
+  <tr><td>Every Line with a manual line break</td><td>510</td><td>588</td><td>1445</td><td>1440</td><td>1527</td><td>1130</td><td>56</td><td>56</td></tr>
+  <tr><td>Every word with a full link</td><td>452</td><td>246</td><td>1045</td><td>996</td><td>1884</td><td>1819</td><td>86</td><td>55</td></tr>
+  <tr><td>Every word with a full image</td><td>268</td><td>150</td><td>1140</td><td>1132</td><td>1985</td><td>1908</td><td>38</td><td>36</td></tr>
+  <tr><td>Every word with a reference link</td><td>9847</td><td>9082</td><td>18956</td><td>18719</td><td>121136</td><td>115416</td><td>1525</td><td>1380</td></tr>
+  <tr><td>Every block a quote</td><td>445</td><td>206</td><td>1312</td><td>1301</td><td>478</td><td>457</td><td>50</td><td>45</td></tr>
+  <tr><td>Every block a codeblock</td><td>70</td><td>87</td><td>373</td><td>376</td><td>161</td><td>175</td><td>60</td><td>22</td></tr>
+  <tr><td>Every block a list</td><td>920</td><td>912</td><td>1720</td><td>1725</td><td>622</td><td>651</td><td>55</td><td>55</td></tr>
+  <tr><td>All tests together</td><td>3281</td><td>2885</td><td>5184</td><td>5196</td><td>10130</td><td>10460</td><td>206</td><td>196</td></tr>
 </table>
-
-*   Q: Why is Txtmark so slow when it comes to XML entities?
-*   A: Because Txtmark does some sanity checks on XML entities to make sure
-    it outputs valid XML. For example:
-
-        &cutie;
-
-    will produce (when processed with Markdown and most other markdown processors):
-
-        &cutie;
-
-    and
-
-        &amp;cutie;
-
-    when processed with Txtmark.
 
 Benchmarked versions:  
 [Actuarius] version: 0.2  
@@ -193,10 +202,11 @@ Benchmarked versions:
 
 ---
 
-[Markdown] is copyright (c) 2004 by John Gruber  
-[Actuarius] is copyright (c) 2010 by Christoph Henkelmann  
-[Knockoff] is copyright (c) 2009-2011 by Tristan Juricek  
-[PegDown] is copyright (c) 2010 by Mathias Doenitz  
+Mentioned/related projects:  
+[Markdown] is Copyright (C) 2004 by John Gruber  
+[Actuarius] is Copyright (C) 2010 by Christoph Henkelmann  
+[Knockoff] is Copyright (C) 2009-2011 by Tristan Juricek  
+[PegDown] is Copyright (C) 2010 by Mathias Doenitz  
 
 ***
 
@@ -206,5 +216,6 @@ Benchmarked versions:
 [PegDown]: https://github.com/sirthias/pegdown
 [tar]: https://github.com/rjeschke/txtmark/tarball/master "branch: master"
 [zip]: https://github.com/rjeschke/txtmark/zipball/master "branch: master"
+[$PROFILE$]: extended "Txtmark processing information."
 
 Project link: <https://github.com/rjeschke/txtmark>

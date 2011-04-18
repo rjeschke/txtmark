@@ -17,6 +17,8 @@ class Emitter
     private final HashMap<String, LinkRef> linkRefs = new HashMap<String, LinkRef>();
     /** The Decorator. */
     private Decorator decorator;
+    /** Extension flag. */
+    public boolean useExtensions = false;
     
     /** Constructor. */
     public Emitter(final Decorator decorator)
@@ -311,7 +313,6 @@ class Emitter
      * @param start Starting position.
      * @return The new position or -1 if nothing valid has been found.
      */
-    // TODO ... hm ... refactor this
     private int checkHtml(final StringBuilder out, final String in, int start)
     {
         final StringBuilder temp = new StringBuilder();
@@ -319,8 +320,8 @@ class Emitter
 
         // Check for auto links
         temp.setLength(0);
-        pos = Utils.readUntil(temp, in, start + 1, ':');
-        if(pos != -1 && HTML.isLinkPrefix(temp.toString()))
+        pos = Utils.readUntil(temp, in, start + 1, ':', ' ', '>', '\n');
+        if(pos != -1 && in.charAt(pos) == ':' && HTML.isLinkPrefix(temp.toString()))
         {
             pos = Utils.readUntil(temp, in, pos, '>');
             if(pos != -1)
@@ -338,8 +339,8 @@ class Emitter
         
         // Check for mailto auto link
         temp.setLength(0);
-        pos = Utils.readUntil(temp, in, start + 1, '@');
-        if(pos != -1)
+        pos = Utils.readUntil(temp, in, start + 1, '@', ' ', '>', '\n');
+        if(pos != -1 && in.charAt(pos) == '@')
         {
             pos = Utils.readUntil(temp, in, pos, '>');
             if(pos != -1)
@@ -534,6 +535,40 @@ class Emitter
                     out.append("&amp;");
                 }
                 break;
+            case X_COPY:
+                out.append("&copy;");
+                pos += 2;
+                break;
+            case X_REG:
+                out.append("&reg;");
+                pos += 2;
+                break;
+            case X_TRADE:
+                out.append("&trade;");
+                pos += 3;
+                break;
+            case X_MDASH:
+                out.append("&mdash;");
+                pos++;
+                break;
+            case X_HELLIP:
+                out.append("&hellip;");
+                pos += 2;
+                break;
+            case X_LAQUO:
+                out.append("&laquo;");
+                pos++;
+                break;
+            case X_RAQUO:
+                out.append("&raquo;");
+                pos++;
+                break;
+            case X_RDQUO:
+                out.append("&rdquo;");
+                break;
+            case X_LDQUO:
+                out.append("&ldquo;");
+                break;
             case ESCAPE:
                 pos++;
                 //$FALL-THROUGH$
@@ -559,6 +594,7 @@ class Emitter
         final char c  = in.charAt(pos);
         final char c1 = pos + 1 < in.length() ? in.charAt(pos + 1) : ' ';
         final char c2 = pos + 2 < in.length() ? in.charAt(pos + 2) : ' ';
+        final char c3 = pos + 3 < in.length() ? in.charAt(pos + 3) : ' ';
 
         switch(c)
         {
@@ -608,10 +644,44 @@ class Emitter
                 return MarkToken.NONE;
             }
         case '<':
+            if(this.useExtensions && c1 == '<')
+                return MarkToken.X_LAQUO;
             return MarkToken.HTML;
         case '&':
             return MarkToken.ENTITY;
         default:
+            if(this.useExtensions)
+            {
+                switch(c)
+                {
+                case '-':
+                    if(c1 == '-')
+                        return MarkToken.X_MDASH;
+                    break;
+                case '>':
+                    if(c1 == '>')
+                        return MarkToken.X_RAQUO;
+                    break;
+                case '.':
+                    if(c1 == '.' && c2 == '.')
+                        return MarkToken.X_HELLIP;
+                    break;
+                case '(':
+                    if(c1 == 'C' && c2 == ')')
+                        return MarkToken.X_COPY;
+                    if(c1 == 'R' && c2 == ')')
+                        return MarkToken.X_REG;
+                    if(c1 == 'T' & c2 == 'M' & c3 == ')')
+                        return MarkToken.X_TRADE;
+                    break;
+                case '"':
+                    if(!Character.isLetterOrDigit(c0) && c1 != ' ')
+                        return MarkToken.X_LDQUO;
+                    if(c0 != ' ' && !Character.isLetterOrDigit(c1))
+                        return MarkToken.X_RDQUO;
+                    break;
+                }
+            }
             return MarkToken.NONE;
         }
     }
