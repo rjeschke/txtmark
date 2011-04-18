@@ -109,12 +109,13 @@ This seemed to me as the easiest and safest way to enable different behaviours.
         <li>and this is not a list</li>
         </ul>
 
-*   Auto HTML entities:
+*   Auto HTML entities (inspired by [SmartyPants]):
 
     *   `(C)` becomes `&copy;` - &copy;
     *   `(R)` becomes `&reg;` - &reg;
     *   `(TM)` becomes `&trade;` - &trade;
-    *   `--` becomes `&mdash;` - &mdash;
+    *   `--` becomes `&ndash;` - &ndash;
+    *   `---` becomes `&mdash;` - &mdash;
     *   `...` becomes `&hellip;` - &hellip;
     *   `<<` becomes `&laquo;` - &laquo;
     *   `>>` becomes `&raquo;` - &raquo;
@@ -204,6 +205,7 @@ Benchmarked versions:
 
 Mentioned/related projects:  
 [Markdown] is Copyright (C) 2004 by John Gruber  
+[SmartyPants] is Copyright (C) 2003 John Gruber  
 [Actuarius] is Copyright (C) 2010 by Christoph Henkelmann  
 [Knockoff] is Copyright (C) 2009-2011 by Tristan Juricek  
 [PegDown] is Copyright (C) 2010 by Mathias Doenitz  
@@ -214,6 +216,7 @@ Mentioned/related projects:
 [Actuarius]: http://henkelmann.eu/projects/actuarius/
 [Knockoff]: http://tristanhunt.com/projects/knockoff/
 [PegDown]: https://github.com/sirthias/pegdown
+[SmartyPants]: http://daringfireball.net/projects/smartypants/
 [tar]: https://github.com/rjeschke/txtmark/tarball/master "branch: master"
 [zip]: https://github.com/rjeschke/txtmark/zipball/master "branch: master"
 [$PROFILE$]: extended "Txtmark processing information."

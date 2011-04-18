@@ -547,9 +547,13 @@ class Emitter
                 out.append("&trade;");
                 pos += 3;
                 break;
+            case X_NDASH:
+                out.append("&ndash;");
+                pos++;
+                break;
             case X_MDASH:
                 out.append("&mdash;");
-                pos++;
+                pos += 2;
                 break;
             case X_HELLIP:
                 out.append("&hellip;");
@@ -656,7 +660,7 @@ class Emitter
                 {
                 case '-':
                     if(c1 == '-')
-                        return MarkToken.X_MDASH;
+                        return c2 == '-' ? MarkToken.X_MDASH : MarkToken.X_NDASH;
                     break;
                 case '>':
                     if(c1 == '>')

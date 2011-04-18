@@ -46,7 +46,9 @@ enum MarkToken
     /** Extended: &raquo; */
     X_RAQUO,            // >>
     /** Extended: &mdash; */
-    X_MDASH,            // --
+    X_NDASH,            // --
+    /** Extended: &ndash; */
+    X_MDASH,            // ---
     /** Extended: &hellip; */
     X_HELLIP,           // ...
     /** Extended: &rdquo; */
