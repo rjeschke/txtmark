@@ -336,7 +336,7 @@ public class Processor
                 else
                 {
                     // Store linkRef and skip line
-                    final LinkRef lr = new LinkRef(link, comment);
+                    final LinkRef lr = new LinkRef(link, comment, comment != null && (link.length() == 1 && link.charAt(0) == '*'));
                     this.emitter.addLinkRef(id, lr);
                     if(comment == null)
                         lastLinkRef = lr;
@@ -402,17 +402,23 @@ public class Processor
      * @param root The Block to process.
      * @param listMode Flag indicating that we're in a list item block.
      */
-    // TODO ... paragraphs and lists seems to be not working correctly
     private void recurse(final Block root, boolean listMode)
     {
         Block block, list;
         Line line = root.lines;
+
+        if(listMode)
+        {
+            root.removeListIndent();
+            if(this.useExtensions && root.lines != null && root.lines.getLineType() != LineType.CODE)
+            {
+                root.id = root.lines.stripIP();
+            }
+        }
+
         while(line != null && line.isEmpty) line = line.next;
         if(line == null)
             return;
-
-        if(listMode)
-            root.removeListIndent();
 
         while(line != null)
         {
@@ -509,6 +515,8 @@ public class Processor
                 block.type = BlockType.HEADLINE;
                 if(type != LineType.HEADLINE)
                 block.hlDepth = type == LineType.HEADLINE1 ? 1 : 2;
+                if(this.useExtensions)
+                    block.id = block.lines.stripIP();
                 block.transfromHeadline();
                 root.removeLeadingEmptyLines();
                 line = root.lines;

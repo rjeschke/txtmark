@@ -306,6 +306,93 @@ class Line
         }
         return -1;
     }
+
+    /**
+     * Checks if this line contains an ID at it's end and removes it from the line.
+     * 
+     * @return The ID or <code>null</code> if no valid ID exists.
+     */
+    // FIXME ... hack
+    public String stripIP()
+    {
+        if(this.isEmpty || this.value.charAt(this.value.length() - this.trailing - 1) != '}')
+            return null;
+        int p = this.leading;
+        boolean found = false;
+        while(p < this.value.length() && !found)
+        {
+            switch(this.value.charAt(p))
+            {
+            case '\\':
+                if(p + 1 < this.value.length())
+                {
+                    switch(this.value.charAt(p + 1))
+                    {
+                    case '{':
+                        p++;
+                        break;
+                    }
+                }
+                p++;
+                break;
+            case '{':
+                found = true;
+                break;
+            default:
+                p++;
+                break;
+            }
+        }
+        
+        if(found)
+        {
+            if(p + 1 < this.value.length() && this.value.charAt(p + 1) == '#')
+            {
+                final int start = p + 2;
+                p = start;
+                found = false;
+                while(p < this.value.length() && !found)
+                {
+                    switch(this.value.charAt(p))
+                    {
+                    case '\\':
+                        if(p + 1 < this.value.length())
+                        {
+                            switch(this.value.charAt(p + 1))
+                            {
+                            case '}':
+                                p++;
+                                break;
+                            }
+                        }
+                        p++;
+                        break;
+                    case '}':
+                        found = true;
+                        break;
+                    default:
+                        p++;
+                        break;
+                    }
+                }
+                if(found)
+                {
+                    final String id = this.value.substring(start, p).trim();
+                    if(this.leading != 0)
+                    {
+                        this.value = this.value.substring(0, this.leading) + this.value.substring(this.leading, start - 2).trim();
+                    }
+                    else
+                    {
+                        this.value = this.value.substring(this.leading, start - 2).trim();
+                    }
+                    this.trailing = 0;
+                    return id.length() > 0 ? id : null; 
+                }
+            }
+        }
+        return null;
+    }
     
     /**
      * Checks for a valid HTML block. Sets <code>xmlEndLine</code>.

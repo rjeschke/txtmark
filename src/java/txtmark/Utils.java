@@ -63,12 +63,14 @@ class Utils
         case '\'':
         case '.':
         case '>':
+        case '<':
         case '*':
         case '+':
         case '-':
         case '_':
         case '!':
         case '`':
+        case '^':
             out.append(ch);
             return pos + 1;
         default:

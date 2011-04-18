@@ -35,24 +35,26 @@ enum MarkToken
     ENTITY,             // &
     /** \ */
     ESCAPE,             // \x
-    /** Extended: &copy; */
+    /** Extended: ^ */
+    SUPER,              // ^
+    /** Extended: (C) */
     X_COPY,             // (C)
-    /** Extended: &reg; */
+    /** Extended: (R) */
     X_REG,              // (R)
-    /** Extended: &trade; */
+    /** Extended: (TM) */
     X_TRADE,            // (TM)
-    /** Extended: &laquo; */
+    /** Extended: &lt;&lt; */
     X_LAQUO,            // <<
-    /** Extended: &raquo; */
+    /** Extended: >> */
     X_RAQUO,            // >>
-    /** Extended: &mdash; */
+    /** Extended: -- */
     X_NDASH,            // --
-    /** Extended: &ndash; */
+    /** Extended: --- */
     X_MDASH,            // ---
-    /** Extended: &hellip; */
+    /** Extended: &#46;&#46;&#46; */
     X_HELLIP,           // ...
-    /** Extended: &rdquo; */
+    /** Extended: "x */
     X_RDQUO,            // "
-    /** Extended: &ldquo; */
+    /** Extended: x" */
     X_LDQUO            // "
 }

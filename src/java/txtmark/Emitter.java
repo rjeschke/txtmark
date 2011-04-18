@@ -57,6 +57,13 @@ class Emitter
             break;
         case HEADLINE:
             this.decorator.openHeadline(out, root.hlDepth);
+            if(this.useExtensions && root.id != null)
+            {
+                out.append(" id=\"");
+                Utils.appendCode(out, root.id, 0, root.id.length());
+                out.append('"');
+            }
+            out.append('>');
             break;
         case PARAGRAPH:
             this.decorator.openParagraph(out);
@@ -75,6 +82,13 @@ class Emitter
             break;
         case LIST_ITEM:
             this.decorator.openListItem(out);
+            if(this.useExtensions && root.id != null)
+            {
+                out.append(" id=\"");
+                Utils.appendCode(out, root.id, 0, root.id.length());
+                out.append('"');
+            }
+            out.append('>');
             break;
         }
 
@@ -175,9 +189,10 @@ class Emitter
      */
     private int checkLink(final StringBuilder out, final String in, int start, MarkToken token)
     {
+        boolean isAbbrev = false;
         int pos = start + (token == MarkToken.LINK ? 1 : 2);
         final StringBuilder temp = new StringBuilder();
-
+        
         temp.setLength(0);
         pos = Utils.readMdLinkId(temp, in, pos);
         if(pos < start)
@@ -191,6 +206,7 @@ class Emitter
             final LinkRef lr = this.linkRefs.get(name.toLowerCase());
             if(lr != null)
             {
+                isAbbrev = lr.isAbbrev;
                 link = lr.link;
                 comment = lr.title;
                 pos = oldPos;
@@ -255,6 +271,7 @@ class Emitter
             final LinkRef lr = this.linkRefs.get(name.toLowerCase());
             if(lr != null)
             {
+                isAbbrev = lr.isAbbrev;
                 link = lr.link;
                 comment = lr.title;
                 pos = oldPos;
@@ -270,19 +287,32 @@ class Emitter
 
         if(token == MarkToken.LINK)
         {
-            this.decorator.openLink(out);
-            out.append(" href=\"");
-            Utils.appendValue(out, link, 0, link.length());
-            out.append('"');
-            if(comment != null)
+            if(isAbbrev && comment != null)
             {
-                out.append(" title=\"");
+                if(!this.useExtensions)
+                    return -1;
+                out.append("<abbr title=\"");
                 Utils.appendValue(out, comment, 0, comment.length());
-                out.append('"');
+                out.append("\">");
+                this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
+                out.append("</abbr>");
             }
-            out.append('>');
-            this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
-            out.append("</a>");
+            else
+            {
+                this.decorator.openLink(out);
+                out.append(" href=\"");
+                Utils.appendValue(out, link, 0, link.length());
+                out.append('"');
+                if(comment != null)
+                {
+                    out.append(" title=\"");
+                    Utils.appendValue(out, comment, 0, comment.length());
+                    out.append('"');
+                }
+                out.append('>');
+                this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
+                out.append("</a>");
+            }
         }
         else
         {
@@ -486,6 +516,21 @@ class Emitter
                     out.append(in.charAt(pos));
                 }
                 break;
+            case SUPER:
+                temp.setLength(0);
+                b = this.recursiveEmitLine(temp, in, pos + 1, mt);
+                if(b > 0)
+                {
+                    this.decorator.openSuper(out);
+                    out.append(temp);
+                    this.decorator.closeSuper(out);
+                    pos = b;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+                break;
             case CODE_SINGLE:
             case CODE_DOUBLE:
                 a = pos + (mt == MarkToken.CODE_DOUBLE ? 2 : 1);
@@ -613,6 +658,10 @@ class Emitter
             {
                 return c0 != ' ' || c2 != ' ' ? MarkToken.STRONG_UNDERSCORE : MarkToken.EM_UNDERSCORE;
             }
+            if(this.useExtensions)
+            {
+                return c0 != ' ' && c0 != '_' && c1 != ' ' ? MarkToken.NONE : MarkToken.EM_UNDERSCORE;
+            }
             return c0 != ' ' || c1 != ' ' ? MarkToken.EM_UNDERSCORE : MarkToken.NONE;
         case '!':
             if(c1 == '[')
@@ -637,12 +686,14 @@ class Emitter
             case '\'':
             case '.':
             case '>':
+            case '<':
             case '*':
             case '+':
             case '-':
             case '_':
             case '!':
             case '`':
+            case '^':
                 return MarkToken.ESCAPE;
             default:
                 return MarkToken.NONE;
@@ -662,6 +713,8 @@ class Emitter
                     if(c1 == '-')
                         return c2 == '-' ? MarkToken.X_MDASH : MarkToken.X_NDASH;
                     break;
+                case '^':
+                    return c0 == '^' || c1 == '^' ? MarkToken.NONE : MarkToken.SUPER;
                 case '>':
                     if(c1 == '>')
                         return MarkToken.X_RAQUO;

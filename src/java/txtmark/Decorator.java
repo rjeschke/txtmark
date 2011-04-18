@@ -94,10 +94,10 @@ public interface Decorator
     /**
      * Called when a headline is opened.
      * 
+     * <p><strong>Note:</strong> Don't close the HTML tag!</p>
      * <p>Default implementation is:</p>
      * <pre><code> out.append("&lt;h");
-     * out.append(level);
-     * out.append('>');</code></pre>
+     * out.append(level);</code></pre>
      * 
      * @param out The StringBuilder to write to.
      */
@@ -156,6 +156,26 @@ public interface Decorator
     public void closeEmphasis(final StringBuilder out);
 
     /**
+     * Called when a superscript span is opened.
+     * 
+     * <p>Default implementation is:</p>
+     * <pre><code>out.append("&lt;sup>");</code></pre>
+     * 
+     * @param out The StringBuilder to write to.
+     */
+    public void openSuper(final StringBuilder out);
+
+    /**
+     * Called when a superscript span is closed.
+     * 
+     * <p>Default implementation is:</p>
+     * <pre><code>out.append("&lt;/sup>");</code></pre>
+     * 
+     * @param out The StringBuilder to write to.
+     */
+    public void closeSuper(final StringBuilder out);
+
+    /**
      * Called when an ordered list is opened.
      * 
      * <p>Default implementation is:</p>
@@ -198,8 +218,9 @@ public interface Decorator
     /**
      * Called when a list item is opened.
      * 
+     * <p><strong>Note:</strong> Don't close the HTML tag!</p>
      * <p>Default implementation is:</p>
-     * <pre><code>out.append("&lt;li>");</code></pre>
+     * <pre><code>out.append("&lt;li");</code></pre>
      * 
      * @param out The StringBuilder to write to.
      */
@@ -228,6 +249,7 @@ public interface Decorator
     /**
      * Called when a link is opened.
      * 
+     * <p><strong>Note:</strong> Don't close the HTML tag!</p>
      * <p>Default implementation is:</p>
      * <pre><code>out.append("&lt;a");</code></pre>
      * 
@@ -238,6 +260,7 @@ public interface Decorator
     /**
      * Called when an image is opened.
      * 
+     * <p><strong>Note:</strong> Don't close the HTML tag!</p>
      * <p>Default implementation is:</p>
      * <pre><code>out.append("&lt;img");</code></pre>
      * 

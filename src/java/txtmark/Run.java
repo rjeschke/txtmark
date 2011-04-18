@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
  *&lt;meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
  *&lt;/head>
  *&lt;body>
- *&lt;!-- the following file separates header from footer -->
+ *&lt;!-- the following line separates header from footer -->
  *&lt;!-- ### -->
  *&lt;/body>
  *&lt;/html>

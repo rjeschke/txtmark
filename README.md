@@ -4,7 +4,7 @@ See LICENSE.txt for licensing information.
 
 ***
 
-Txtmark is yet another markdown processor for the JVM.  
+### Txtmark is yet another markdown processor for the JVM.  
 
 *   It is easy to use:
 
@@ -16,12 +16,14 @@ Txtmark is yet another markdown processor for the JVM.
 *   It does not depend on other libraries, so classpathing `txtmark.jar` is
     sufficient to use Txtmark in your project.
 
-For an in-depth explanation of the markdown syntax have a look at [daringfireball.net](http://daringfireball.net/projects/markdown/syntax).
+For an in-depth explanation of markdown have a look at the original [Markdown Syntax].
+
+***
 
 ### Build instructions
 
-1.  Clone the repo or download the sources as [tar] or [zip]
-2.  Install [Apache Ant(TM)](http://ant.apache.org/)
+1.  Clone the [repo] or download the sources as [tar] or [zip]
+2.  Install [Apache Ant(TM)]
 3.  Do
 
         ant release
@@ -29,9 +31,147 @@ For an in-depth explanation of the markdown syntax have a look at [daringfirebal
     and you will find everything you need inside the `release` folder.
 
 
-### Where Txtmark is not like Markdown
+***
+
+### Txtmark extensions
+
+To enable Txtmark's extended markdown parsing you can use the $PROFILE$ mechanism:
+
+    [$PROFILE$]: extended
+
+This seemed to me as the easiest and safest way to enable different behaviours.
+Just put this line into your Txtmark file like you would use reference links.
+
+#### Behavior changes when using `[$PROFILE$]: extended`
+
+*   ##### Lists and code blocks end a paragraph
+
+    In normal markdown the following:
+
+        This is a paragraph
+        * and this is not a list
+
+    Will produce:
+
+        <p>This is a paragraph
+        * and this is not a list</p>
+
+    When using Txtmark extensions this changes to:
+
+        <p>This is a paragraph</p>
+        <ul>
+        <li>and this is not a list</li>
+        </ul>
+
+*   ##### Text anchors
+
+    Headlines and list items may recieve an ID which
+    you can refer to using links.
+    
+        ## Headline with ID ##     {#headid}
+        
+        Another headline with ID   {#headid2}
+        ------------------------
+        
+        * List with ID             {#listid}
+        
+        Links: [Foo] (#headid)
+        
+    this will produce:
+    
+        <h2 id="headid">Headline with ID</h2>
+        <h2 id="headid2">Another headline with ID</h2>
+        <ul>
+        <li id="listid">List with ID</li>
+        </ul>
+        <p>Links: <a href="#headid">Foo</a></p>
+    
+    The ID _must_ be the last thing on the first line.
+    
+    All spaces before `{#` get removed, so you can't
+    use an ID and a manual line break in the same line.
+    
+*   ##### Auto HTML entities
+
+    *   `(C)` becomes `&copy;` - &copy;
+    *   `(R)` becomes `&reg;` - &reg;
+    *   `(TM)` becomes `&trade;` - &trade;
+    *   `--` becomes `&ndash;` - &ndash;
+    *   `---` becomes `&mdash;` - &mdash;
+    *   `...` becomes `&hellip;` - &hellip;
+    *   `<<` becomes `&laquo;` - &laquo;
+    *   `>>` becomes `&raquo;` - &raquo;
+    *   `"Hello"` becomes `&ldquo;Hello&rdquo;` - &ldquo;Hello&rdquo;
+
+*   ##### Underscores (Emphasis)
+
+    Underscores in the middle of a word don't result in emphasis.
+    
+        Con_cat_this
+        
+    normally produces this:
+    
+        Con<em>cat</em>this
+
+*   ##### Superscript
+
+    You can use `^` to mark a span as superscript.
+    
+        2^2^ = 4
+        
+    turns into
+    
+        2<sup>2</sup> = 4
+
+*   ##### Abbreviations
+
+    Abbreviations are defined like reference links, but using a `*`
+    instead of a link and must be single-line only.
+    
+        [Git]: * "Fast distributed revision control system"
+        
+    and used like this
+    
+        This is [Git]!
+        
+    which will produce
+    
+        This is <abbr title="Fast distributed revision control system">Git</abbr>!
+        
+***
+
+### Markdown conformity
+
+Txtmark passes all tests inside [MarkdownTest\_1.0\_2007-05-09](http://daringfireball.net/projects/downloads/MarkdownTest_1.0_2007-05-09.tgz)
+except of two:
+
+1.  **Images.text**
+
+    Fails because Txtmark doesn't produce empty 'title' image attributes.  
+    (IMHO: Images ... OK)
+
+2.  **Literal quotes in titles.text**
+
+    What the frell ... this test will continue to FAIL.  
+    Sorry, but using unescaped `"` in a title which should be surrounded
+    by `"` is unacceptable for me ;)
+
+    Change:
+
+        Foo [bar](/url/ "Title with "quotes" inside").
+        [bar]: /url/ "Title with "quotes" inside"
+
+    to:
+
+        Foo [bar](/url/ "Title with \"quotes\" inside").
+        [bar]: /url/ "Title with \"quotes\" inside"
+
+    and Txtmark will produce the correct result.  
+    (IMHO: Literal quotes in titles ... OK)
 
 ***
+
+### Where Txtmark is not like Markdown
 
 *   Txtmark does not produce empty `title` attributes in link and image tags.
 
@@ -77,85 +217,16 @@ For an in-depth explanation of the markdown syntax have a look at [daringfirebal
         </li>
         </ul>
 
-### Txtmark extensions
+*   List of escapeable characters:
+
+        \   [   ]   (   )   {   }   #
+        "   '   .   <   >   +   -   _
+        !   `   ^
+        
 
 ***
-
-To enable Txtmark's extended markdown parsing you can use the $PROFILE$ mechanism:
-
-    [$PROFILE$]: extended
-
-This seemed to me as the easiest and safest way to enable different behaviours.
-(All other markdown processors will ignore this line.)
-
-#### Behavior changes when using `[$PROFILE$]: extended`
-
-*   Lists and code blocks end a paragraph (inspired by [Actuarius])
-
-    In normal markdown the following:
-
-        This is a paragraph
-        * and this is not a list
-
-    will produce:
-
-        <p>This is a paragraph
-        * and this is not a list</p>
-
-    When using Txtmark extensions this changes to:
-
-        <p>This is a paragraph</p>
-        <ul>
-        <li>and this is not a list</li>
-        </ul>
-
-*   Auto HTML entities (inspired by [SmartyPants]):
-
-    *   `(C)` becomes `&copy;` - &copy;
-    *   `(R)` becomes `&reg;` - &reg;
-    *   `(TM)` becomes `&trade;` - &trade;
-    *   `--` becomes `&ndash;` - &ndash;
-    *   `---` becomes `&mdash;` - &mdash;
-    *   `...` becomes `&hellip;` - &hellip;
-    *   `<<` becomes `&laquo;` - &laquo;
-    *   `>>` becomes `&raquo;` - &raquo;
-    *   `"Hello"` becomes `&ldquo;Hello&rdquo;` - &ldquo;Hello&rdquo;
-
-### Markdown conformity
-
-***
-
-Txtmark passes all tests inside [MarkdownTest\_1.0\_2007-05-09](http://daringfireball.net/projects/downloads/MarkdownTest_1.0_2007-05-09.tgz)
-except of two:
-
-1.  **Images.text**
-
-    Fails because Txtmark doesn't produce empty 'title' image attributes.  
-    (IMHO: Images ... OK)
-
-2.  **Literal quotes in titles.text**
-
-    What the frell ... this test will continue to FAIL.  
-    Sorry, but using unescaped `"` in a title which should be surrounded
-    by `"` is unacceptable for me ;)
-
-    Change:
-
-        Foo [bar](/url/ "Title with "quotes" inside").
-        [bar]: /url/ "Title with "quotes" inside"
-
-    to:
-
-        Foo [bar](/url/ "Title with \"quotes\" inside").
-        [bar]: /url/ "Title with \"quotes\" inside"
-
-    and Txtmark will produce the correct result.  
-    (IMHO: Literal quotes in titles ... OK)
-
 
 ### Performance comparison of markdown processors for the JVM
-
----
 
 Based on [this benchmark suite](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).  
 
@@ -196,29 +267,45 @@ Benchmark system:
   <tr><td>All tests together</td><td>3281</td><td>2885</td><td>5184</td><td>5196</td><td>10130</td><td>10460</td><td>206</td><td>196</td></tr>
 </table>
 
-Benchmarked versions:  
+##### Benchmarked versions:  
 [Actuarius] version: 0.2  
 [PegDown] version: 0.8.5.4  
 [Knockoff] version: 0.7.3-15  
 
----
+***
 
-Mentioned/related projects:  
-[Markdown] is Copyright (C) 2004 by John Gruber  
-[SmartyPants] is Copyright (C) 2003 John Gruber  
-[Actuarius] is Copyright (C) 2010 by Christoph Henkelmann  
-[Knockoff] is Copyright (C) 2009-2011 by Tristan Juricek  
-[PegDown] is Copyright (C) 2010 by Mathias Doenitz  
+### TODO
+
+*   Inline HTML control (configurable escaping of unallowed HTML tags)
+*   Code clean-ups
+*   Binary download
 
 ***
 
+### Mentioned/related projects
+
+[Markdown] is Copyright (C) 2004 by John Gruber  
+[SmartyPants] is Copyright (C) 2003 by John Gruber  
+[Actuarius] is Copyright (C) 2010 by Christoph Henkelmann  
+[Knockoff] is Copyright (C) 2009-2011 by Tristan Juricek  
+[PegDown] is Copyright (C) 2010 by Mathias Doenitz  
+[PHP Markdown & Extra] is Copyright (C) 2009 Michel Fortin  
+
+***
+
+[Markdown Syntax]: http://daringfireball.net/projects/markdown/syntax/ "daringfireball.net"
 [Markdown]: http://daringfireball.net/projects/markdown/
+[SmartyPants]: http://daringfireball.net/projects/smartypants/
 [Actuarius]: http://henkelmann.eu/projects/actuarius/
 [Knockoff]: http://tristanhunt.com/projects/knockoff/
-[PegDown]: https://github.com/sirthias/pegdown
-[SmartyPants]: http://daringfireball.net/projects/smartypants/
+[PegDown]: https://github.com/sirthias/pegdown/
+[PHP Markdown & Extra]: http://michelf.com/projects/php-markdown/
+[Apache Ant(TM)]: http://ant.apache.org/
+
+[repo]: https://github.com/rjeschke/txtmark/ "Txtmark at GitHub.com"
 [tar]: https://github.com/rjeschke/txtmark/tarball/master "branch: master"
 [zip]: https://github.com/rjeschke/txtmark/zipball/master "branch: master"
+
 [$PROFILE$]: extended "Txtmark processing information."
 
 Project link: <https://github.com/rjeschke/txtmark>

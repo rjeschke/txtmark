@@ -21,7 +21,9 @@ class Block
     public Block next = null;
     /** Depth of headline BlockType. */
     public int hlDepth = 0;
-
+    /** ID for headlines and list items */
+    public String id = null;
+    
     /** Constructor. */
     public Block()
     {

@@ -90,7 +90,6 @@ public class DefaultDecorator implements Decorator
     {
         out.append("<h");
         out.append(level);
-        out.append('>');
     }
 
     /** @see txtmark.Decorator#closeHeadline(StringBuilder, int) */
@@ -130,6 +129,20 @@ public class DefaultDecorator implements Decorator
         out.append("</em>");
     }
 
+    /** @see txtmark.Decorator#openSuper(StringBuilder) */
+    @Override
+    public void openSuper(StringBuilder out)
+    {
+        out.append("<sup>");
+    }
+
+    /** @see txtmark.Decorator#closeSuper(StringBuilder) */
+    @Override
+    public void closeSuper(StringBuilder out)
+    {
+        out.append("</sup>");
+    }
+
     /** @see txtmark.Decorator#openOrderedList(StringBuilder)*/
     @Override
     public void openOrderedList(StringBuilder out)
@@ -162,7 +175,7 @@ public class DefaultDecorator implements Decorator
     @Override
     public void openListItem(StringBuilder out)
     {
-        out.append("<li>");
+        out.append("<li");
     }
 
     /** @see txtmark.Decorator#closeListItem(StringBuilder) */
