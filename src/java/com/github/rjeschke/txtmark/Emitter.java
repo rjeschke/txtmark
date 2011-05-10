@@ -19,11 +19,14 @@ class Emitter
     private Decorator decorator;
     /** Extension flag. */
     public boolean useExtensions = false;
+    /** Safe mode flag. */
+    private final boolean safeMode;
     
     /** Constructor. */
-    public Emitter(final Decorator decorator)
+    public Emitter(final Decorator decorator, final boolean safeMode)
     {
         this.decorator = decorator;
+        this.safeMode = safeMode;
     }
 
     /**
@@ -391,7 +394,7 @@ class Emitter
         if(start + 2 < in.length())
         {
             temp.setLength(0);
-            return Utils.readXML(out, in, start);
+            return Utils.readXML(out, in, start, this.safeMode);
         }        
     
         return -1;
@@ -778,14 +781,52 @@ class Emitter
     private void emitRawLines(final StringBuilder out, final Line lines)
     {
         Line line = lines;
-        while(line != null)
+        if(this.safeMode)
         {
-            if(!line.isEmpty)
+            final StringBuilder temp = new StringBuilder();
+            while(line != null)
             {
-                out.append(line.value);
+                if(!line.isEmpty)
+                {
+                    temp.append(line.value);
+                }
+                temp.append('\n');
+                line = line.next;
             }
-            out.append('\n');
-            line = line.next;
+            final String in = temp.toString();
+            for(int pos = 0; pos < in.length(); pos++)
+            {
+                if(in.charAt(pos) == '<')
+                {
+                    temp.setLength(0);
+                    final int t = Utils.readXML(temp, in, pos, this.safeMode);
+                    if(t != -1)
+                    {
+                        out.append(temp);
+                        pos = t;
+                    }
+                    else
+                    {
+                        out.append(in.charAt(pos));
+                    }
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+            }
+        }
+        else
+        {
+            while(line != null)
+            {
+                if(!line.isEmpty)
+                {
+                    out.append(line.value);
+                }
+                out.append('\n');
+                line = line.next;
+            }
         }
     }
 

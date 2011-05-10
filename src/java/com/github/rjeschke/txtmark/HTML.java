@@ -105,12 +105,26 @@ class HTML
         HTMLElement.ul
     };
 
+    /** HTML unsafe elements. */
+    private final static HTMLElement[] UNSAFE_ELEMENTS = {
+        HTMLElement.applet,
+        HTMLElement.head,
+        HTMLElement.html,
+        HTMLElement.body,
+        HTMLElement.frame,
+        HTMLElement.frameset,
+        HTMLElement.iframe,
+        HTMLElement.script
+    };
+    
     /** Character to entity encoding map. */
     private final static HashMap<Character, String> encodeMap = new HashMap<Character, String>();
     /** Entity to character decoding map. */
     private final static HashMap<String, Character> decodeMap = new HashMap<String, Character>();
     /** Set of valid HTML tags. */
     private final static HashSet<String> HTML_ELEMENTS = new HashSet<String>();
+    /** Set of unsafe HTML tags. */
+    private final static HashSet<String> HTML_UNSAFE = new HashSet<String>();
     /** Set of HTML block level tags. */
     private final static HashSet<String> HTML_BLOCK_ELEMENTS = new HashSet<String>();
     /** Set of valid markdown link prefixes. */
@@ -121,6 +135,10 @@ class HTML
         for(final HTMLElement h : HTMLElement.values())
         {
             HTML_ELEMENTS.add(h.toString());
+        }
+        for(final HTMLElement h : UNSAFE_ELEMENTS)
+        {
+            HTML_UNSAFE.add(h.toString());
         }
         for(final HTMLElement h : BLOCK_ELEMENTS)
         {
@@ -177,5 +195,14 @@ class HTML
     public static boolean isHtmlBlockElement(final String value)
     {
         return HTML_BLOCK_ELEMENTS.contains(value);
+    }
+
+    /**
+     * @param value String to check.
+     * @return Returns <code>true</code> if the given String is an unsafe HTML tag.
+     */
+    public static boolean isUnsafeHtmlElement(final String value)
+    {
+        return HTML_UNSAFE.contains(value);
     }
 }

@@ -471,51 +471,57 @@ class Utils
      * @param out The StringBuilder to write to.
      * @param in Input String.
      * @param start Starting position.
+     * @param safeMode Whether to escape unsafe HTML tags or not
      * @return The new position or -1 if this is no valid XML element.
      */
-    public static int readXML(final StringBuilder out, final String in, final int start)
+    public static int readXML(final StringBuilder out, final String in, final int start, final boolean safeMode)
     {
         int pos;
+        final boolean isCloseTag;
         if(in.charAt(start + 1) == '/')
         {
-            out.append("</");
+            isCloseTag = true;
             pos = start + 2;
+        }
+        else if(in.charAt(start + 1) == '!')
+        {
+            out.append("<!");
+            return start + 1;
+        }
+        else
+        {
+            isCloseTag = false;
+            pos = start + 1;
+        }
+        if(safeMode)
+        {
+            final StringBuilder temp = new StringBuilder();
+            pos = readRawUntil(temp, in, pos, ' ', '/', '>');
+            if(pos == -1) return -1;
+            final String tag = temp.toString().trim().toLowerCase();
+            if(HTML.isUnsafeHtmlElement(tag))
+            {
+                out.append("&lt;");
+                if(isCloseTag)
+                    out.append('/');
+                out.append(temp);
+            }
         }
         else
         {
             out.append('<');
-            pos = start + 1;
+            if(isCloseTag)
+                out.append('/');
+            pos = readRawUntil(out, in, pos, ' ', '/', '>');
         }
-        pos = readRawUntil(out, in, pos, ' ', '/', '>');
         if(pos == -1) return -1;
-        pos = skipSpaces(in, pos);
-        if(Character.isLetter(in.charAt(pos)))
-        {
-            while(in.charAt(pos) != '/' && in.charAt(pos) != '>')
-            {
-                out.append(' ');
-                pos = readRawUntil(out, in, pos, ' ', '=');
-                if(pos == -1) return -1;
-                pos = skipSpaces(in, pos);
-                if(pos == -1) return -1;
-                out.append('=');
-                pos = skipSpaces(in, pos + 1);
-                if(pos == -1) return -1;
-                final char lim = in.charAt(pos);
-                if(lim != '\'' && lim != '"') return -1;
-                out.append(lim);
-                pos = readRawUntil(out, in, pos + 1, lim);
-                if(pos == -1) return -1;
-                out.append(lim);
-                pos = skipSpaces(in, pos + 1);
-                if(pos == -1) return -1;
-            }
-            
-        }
+        pos = readRawUntil(out, in, pos, '/', '>');
         if(in.charAt(pos) == '/')
         {
             out.append(" /");
-            pos++;
+            pos = readRawUntil(out, in, pos + 1, '>');
+            if(pos == -1)
+                return -1;
         }
         if(in.charAt(pos) == '>')
         {

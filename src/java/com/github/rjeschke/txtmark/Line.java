@@ -409,7 +409,7 @@ class Line
             if(this.readXMLComment(this, this.leading) > 0)
                 return true;
         }
-        pos = Utils.readXML(temp, this.value, this.leading);
+        pos = Utils.readXML(temp, this.value, this.leading, false);
         String element, tag;
         if(pos > -1)
         {
@@ -441,7 +441,7 @@ class Line
                 else
                 {
                     temp.setLength(0);
-                    final int newPos = Utils.readXML(temp, line.value, pos);
+                    final int newPos = Utils.readXML(temp, line.value, pos, false);
                     if(newPos > 0)
                     {
                         element = temp.toString();
