@@ -114,7 +114,8 @@ class HTML
         HTMLElement.frame,
         HTMLElement.frameset,
         HTMLElement.iframe,
-        HTMLElement.script
+        HTMLElement.script,
+        HTMLElement.object,
     };
     
     /** Character to entity encoding map. */
