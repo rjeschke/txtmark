@@ -4,3 +4,4 @@ release/
 .settings
 .classpath
 .project
+target/
