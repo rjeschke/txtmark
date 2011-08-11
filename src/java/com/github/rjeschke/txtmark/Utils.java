@@ -478,55 +478,59 @@ class Utils
     {
         int pos;
         final boolean isCloseTag;
-        if(in.charAt(start + 1) == '/')
-        {
-            isCloseTag = true;
-            pos = start + 2;
-        }
-        else if(in.charAt(start + 1) == '!')
-        {
-            out.append("<!");
-            return start + 1;
-        }
-        else
-        {
-            isCloseTag = false;
-            pos = start + 1;
-        }
-        if(safeMode)
-        {
-            final StringBuilder temp = new StringBuilder();
-            pos = readRawUntil(temp, in, pos, ' ', '/', '>');
-            if(pos == -1) return -1;
-            final String tag = temp.toString().trim().toLowerCase();
-            if(HTML.isUnsafeHtmlElement(tag))
-            {
-                out.append("&lt;");
-                if(isCloseTag)
-                    out.append('/');
-                out.append(temp);
-            }
-        }
-        else
-        {
-            out.append('<');
-            if(isCloseTag)
-                out.append('/');
-            pos = readRawUntil(out, in, pos, ' ', '/', '>');
-        }
-        if(pos == -1) return -1;
-        pos = readRawUntil(out, in, pos, '/', '>');
-        if(in.charAt(pos) == '/')
-        {
-            out.append(" /");
-            pos = readRawUntil(out, in, pos + 1, '>');
-            if(pos == -1)
-                return -1;
-        }
-        if(in.charAt(pos) == '>')
-        {
-            out.append('>');
-            return pos;
+        try {
+            if(in.charAt(start + 1) == '/')
+	        {
+	            isCloseTag = true;
+	            pos = start + 2;
+	        }
+	        else if(in.charAt(start + 1) == '!')
+	        {
+	            out.append("<!");
+	            return start + 1;
+	        }
+	        else
+	        {
+	            isCloseTag = false;
+	            pos = start + 1;
+	        }
+	        if(safeMode)
+	        {
+	            final StringBuilder temp = new StringBuilder();
+	            pos = readRawUntil(temp, in, pos, ' ', '/', '>');
+	            if(pos == -1) return -1;
+	            final String tag = temp.toString().trim().toLowerCase();
+	            if(HTML.isUnsafeHtmlElement(tag))
+	            {
+	                out.append("&lt;");
+	                if(isCloseTag)
+	                    out.append('/');
+	                out.append(temp);
+	            }
+	        }
+	        else
+	        {
+	            out.append('<');
+	            if(isCloseTag)
+	                out.append('/');
+	            pos = readRawUntil(out, in, pos, ' ', '/', '>');
+	        }
+	        if(pos == -1) return -1;
+	        pos = readRawUntil(out, in, pos, '/', '>');
+	        if(in.charAt(pos) == '/')
+	        {
+	            out.append(" /");
+	            pos = readRawUntil(out, in, pos + 1, '>');
+	            if(pos == -1)
+	                return -1;
+	        }
+	        if(in.charAt(pos) == '>')
+	        {
+	            out.append('>');
+	            return pos;
+	        }
+        } catch (StringIndexOutOfBoundsException e) {
+            return -1;
         }
         return -1;
     }
