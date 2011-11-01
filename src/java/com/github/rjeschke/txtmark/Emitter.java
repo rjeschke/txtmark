@@ -198,6 +198,7 @@ class Emitter
         
         temp.setLength(0);
         pos = Utils.readMdLinkId(temp, in, pos);
+        String caption = temp.toString();
         if(pos < start)
             return -1;
 
@@ -332,6 +333,13 @@ class Emitter
                 out.append('"');
             }
             out.append(" />");
+            
+            if (caption != null && !caption.isEmpty())
+            {
+            	out.append("<p class=\"caption\">");
+            	out.append(caption);
+            	out.append("</p>");
+            }
         }
 
         return pos;
