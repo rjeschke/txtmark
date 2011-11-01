@@ -223,7 +223,28 @@ class Line
                 && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value.charAt(this.leading) == '_'))
         {
             if(this.countChars(this.value.charAt(this.leading)) >= 3)
+            {
+                Line line = this.next;
+
+                // look for non-ruler line
+                if(line != null && !line.isEmpty
+                        && line.value.charAt(line.leading) != '*' && line.value.charAt(line.leading) != '-' && line.value.charAt(line.leading) != '_')
+                {
+                    line = line.next;
+
+                    // look for trailing ruler
+                    if(line.value.length() - line.leading - line.trailing > 2 
+                            && (line.value.charAt(line.leading) == '*' || line.value.charAt(line.leading) == '-' || line.value.charAt(line.leading) == '_'))
+                    {
+                        if(line.countChars(line.value.charAt(line.leading)) >= 3)
+                        {
+                            return LineType.SIDEBAR;
+                        }
+                    }
+                }
+
                 return LineType.HR;
+            }
         }
 
         if(this.value.length() - this.leading >= 2 && this.value.charAt(this.leading + 1) == ' ')

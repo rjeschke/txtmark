@@ -25,6 +25,8 @@ enum LineType
     BQUOTE,
     /** A horizontal ruler. */
     HR,
+    /** A side-bar. */
+    SIDEBAR,
     /** Start of a XML block. */
     XML
 }
