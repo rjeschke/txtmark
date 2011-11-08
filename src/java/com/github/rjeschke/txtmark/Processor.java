@@ -834,6 +834,42 @@ public class Processor
                 root.removeLeadingEmptyLines();
                 line = root.lines;
                 break;
+            case SIDEBAR:
+            	// handle leading ruler
+            	if (line.previous != null)
+            	{
+            		// FIXME ... this looks wrong
+            		root.split(line.previous);
+            	}
+            	block = root.split(line);
+            	block.type = BlockType.RULER;
+            	root.removeLeadingEmptyLines();
+            	line = root.lines;
+	        	
+	        	// handle side-bar contents
+                while (line != null)
+                {
+                	if (!line.isEmpty && line.value.startsWith("---"))
+                		break;
+                	line = line.next;
+                }
+                block = root
+                	.split(line != null ? line.previous : root.lineTail);
+                block.type = BlockType.PARAGRAPH;
+                block.removeSurroundingEmptyLines();
+
+            	// handle trailing ruler
+            	if (line.previous != null)
+            	{
+            		// FIXME ... this looks wrong
+            		root.split(line.previous);
+            	}
+            	block = root.split(line);
+            	block.type = BlockType.RULER;
+            	root.removeLeadingEmptyLines();
+            	line = root.lines;
+
+            	break;
             case HEADLINE:
             case HEADLINE1:
             case HEADLINE2:
