@@ -8,6 +8,15 @@
   <name>txtmark</name>
   <url>https://github.com/rjeschke/txtmark</url>
   <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+        </configuration>
+      </plugin>
+    </plugins>
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
   </build>
   <dependencies>
