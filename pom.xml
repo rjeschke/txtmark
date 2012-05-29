@@ -15,6 +15,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <scm>
+    <developerConnection>scm:git:git://github.com/rjeschke/txtmark.git</developerConnection>
+  </scm>
+
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
