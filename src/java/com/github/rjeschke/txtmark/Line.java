@@ -29,7 +29,7 @@ class Line
 {
     /** Current cursor position. */
     public int pos;
-    /** Leading and triling spaces. */
+    /** Leading and trailing spaces. */
     public int leading = 0, trailing = 0;
     /** Is this line empty? */
     public boolean isEmpty = true;
@@ -324,7 +324,7 @@ class Line
      * @return The ID or <code>null</code> if no valid ID exists.
      */
     // FIXME ... hack
-    public String stripIP()
+    public String stripID()
     {
         if(this.isEmpty || this.value.charAt(this.value.length() - this.trailing - 1) != '}')
             return null;

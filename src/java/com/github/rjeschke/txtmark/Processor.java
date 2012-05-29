@@ -749,7 +749,7 @@ public class Processor
             if (this.useExtensions && root.lines != null
                     && root.lines.getLineType() != LineType.CODE)
             {
-                root.id = root.lines.stripIP();
+                root.id = root.lines.stripID();
             }
         }
 
@@ -861,7 +861,7 @@ public class Processor
                 if (type != LineType.HEADLINE)
                     block.hlDepth = type == LineType.HEADLINE1 ? 1 : 2;
                 if (this.useExtensions)
-                    block.id = block.lines.stripIP();
+                    block.id = block.lines.stripID();
                 block.transfromHeadline();
                 root.removeLeadingEmptyLines();
                 line = root.lines;
