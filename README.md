@@ -20,6 +20,12 @@ For an in-depth explanation of markdown have a look at the original [Markdown Sy
 
 ***
 
+### Maven repository
+
+Txtmark is now available as a maven artifact. Have a look [here] (http://renejeschke.de/maven/).
+
+***
+
 ### Build instructions
 
 1.  Clone the [repo] or download the sources as [tar] or [zip]
