@@ -16,7 +16,7 @@
   </properties>
 
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com:rjeschke/txtmark.git</developerConnection>
+    <developerConnection>scm:git:ssh://git@github.com/rjeschke/txtmark.git</developerConnection>
   </scm>
 
   <distributionManagement>
