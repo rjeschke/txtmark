@@ -74,7 +74,7 @@ public class Configuration
          * Constructor.
          * 
          */
-        public Builder()
+        Builder()
         {
             // empty
         }
