@@ -26,25 +26,33 @@ public class Configuration
     final boolean safeMode;
     final String encoding;
     final Decorator decorator;
+    final BlockEmitter codeBlockEmitter;
 
     /**
-     * <p>This is the default configuration for txtmark's <code>process</code> methods</p>
+     * <p>
+     * This is the default configuration for txtmark's <code>process</code>
+     * methods
+     * </p>
      * 
      * <ul>
      * <li><code>safeMode = false</code></li>
      * <li><code>encoding = UTF-8</code></li>
      * <li><code>decorator = DefaultDecorator</code></li>
+     * <li><code>codeBlockEmitter = null</code></li>
      * </ul>
      */
-    public final static Configuration DEFAULT = new Configuration(false, "UTF-8", new DefaultDecorator());
+    public final static Configuration DEFAULT = Configuration.builder().build();
 
     /**
-     * <p>Default safe configuration</p>
+     * <p>
+     * Default safe configuration
+     * </p>
      * 
      * <ul>
      * <li><code>safeMode = true</code></li>
      * <li><code>encoding = UTF-8</code></li>
      * <li><code>decorator = DefaultDecorator</code></li>
+     * <li><code>codeBlockEmitter = null</code></li>
      * </ul>
      */
     public final static Configuration DEFAULT_SAFE = Configuration.builder().enableSafeMode().build();
@@ -56,11 +64,12 @@ public class Configuration
      * @param encoding
      * @param decorator
      */
-    Configuration(boolean safeMode, String encoding, Decorator decorator)
+    Configuration(boolean safeMode, String encoding, Decorator decorator, BlockEmitter codeBlockEmitter)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
         this.decorator = decorator;
+        this.codeBlockEmitter = codeBlockEmitter;
     }
 
     /**
@@ -72,7 +81,7 @@ public class Configuration
     {
         return new Builder();
     }
-    
+
     /**
      * Configuration builder.
      * 
@@ -84,6 +93,7 @@ public class Configuration
         private boolean safeMode = false;
         private String encoding = "UTF-8";
         private Decorator decorator = new DefaultDecorator();
+        private BlockEmitter codeBlockEmitter = null;
 
         /**
          * Constructor.
@@ -158,6 +168,23 @@ public class Configuration
         }
 
         /**
+         * Sets the code block emitter.
+         * 
+         * Default: <code>null</code>
+         * 
+         * @param emitter
+         *            The BlockEmitter
+         * @return This builder
+         * @see BlockEmitter
+         * @since 0.7
+         */
+        public Builder setCodeBlockEmitter(BlockEmitter emitter)
+        {
+            this.codeBlockEmitter = emitter;
+            return this;
+        }
+
+        /**
          * Builds a configuration instance.
          * 
          * @return a Configuration instance
@@ -165,7 +192,7 @@ public class Configuration
          */
         public Configuration build()
         {
-            return new Configuration(this.safeMode, this.encoding, this.decorator);
+            return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter);
         }
     }
 }

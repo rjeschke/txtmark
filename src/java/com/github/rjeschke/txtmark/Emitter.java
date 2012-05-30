@@ -15,6 +15,7 @@
  */
 package com.github.rjeschke.txtmark;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -847,32 +848,48 @@ class Emitter
     private void emitCodeLines(final StringBuilder out, final Line lines)
     {
         Line line = lines;
-        while(line != null)
+        if(this.config.codeBlockEmitter != null)
         {
-            if(!line.isEmpty)
+            final ArrayList<String> list = new ArrayList<String>();
+            while(line != null)
             {
-                for(int i = 4; i < line.value.length(); i++)
+                if(line.isEmpty)
+                    list.add("");
+                else
+                    list.add(line.value.substring(4));
+                line = line.next;
+            }
+            this.config.codeBlockEmitter.emitBlock(out, list);
+        }
+        else
+        {
+            while(line != null)
+            {
+                if(!line.isEmpty)
                 {
-                    final char c;
-                    switch(c = line.value.charAt(i))
+                    for(int i = 4; i < line.value.length(); i++)
                     {
-                    case '&':
-                        out.append("&amp;");
-                        break;
-                    case '<':
-                        out.append("&lt;");
-                        break;
-                    case '>':
-                        out.append("&gt;");
-                        break;
-                    default:
-                        out.append(c);
-                        break;
+                        final char c;
+                        switch(c = line.value.charAt(i))
+                        {
+                        case '&':
+                            out.append("&amp;");
+                            break;
+                        case '<':
+                            out.append("&lt;");
+                            break;
+                        case '>':
+                            out.append("&gt;");
+                            break;
+                        default:
+                            out.append(c);
+                            break;
+                        }
                     }
                 }
+                out.append('\n');
+                line = line.next;
             }
-            out.append('\n');
-            line = line.next;
         }
     }
 }
