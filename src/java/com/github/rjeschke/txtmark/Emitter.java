@@ -26,18 +26,15 @@ class Emitter
 {
     /** Link references. */
     private final HashMap<String, LinkRef> linkRefs = new HashMap<String, LinkRef>();
-    /** The Decorator. */
-    private Decorator decorator;
+    /** The configuration. */
+    private final Configuration config;
     /** Extension flag. */
     public boolean useExtensions = false;
-    /** Safe mode flag. */
-    private final boolean safeMode;
     
     /** Constructor. */
-    public Emitter(final Decorator decorator, final boolean safeMode)
+    public Emitter(final Configuration config)
     {
-        this.decorator = decorator;
-        this.safeMode = safeMode;
+        this.config = config;
     }
 
     /**
@@ -64,13 +61,13 @@ class Emitter
         switch(root.type)
         {
         case RULER:
-            this.decorator.horizontalRuler(out);
+            this.config.decorator.horizontalRuler(out);
             return;
         case NONE:
         case XML:
             break;
         case HEADLINE:
-            this.decorator.openHeadline(out, root.hlDepth);
+            this.config.decorator.openHeadline(out, root.hlDepth);
             if(this.useExtensions && root.id != null)
             {
                 out.append(" id=\"");
@@ -80,22 +77,22 @@ class Emitter
             out.append('>');
             break;
         case PARAGRAPH:
-            this.decorator.openParagraph(out);
+            this.config.decorator.openParagraph(out);
             break;
         case CODE:
-            this.decorator.openCodeBlock(out);
+            this.config.decorator.openCodeBlock(out);
             break;
         case BLOCKQUOTE:
-            this.decorator.openBlockquote(out);
+            this.config.decorator.openBlockquote(out);
             break;
         case UNORDERED_LIST:
-            this.decorator.openUnorderedList(out);
+            this.config.decorator.openUnorderedList(out);
             break;
         case ORDERED_LIST:
-            this.decorator.openOrderedList(out);
+            this.config.decorator.openOrderedList(out);
             break;
         case LIST_ITEM:
-            this.decorator.openListItem(out);
+            this.config.decorator.openListItem(out);
             if(this.useExtensions && root.id != null)
             {
                 out.append(" id=\"");
@@ -127,25 +124,25 @@ class Emitter
         case XML:
             break;
         case HEADLINE:
-            this.decorator.closeHeadline(out, root.hlDepth);
+            this.config.decorator.closeHeadline(out, root.hlDepth);
             break;
         case PARAGRAPH:
-            this.decorator.closeParagraph(out);
+            this.config.decorator.closeParagraph(out);
             break;
         case CODE:
-            this.decorator.closeCodeBlock(out);
+            this.config.decorator.closeCodeBlock(out);
             break;
         case BLOCKQUOTE:
-            this.decorator.closeBlockquote(out);
+            this.config.decorator.closeBlockquote(out);
             break;
         case UNORDERED_LIST:
-            this.decorator.closeUnorderedList(out);
+            this.config.decorator.closeUnorderedList(out);
             break;
         case ORDERED_LIST:
-            this.decorator.closeOrderedList(out);
+            this.config.decorator.closeOrderedList(out);
             break;
         case LIST_ITEM:
-            this.decorator.closeListItem(out);
+            this.config.decorator.closeListItem(out);
             break;
         }
     }
@@ -313,7 +310,7 @@ class Emitter
             }
             else
             {
-                this.decorator.openLink(out);
+                this.config.decorator.openLink(out);
                 out.append(" href=\"");
                 Utils.appendValue(out, link, 0, link.length());
                 out.append('"');
@@ -330,7 +327,7 @@ class Emitter
         }
         else
         {
-            this.decorator.openImage(out);
+            this.config.decorator.openImage(out);
             out.append(" src=\"");
             Utils.appendValue(out, link, 0, link.length());
             out.append("\" alt=\"");
@@ -371,7 +368,7 @@ class Emitter
             if(pos != -1)
             {
                 final String link = temp.toString();
-                this.decorator.openLink(out);
+                this.config.decorator.openLink(out);
                 out.append(" href=\"");
                 Utils.appendValue(out, link, 0, link.length());
                 out.append("\">");
@@ -390,7 +387,7 @@ class Emitter
             if(pos != -1)
             {
                 final String link = temp.toString();
-                this.decorator.openLink(out);
+                this.config.decorator.openLink(out);
                 out.append(" href=\"");
                 Utils.appendMailto(out, "mailto:", 0, 7);
                 Utils.appendMailto(out, link, 0, link.length());
@@ -405,7 +402,7 @@ class Emitter
         if(start + 2 < in.length())
         {
             temp.setLength(0);
-            return Utils.readXML(out, in, start, this.safeMode);
+            return Utils.readXML(out, in, start, this.config.safeMode);
         }        
     
         return -1;
@@ -504,9 +501,9 @@ class Emitter
                 b = this.recursiveEmitLine(temp, in, pos + 1, mt);
                 if(b > 0)
                 {
-                    this.decorator.openEmphasis(out);
+                    this.config.decorator.openEmphasis(out);
                     out.append(temp);
-                    this.decorator.closeEmphasis(out);
+                    this.config.decorator.closeEmphasis(out);
                     pos = b;
                 }
                 else
@@ -520,9 +517,9 @@ class Emitter
                 b = this.recursiveEmitLine(temp, in, pos + 2, mt);
                 if(b > 0)
                 {
-                    this.decorator.openStrong(out);
+                    this.config.decorator.openStrong(out);
                     out.append(temp);
-                    this.decorator.closeStrong(out);
+                    this.config.decorator.closeStrong(out);
                     pos = b + 1;
                 }
                 else
@@ -535,9 +532,9 @@ class Emitter
                 b = this.recursiveEmitLine(temp, in, pos + 1, mt);
                 if(b > 0)
                 {
-                    this.decorator.openSuper(out);
+                    this.config.decorator.openSuper(out);
                     out.append(temp);
-                    this.decorator.closeSuper(out);
+                    this.config.decorator.closeSuper(out);
                     pos = b;
                 }
                 else
@@ -558,9 +555,9 @@ class Emitter
                     {
                         while(in.charAt(b - 1) == ' ')
                             b--;
-                        this.decorator.openCodeSpan(out);
+                        this.config.decorator.openCodeSpan(out);
                         Utils.appendCode(out, in, a, b);
-                        this.decorator.closeCodeSpan(out);
+                        this.config.decorator.closeCodeSpan(out);
                     }
                 }
                 else
@@ -792,7 +789,7 @@ class Emitter
     private void emitRawLines(final StringBuilder out, final Line lines)
     {
         Line line = lines;
-        if(this.safeMode)
+        if(this.config.safeMode)
         {
             final StringBuilder temp = new StringBuilder();
             while(line != null)
@@ -810,7 +807,7 @@ class Emitter
                 if(in.charAt(pos) == '<')
                 {
                     temp.setLength(0);
-                    final int t = Utils.readXML(temp, in, pos, this.safeMode);
+                    final int t = Utils.readXML(temp, in, pos, this.config.safeMode);
                     if(t != -1)
                     {
                         out.append(temp);

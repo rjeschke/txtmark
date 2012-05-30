@@ -18,16 +18,21 @@ package com.github.rjeschke.txtmark;
 /**
  * Default Decorator implementation.
  * 
- * <p>Example for a user Decorator having a class attribute on &lt;p> tags.</p>
- * <pre><code>public class MyDecorator extends DefaultDecorator
- *{
- *    &#64;Override
- *    public void openParagraph(StringBuilder out)
- *    {
- *        out.append("&lt;p class=\"myclass\">");
- *    }
- *}
- *</code></pre>
+ * <p>
+ * Example for a user Decorator having a class attribute on &lt;p> tags.
+ * </p>
+ * 
+ * <pre>
+ * <code>public class MyDecorator extends DefaultDecorator
+ * {
+ *     &#64;Override
+ *     public void openParagraph(StringBuilder out)
+ *     {
+ *         out.append("&lt;p class=\"myclass\">");
+ *     }
+ * }
+ * </code>
+ * </pre>
  * 
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
@@ -38,7 +43,7 @@ public class DefaultDecorator implements Decorator
     {
         // empty
     }
-    
+
     /** @see com.github.rjeschke.txtmark.Decorator#openParagraph(StringBuilder) */
     @Override
     public void openParagraph(StringBuilder out)
@@ -95,7 +100,10 @@ public class DefaultDecorator implements Decorator
         out.append("</code>");
     }
 
-    /** @see com.github.rjeschke.txtmark.Decorator#openHeadline(StringBuilder, int) */
+    /**
+     * @see com.github.rjeschke.txtmark.Decorator#openHeadline(StringBuilder,
+     *      int)
+     */
     @Override
     public void openHeadline(StringBuilder out, int level)
     {
@@ -103,7 +111,10 @@ public class DefaultDecorator implements Decorator
         out.append(level);
     }
 
-    /** @see com.github.rjeschke.txtmark.Decorator#closeHeadline(StringBuilder, int) */
+    /**
+     * @see com.github.rjeschke.txtmark.Decorator#closeHeadline(StringBuilder,
+     *      int)
+     */
     @Override
     public void closeHeadline(StringBuilder out, int level)
     {
@@ -154,7 +165,7 @@ public class DefaultDecorator implements Decorator
         out.append("</sup>");
     }
 
-    /** @see com.github.rjeschke.txtmark.Decorator#openOrderedList(StringBuilder)*/
+    /** @see com.github.rjeschke.txtmark.Decorator#openOrderedList(StringBuilder) */
     @Override
     public void openOrderedList(StringBuilder out)
     {
@@ -182,7 +193,7 @@ public class DefaultDecorator implements Decorator
         out.append("</ul>\n");
     }
 
-    /** @see com.github.rjeschke.txtmark.Decorator#openListItem(StringBuilder) */    
+    /** @see com.github.rjeschke.txtmark.Decorator#openListItem(StringBuilder) */
     @Override
     public void openListItem(StringBuilder out)
     {
