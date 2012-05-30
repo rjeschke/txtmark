@@ -284,7 +284,6 @@ Benchmark system:
 
 *   Inline HTML control (configurable escaping of unallowed HTML tags)
 *   Code clean-ups
-*   Binary download
 
 ***
 
