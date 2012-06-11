@@ -22,14 +22,14 @@
       <uniqueVersion>false</uniqueVersion>
       <id>release-rj</id>
       <name>Release repository</name>
-      <url>scpexe://maven.renejeschke.de/maven</url>
+      <url>scp://maven.renejeschke.de/maven</url>
       <layout>default</layout>
     </repository>
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>snapshot-rj</id>
       <name>Snapshot repository</name>
-      <url>scpexe://maven.renejeschke.de/maven-snapshots</url>
+      <url>scp://maven.renejeschke.de/maven-snapshots</url>
       <layout>default</layout>
     </snapshotRepository>
   </distributionManagement>
@@ -76,7 +76,7 @@
     <extensions>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-external</artifactId>
+        <artifactId>wagon-ssh</artifactId>
         <version>2.2</version>
       </extension>
     </extensions>
