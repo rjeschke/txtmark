@@ -737,7 +737,7 @@ public class Processor
      * @param root
      *            The Block to process.
      */
-    private void initListBlock(final Block root)
+    private static void initListBlock(final Block root)
     {
         Line line = root.lines;
         line = line.next;
@@ -898,7 +898,7 @@ public class Processor
                 list.lineTail.nextEmpty = false;
                 list.removeSurroundingEmptyLines();
                 list.lines.prevEmpty = list.lineTail.nextEmpty = false;
-                this.initListBlock(list);
+                initListBlock(list);
                 block = list.blocks;
                 while(block != null)
                 {
