@@ -26,19 +26,6 @@ Txtmark is now available as a maven artifact. Have a look [here] (http://renejes
 
 ***
 
-### Build instructions
-
-1.  Clone the [repo] or download the sources as [tar] or [zip]
-2.  Install [Apache Ant(TM)]
-3.  Do
-
-        ant release
-
-    and you will find everything you need inside the `release` folder.
-
-
-***
-
 ### Txtmark extensions
 
 To enable Txtmark's extended markdown parsing you can use the $PROFILE$ mechanism:
