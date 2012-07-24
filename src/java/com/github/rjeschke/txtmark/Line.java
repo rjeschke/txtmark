@@ -20,8 +20,9 @@ import java.util.LinkedList;
 /**
  * This class represents a text line.
  * 
- * <p>It also provides methods for processing
- * and analyzing a line.</p>   
+ * <p>
+ * It also provides methods for processing and analyzing a line.
+ * </p>
  * 
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
@@ -34,13 +35,14 @@ class Line
     /** Is this line empty? */
     public boolean isEmpty = true;
     /** This line's value. */
-    public String value =  null;
+    public String value = null;
     /** Previous and next line. */
     public Line previous = null, next = null;
     /** Is previous/next line empty? */
     public boolean prevEmpty, nextEmpty;
     /** Final line of a XML block. */
     public Line xmlEndLine;
+
     /** Constructor. */
     public Line()
     {
@@ -65,7 +67,7 @@ class Line
             this.isEmpty = false;
             this.trailing = 0;
             while(this.value.charAt(this.value.length() - this.trailing - 1) == ' ')
-                 this.trailing++;
+                this.trailing++;
         }
     }
 
@@ -100,8 +102,10 @@ class Line
     /**
      * Reads chars from this line until any 'end' char is reached.
      * 
-     * @param end Delimiting character(s)
-     * @return The read String or <code>null</code> if no 'end' char was reached.
+     * @param end
+     *            Delimiting character(s)
+     * @return The read String or <code>null</code> if no 'end' char was
+     *         reached.
      */
     // TODO use Util#readUntil
     public String readUntil(char... end)
@@ -189,7 +193,8 @@ class Line
     /**
      * Counts the amount of 'ch' in this line.
      * 
-     * @param ch The char to count. 
+     * @param ch
+     *            The char to count.
      * @return A value > 0 if this line only consists of 'ch' end spaces.
      */
     private int countChars(char ch)
@@ -214,9 +219,11 @@ class Line
     /**
      * Gets this line's type.
      * 
+     * @param extendedMode
+     *            Whether extended profile is enabled or not
      * @return The LineType.
      */
-    public LineType getLineType()
+    public LineType getLineType(boolean extendedMode)
     {
         if(this.isEmpty)
             return LineType.EMPTY;
@@ -230,8 +237,26 @@ class Line
         if(this.value.charAt(this.leading) == '>')
             return LineType.BQUOTE;
 
-        if(this.value.length() - this.leading - this.trailing > 2 
-                && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value.charAt(this.leading) == '_'))
+        if(extendedMode)
+        {
+            if(this.value.length() - this.leading - this.trailing > 2)
+            {
+                int c = 0;
+                for(int i = this.leading; i < this.value.length() - this.trailing; i++)
+                {
+                    if(this.value.charAt(i) == '`')
+                        c++;
+                    else
+                        break;
+                }
+                if(c >= 3)
+                    return LineType.FENCED_CODE;
+            }
+        }
+        
+        if(this.value.length() - this.leading - this.trailing > 2
+                && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value
+                        .charAt(this.leading) == '_'))
         {
             if(this.countChars(this.value.charAt(this.leading)) >= 3)
                 return LineType.HR;
@@ -262,7 +287,7 @@ class Line
             if(this.checkHTML())
                 return LineType.XML;
         }
-        
+
         if(this.next != null && !this.next.isEmpty)
         {
             if((this.next.value.charAt(0) == '-') && (this.next.countChars('-') > 0))
@@ -273,12 +298,14 @@ class Line
 
         return LineType.OTHER;
     }
-    
+
     /**
      * Reads an XML comment. Sets <code>xmlEndLine</code>.
      * 
-     * @param firstLine The Line to start reading from.
-     * @param start The starting position.
+     * @param firstLine
+     *            The Line to start reading from.
+     * @param start
+     *            The starting position.
      * @return The new position or -1 if it is no valid comment.
      */
     private int readXMLComment(final Line firstLine, final int start)
@@ -319,7 +346,8 @@ class Line
     }
 
     /**
-     * Checks if this line contains an ID at it's end and removes it from the line.
+     * Checks if this line contains an ID at it's end and removes it from the
+     * line.
      * 
      * @return The ID or <code>null</code> if no valid ID exists.
      */
@@ -354,7 +382,7 @@ class Line
                 break;
             }
         }
-        
+
         if(found)
         {
             if(p + 1 < this.value.length() && this.value.charAt(p + 1) == '#')
@@ -391,20 +419,21 @@ class Line
                     final String id = this.value.substring(start, p).trim();
                     if(this.leading != 0)
                     {
-                        this.value = this.value.substring(0, this.leading) + this.value.substring(this.leading, start - 2).trim();
+                        this.value = this.value.substring(0, this.leading)
+                                + this.value.substring(this.leading, start - 2).trim();
                     }
                     else
                     {
                         this.value = this.value.substring(this.leading, start - 2).trim();
                     }
                     this.trailing = 0;
-                    return id.length() > 0 ? id : null; 
+                    return id.length() > 0 ? id : null;
                 }
             }
         }
         return null;
     }
-    
+
     /**
      * Checks for a valid HTML block. Sets <code>xmlEndLine</code>.
      * 
@@ -436,7 +465,7 @@ class Line
                 return true;
             }
             tags.add(tag);
-            
+
             Line line = this;
             while(line != null)
             {

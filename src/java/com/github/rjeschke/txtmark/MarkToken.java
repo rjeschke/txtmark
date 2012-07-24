@@ -67,5 +67,7 @@ enum MarkToken
     /** Extended: "x */
     X_RDQUO,            // "
     /** Extended: x" */
-    X_LDQUO            // "
+    X_LDQUO,            // "
+    /** [[ */
+    X_LINK,             // [[
 }

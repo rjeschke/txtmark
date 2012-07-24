@@ -37,5 +37,7 @@ enum LineType
     /** A horizontal ruler. */
     HR,
     /** Start of a XML block. */
-    XML
+    XML,
+    /** Fenced code block start/end */
+    FENCED_CODE
 }

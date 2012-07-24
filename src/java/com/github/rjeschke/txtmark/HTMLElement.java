@@ -22,6 +22,7 @@ package com.github.rjeschke.txtmark;
  */
 enum HTMLElement
 {
+    // TODO add new HTML5 elements
     NONE,
     a, abbr, acronym, address, applet, area,
     b, base, basefont, bdo, big, blockquote, body, br, button,

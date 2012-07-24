@@ -59,6 +59,7 @@ public class Processor
     {
         this.reader = reader;
         this.config = config;
+        this.useExtensions = config.forceExtendedProfile;
         this.emitter = new Emitter(this.config);
     }
 
@@ -618,11 +619,11 @@ public class Processor
                         pos++;
                     }
                     c = this.reader.read();
-                }
                     break;
+                }
                 default:
                     pos++;
-                    sb.append((char) c);
+                    sb.append((char)c);
                     c = this.reader.read();
                     break;
                 }
@@ -743,7 +744,7 @@ public class Processor
         line = line.next;
         while(line != null)
         {
-            final LineType t = line.getLineType();
+            final LineType t = line.getLineType(this.useExtensions);
             if((t == LineType.OLIST || t == LineType.ULIST)
                     || (!line.isEmpty && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST))))
             {
@@ -769,8 +770,8 @@ public class Processor
 
         if(listMode)
         {
-            root.removeListIndent();
-            if(this.useExtensions && root.lines != null && root.lines.getLineType() != LineType.CODE)
+            root.removeListIndent(this.useExtensions);
+            if(this.useExtensions && root.lines != null && root.lines.getLineType(this.useExtensions) != LineType.CODE)
             {
                 root.id = root.lines.stripID();
             }
@@ -783,7 +784,7 @@ public class Processor
 
         while(line != null)
         {
-            final LineType type = line.getLineType();
+            final LineType type = line.getLineType(this.useExtensions);
             switch(type)
             {
             case OTHER:
@@ -791,10 +792,10 @@ public class Processor
                 final boolean wasEmpty = line.prevEmpty;
                 while(line != null && !line.isEmpty)
                 {
-                    final LineType t = line.getLineType();
+                    final LineType t = line.getLineType(this.useExtensions);
                     if((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
                         break;
-                    if(this.useExtensions && (t == LineType.CODE))
+                    if(this.useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
                         break;
                     if(t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2 || t == LineType.HR
                             || t == LineType.BQUOTE || t == LineType.XML)
@@ -816,8 +817,8 @@ public class Processor
                     root.removeLeadingEmptyLines();
                 }
                 line = root.lines;
-            }
                 break;
+            }
             case CODE:
                 while(line != null && (line.isEmpty || line.leading > 3))
                 {
@@ -840,7 +841,8 @@ public class Processor
             case BQUOTE:
                 while(line != null)
                 {
-                    if(!line.isEmpty && (line.prevEmpty && line.leading == 0 && line.getLineType() != LineType.BQUOTE))
+                    if(!line.isEmpty
+                            && (line.prevEmpty && line.leading == 0 && line.getLineType(this.useExtensions) != LineType.BQUOTE))
                         break;
                     line = line.next;
                 }
@@ -860,6 +862,24 @@ public class Processor
                 root.split(line).type = BlockType.RULER;
                 root.removeLeadingEmptyLines();
                 line = root.lines;
+                break;
+            case FENCED_CODE:
+                line = line.next;
+                while(line != null)
+                {
+                    if(line.getLineType(this.useExtensions) == LineType.FENCED_CODE)
+                        break;
+                    line.value = "    " + line.value;
+                    line = line.next;
+                }
+                if(line != null)
+                    line = line.next;
+                block = root.split(line != null ? line.previous : root.lineTail);
+                block.type = BlockType.CODE;
+                block.meta = block.lines.value.replace('`', ' ').trim();
+                block.lines.setEmpty();
+                block.lineTail.setEmpty();
+                block.removeSurroundingEmptyLines();
                 break;
             case HEADLINE:
             case HEADLINE1:
@@ -886,7 +906,7 @@ public class Processor
             case ULIST:
                 while(line != null)
                 {
-                    final LineType t = line.getLineType();
+                    final LineType t = line.getLineType(this.useExtensions);
                     if(!line.isEmpty
                             && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
                         break;

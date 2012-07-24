@@ -81,7 +81,8 @@ class Emitter
             this.config.decorator.openParagraph(out);
             break;
         case CODE:
-            this.config.decorator.openCodeBlock(out);
+            if(this.config.codeBlockEmitter == null)
+                this.config.decorator.openCodeBlock(out);
             break;
         case BLOCKQUOTE:
             this.config.decorator.openBlockquote(out);
@@ -131,7 +132,8 @@ class Emitter
             this.config.decorator.closeParagraph(out);
             break;
         case CODE:
-            this.config.decorator.closeCodeBlock(out);
+            if(this.config.codeBlockEmitter == null)
+                this.config.decorator.closeCodeBlock(out);
             break;
         case BLOCKQUOTE:
             this.config.decorator.closeBlockquote(out);
@@ -159,7 +161,7 @@ class Emitter
         switch(block.type)
         {
         case CODE:
-            this.emitCodeLines(out, block.lines);
+            this.emitCodeLines(out, block.lines, block.meta);
             break;
         case XML:
             this.emitRawLines(out, block.lines);
@@ -680,6 +682,8 @@ class Emitter
                 return MarkToken.IMAGE;
             return MarkToken.NONE;
         case '[':
+            if(this.useExtensions && c1 == '[')
+                return MarkToken.X_LINK;
             return MarkToken.LINK;
         case '`':
             return c1 == '`' ? MarkToken.CODE_DOUBLE : MarkToken.CODE_SINGLE;
@@ -844,8 +848,9 @@ class Emitter
      * 
      * @param out The StringBuilder to write to.
      * @param lines The lines to write.
+     * @param meta Meta information.
      */
-    private void emitCodeLines(final StringBuilder out, final Line lines)
+    private void emitCodeLines(final StringBuilder out, final Line lines, final String meta)
     {
         Line line = lines;
         if(this.config.codeBlockEmitter != null)
@@ -859,7 +864,7 @@ class Emitter
                     list.add(line.value.substring(4));
                 line = line.next;
             }
-            this.config.codeBlockEmitter.emitBlock(out, list);
+            this.config.codeBlockEmitter.emitBlock(out, list, meta);
         }
         else
         {

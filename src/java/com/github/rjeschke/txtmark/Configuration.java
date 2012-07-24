@@ -27,6 +27,7 @@ public class Configuration
     final String encoding;
     final Decorator decorator;
     final BlockEmitter codeBlockEmitter;
+    final boolean forceExtendedProfile;
 
     /**
      * <p>
@@ -64,12 +65,14 @@ public class Configuration
      * @param encoding
      * @param decorator
      */
-    Configuration(boolean safeMode, String encoding, Decorator decorator, BlockEmitter codeBlockEmitter)
+    Configuration(boolean safeMode, String encoding, Decorator decorator, BlockEmitter codeBlockEmitter,
+            boolean forceExtendedProfile)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
         this.decorator = decorator;
         this.codeBlockEmitter = codeBlockEmitter;
+        this.forceExtendedProfile = forceExtendedProfile;
     }
 
     /**
@@ -91,6 +94,7 @@ public class Configuration
     public static class Builder
     {
         private boolean safeMode = false;
+        private boolean forceExtendedProfile = false;
         private String encoding = "UTF-8";
         private Decorator decorator = new DefaultDecorator();
         private BlockEmitter codeBlockEmitter = null;
@@ -115,6 +119,18 @@ public class Configuration
         public Builder enableSafeMode()
         {
             this.safeMode = true;
+            return this;
+        }
+
+        /**
+         * Forces extened profile to be enabled by default.
+         * 
+         * @return This builder.
+         * @since 0.7
+         */
+        public Builder forceExtentedProfile()
+        {
+            this.forceExtendedProfile = true;
             return this;
         }
 
@@ -192,7 +208,8 @@ public class Configuration
          */
         public Configuration build()
         {
-            return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter);
+            return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter,
+                    this.forceExtendedProfile);
         }
     }
 }

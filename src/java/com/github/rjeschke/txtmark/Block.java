@@ -34,6 +34,8 @@ class Block
     public int hlDepth = 0;
     /** ID for headlines and list items */
     public String id = null;
+    /** Block meta information */
+    public String meta = "";
     
     /** Constructor. */
     public Block()
@@ -99,15 +101,18 @@ class Block
 
     /**
      * Used for nested lists. Removes list markers and up to 4 leading spaces.
+     * 
+     * @param extendedMode
+     *            Whether extended profile ist activated or not
      */
-    public void removeListIndent()
+    public void removeListIndent(boolean extendedMode)
     {
         Line line = this.lines;
         while(line != null)
         {
             if(!line.isEmpty)
             {
-                switch(line.getLineType())
+                switch(line.getLineType(extendedMode))
                 {
                 case ULIST:
                     line.value = line.value.substring(line.leading + 2);
@@ -150,6 +155,7 @@ class Block
 
     /**
      * Removes leading empty lines.
+     * 
      * @return <code>true</code> if an empty line was removed.
      */
     public boolean removeLeadingEmptyLines()
@@ -179,8 +185,11 @@ class Block
     }
 
     /**
-     * Splits this block's lines, creating a new child block having 'line' as it's lineTail.
-     * @param line The line to split from.
+     * Splits this block's lines, creating a new child block having 'line' as
+     * it's lineTail.
+     * 
+     * @param line
+     *            The line to split from.
      * @return The newly created Block.
      */
     public Block split(final Line line)
@@ -210,7 +219,8 @@ class Block
     /**
      * Removes the given line from this block.
      * 
-     * @param line Line to remove.
+     * @param line
+     *            Line to remove.
      */
     public void removeLine(final Line line)
     {
@@ -228,7 +238,8 @@ class Block
     /**
      * Appends the given line to this block.
      * 
-     * @param line Line to append.
+     * @param line
+     *            Line to append.
      */
     public void appendLine(final Line line)
     {
@@ -243,10 +254,10 @@ class Block
             this.lineTail = line;
         }
     }
-    
+
     /**
-     * Changes all Blocks of type <code>NONE</code> to <code>PARAGRAPH</code> if this Block
-     * is a List and any of the ListItems contains a paragraph.
+     * Changes all Blocks of type <code>NONE</code> to <code>PARAGRAPH</code> if
+     * this Block is a List and any of the ListItems contains a paragraph.
      */
     public void expandListParagraphs()
     {
