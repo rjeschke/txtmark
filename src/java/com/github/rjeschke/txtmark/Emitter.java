@@ -36,6 +36,7 @@ class Emitter
     public Emitter(final Configuration config)
     {
         this.config = config;
+        this.useExtensions = config.forceExtendedProfile;
     }
 
     /**
@@ -594,6 +595,19 @@ class Emitter
                     out.append("&amp;");
                 }
                 break;
+            case X_LINK_OPEN:
+                temp.setLength(0);
+                b = this.recursiveEmitLine(temp, in, pos + 2, MarkToken.X_LINK_CLOSE);
+                if(b > 0 && this.config.specialLinkEmitter != null)
+                {
+                    this.config.specialLinkEmitter.emitSpan(out, temp.toString());
+                    pos = b + 1;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+                break;
             case X_COPY:
                 out.append("&copy;");
                 pos += 2;
@@ -683,8 +697,12 @@ class Emitter
             return MarkToken.NONE;
         case '[':
             if(this.useExtensions && c1 == '[')
-                return MarkToken.X_LINK;
+                return MarkToken.X_LINK_OPEN;
             return MarkToken.LINK;
+        case ']':
+            if(this.useExtensions && c1 == ']')
+                return MarkToken.X_LINK_CLOSE;
+            return MarkToken.NONE;
         case '`':
             return c1 == '`' ? MarkToken.CODE_DOUBLE : MarkToken.CODE_SINGLE;
         case '\\':

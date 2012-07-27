@@ -869,6 +869,7 @@ public class Processor
                 {
                     if(line.getLineType(this.useExtensions) == LineType.FENCED_CODE)
                         break;
+                    // TODO ... is this really necessary? Maybe add a special flag?  
                     line.value = "    " + line.value;
                     line = line.next;
                 }
@@ -876,8 +877,10 @@ public class Processor
                     line = line.next;
                 block = root.split(line != null ? line.previous : root.lineTail);
                 block.type = BlockType.CODE;
+                // TODO ... what is this?^
                 block.meta = block.lines.value.replace('`', ' ').trim();
                 block.lines.setEmpty();
+                // FIXME check if lineTail is FENCED_CODE
                 block.lineTail.setEmpty();
                 block.removeSurroundingEmptyLines();
                 break;

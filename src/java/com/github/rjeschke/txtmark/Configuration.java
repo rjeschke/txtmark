@@ -28,6 +28,7 @@ public class Configuration
     final Decorator decorator;
     final BlockEmitter codeBlockEmitter;
     final boolean forceExtendedProfile;
+    final SpanEmitter specialLinkEmitter;
 
     /**
      * <p>
@@ -66,13 +67,14 @@ public class Configuration
      * @param decorator
      */
     Configuration(boolean safeMode, String encoding, Decorator decorator, BlockEmitter codeBlockEmitter,
-            boolean forceExtendedProfile)
+            boolean forceExtendedProfile, SpanEmitter specialLinkEmitter)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
         this.decorator = decorator;
         this.codeBlockEmitter = codeBlockEmitter;
         this.forceExtendedProfile = forceExtendedProfile;
+        this.specialLinkEmitter = specialLinkEmitter;
     }
 
     /**
@@ -98,7 +100,8 @@ public class Configuration
         private String encoding = "UTF-8";
         private Decorator decorator = new DefaultDecorator();
         private BlockEmitter codeBlockEmitter = null;
-
+        private SpanEmitter specialLinkEmitter = null;
+        
         /**
          * Constructor.
          * 
@@ -201,6 +204,19 @@ public class Configuration
         }
 
         /**
+         * Sets the emitter for special link spans ([[ ... ]]).
+         * 
+         * @param emitter The emitter.
+         * @return This builder.
+         * @since 0.7
+         */
+        public Builder setSpecialLinkEmitter(SpanEmitter emitter)
+        {
+            this.specialLinkEmitter = emitter;
+            return this;
+        }
+        
+        /**
          * Builds a configuration instance.
          * 
          * @return a Configuration instance
@@ -209,7 +225,7 @@ public class Configuration
         public Configuration build()
         {
             return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter,
-                    this.forceExtendedProfile);
+                    this.forceExtendedProfile, this.specialLinkEmitter);
         }
     }
 }

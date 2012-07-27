@@ -239,6 +239,7 @@ class Line
 
         if(extendedMode)
         {
+            // FIXME this looks awful
             if(this.value.length() - this.leading - this.trailing > 2)
             {
                 int c = 0;
