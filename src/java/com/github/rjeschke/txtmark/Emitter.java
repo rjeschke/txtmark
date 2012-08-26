@@ -82,6 +82,7 @@ class Emitter
             this.config.decorator.openParagraph(out);
             break;
         case CODE:
+        case FENCED_CODE:
             if(this.config.codeBlockEmitter == null)
                 this.config.decorator.openCodeBlock(out);
             break;
@@ -133,6 +134,7 @@ class Emitter
             this.config.decorator.closeParagraph(out);
             break;
         case CODE:
+        case FENCED_CODE:
             if(this.config.codeBlockEmitter == null)
                 this.config.decorator.closeCodeBlock(out);
             break;
@@ -162,7 +164,10 @@ class Emitter
         switch(block.type)
         {
         case CODE:
-            this.emitCodeLines(out, block.lines, block.meta);
+            this.emitCodeLines(out, block.lines, block.meta, true);
+            break;
+        case FENCED_CODE:
+            this.emitCodeLines(out, block.lines, block.meta, false);
             break;
         case XML:
             this.emitRawLines(out, block.lines);
@@ -868,7 +873,7 @@ class Emitter
      * @param lines The lines to write.
      * @param meta Meta information.
      */
-    private void emitCodeLines(final StringBuilder out, final Line lines, final String meta)
+    private void emitCodeLines(final StringBuilder out, final Line lines, final String meta, final boolean removeIndent)
     {
         Line line = lines;
         if(this.config.codeBlockEmitter != null)
@@ -879,7 +884,7 @@ class Emitter
                 if(line.isEmpty)
                     list.add("");
                 else
-                    list.add(line.value.substring(4));
+                    list.add(removeIndent ? line.value.substring(4) : line.value);
                 line = line.next;
             }
             this.config.codeBlockEmitter.emitBlock(out, list, meta);

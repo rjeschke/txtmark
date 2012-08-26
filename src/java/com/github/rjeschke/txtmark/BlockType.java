@@ -28,6 +28,8 @@ enum BlockType
     BLOCKQUOTE,
     /** A code block. */
     CODE,
+    /** A fenced code block. */
+    FENCED_CODE,
     /** A headline. */
     HEADLINE,
     /** A list item. */

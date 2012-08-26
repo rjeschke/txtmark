@@ -30,7 +30,7 @@ class Utils
      * 
      * @return A pseudo random number between 0 and 1023
      */
-    public static int rnd()
+    public final static int rnd()
     {
         return (RND = RND * 1664525 + 1013904223) >>> 22;
     }
@@ -42,7 +42,7 @@ class Utils
      * @param start Starting position.
      * @return The new position or -1 if EOL has been reached.
      */
-    public static int skipSpaces(final String in, final int start)
+    public final static int skipSpaces(final String in, final int start)
     {
         int pos = start;
         while(pos < in.length() && (in.charAt(pos) == ' ' || in.charAt(pos) == '\n'))
@@ -58,7 +58,7 @@ class Utils
      * @param pos Current parsing position.
      * @return The new position.
      */
-    public static int escape(final StringBuilder out, final char ch, final int pos)
+    public final static int escape(final StringBuilder out, final char ch, final int pos)
     {
         switch(ch)
         {
@@ -99,7 +99,7 @@ class Utils
      * @param end End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
-    public static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
+    public final static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
         while(pos < in.length())
@@ -139,7 +139,7 @@ class Utils
      * @param end End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
-    public static int readUntil(final StringBuilder out, final String in, final int start, final char end)
+    public final static int readUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
         while(pos < in.length())
@@ -169,7 +169,7 @@ class Utils
      * @param start Starting position.
      * @return The new position or -1 if this is no valid markdown link.
      */
-    public static int readMdLink(final StringBuilder out, final String in, final int start)
+    public final static int readMdLink(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
         int counter = 1;
@@ -216,7 +216,7 @@ class Utils
      * @param start Starting position.
      * @return The new position or -1 if this is no valid markdown link ID.
      */
-    public static int readMdLinkId(final StringBuilder out, final String in, final int start)
+    public final static int readMdLinkId(final StringBuilder out, final String in, final int start)
     {
         int pos = start;
         int counter = 1;
@@ -261,7 +261,7 @@ class Utils
      * @param end End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
-    public static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
+    public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
         while(pos < in.length())
@@ -294,7 +294,7 @@ class Utils
      * @param end End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
-    public static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
+    public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
         while(pos < in.length())
@@ -317,7 +317,7 @@ class Utils
      * @param start Input String starting position.
      * @param end Input String end position.
      */
-    public static void appendCode(final StringBuilder out, final String in, final int start, final int end)
+    public final static void appendCode(final StringBuilder out, final String in, final int start, final int end)
     {
         for(int i = start; i < end; i++)
         {
@@ -348,7 +348,7 @@ class Utils
      * @param start Input String starting position.
      * @param end Input String end position.
      */
-    public static void appendValue(final StringBuilder out, final String in, final int start, final int end)
+    public final static void appendValue(final StringBuilder out, final String in, final int start, final int end)
     {
         for(int i = start; i < end; i++)
         {
@@ -383,7 +383,7 @@ class Utils
      * @param out The StringBuilder to write to.
      * @param value The character.
      */
-    public static void appendDecEntity(final StringBuilder out, final char value)
+    public final static void appendDecEntity(final StringBuilder out, final char value)
     {
         out.append("&#");
         out.append((int)value);
@@ -396,7 +396,7 @@ class Utils
      * @param out The StringBuilder to write to.
      * @param value The character.
      */
-    public static void appendHexEntity(final StringBuilder out, final char value)
+    public final static void appendHexEntity(final StringBuilder out, final char value)
     {
         out.append("&#x");
         out.append(Integer.toHexString(value));
@@ -411,7 +411,7 @@ class Utils
      * @param start Input String starting position.
      * @param end Input String end position.
      */
-    public static void appendMailto(final StringBuilder out, final String in, final int start, final int end)
+    public final static void appendMailto(final StringBuilder out, final String in, final int start, final int end)
     {
         for(int i = start; i < end; i++)
         {
@@ -448,7 +448,7 @@ class Utils
      * @param out The StringBuilder to write to.
      * @param in Input StringBuilder.
      */
-    public static void getXMLTag(final StringBuilder out, final StringBuilder in)
+    public final static void getXMLTag(final StringBuilder out, final StringBuilder in)
     {
         int pos = 1;
         if(in.charAt(1) == '/')
@@ -465,7 +465,7 @@ class Utils
      * @param out The StringBuilder to write to.
      * @param in Input String.
      */
-    public static void getXMLTag(final StringBuilder out, final String in)
+    public final static void getXMLTag(final StringBuilder out, final String in)
     {
         int pos = 1;
         if(in.charAt(1) == '/')
@@ -485,7 +485,7 @@ class Utils
      * @param safeMode Whether to escape unsafe HTML tags or not
      * @return The new position or -1 if this is no valid XML element.
      */
-    public static int readXML(final StringBuilder out, final String in, final int start, final boolean safeMode)
+    public final static int readXML(final StringBuilder out, final String in, final int start, final boolean safeMode)
     {
         int pos;
         final boolean isCloseTag;
@@ -544,5 +544,55 @@ class Utils
             return -1;
         }
         return -1;
+    }
+    
+    /**
+     * Appends the given string to the given StringBuilder, replacing
+     * '&amp;', '&lt;' and '&gt;' by their respective HTML entities.
+     * 
+     * @param out The StringBuilder to append to.
+     * @param value The string to append.
+     * @param offset The character offset into value from where to start
+     */
+    public final static void codeEncode(StringBuilder out, String value, int offset)
+    {
+        for(int i = offset; i < value.length(); i++)
+        {
+            final char c = value.charAt(i);
+            switch(c)
+            {
+            case '&':
+                out.append("&amp;");
+                break;
+            case '<':
+                out.append("&lt;");
+                break;
+            case '>':
+                out.append("&gt;");
+                break;
+            default:
+                out.append(c);
+            }
+        }
+    }
+    
+    /**
+     * Removes trailing <code>`</code> and trims spaces.
+     * 
+     * @param fenceLine Fenced code block starting line
+     * @return Rest of the line after trimming and backtick removal
+     * @since 0.7
+     */
+    public final static String getMetaFromFence(String fenceLine)
+    {
+        for(int i = 0; i < fenceLine.length(); i++)
+        {
+            final char c = fenceLine.charAt(i);
+            if(!Character.isWhitespace(c) && c != '`')
+            {
+                return fenceLine.substring(i + 1).trim();
+            }
+        }
+        return "";
     }
 }

@@ -177,7 +177,7 @@ class HTML
      * @param value String to check.
      * @return Returns <code>true</code> if the given String is a link prefix.
      */
-    public static boolean isLinkPrefix(final String value)
+    public final static boolean isLinkPrefix(final String value)
     {
         return LINK_PREFIX.contains(value);
     }
@@ -186,7 +186,7 @@ class HTML
      * @param value String to check.
      * @return Returns <code>true</code> if the given String is an entity.
      */
-    public static boolean isEntity(final String value)
+    public final static boolean isEntity(final String value)
     {
         return decodeMap.containsKey(value);
     }
@@ -195,7 +195,7 @@ class HTML
      * @param value String to check.
      * @return Returns <code>true</code> if the given String is a HTML tag.
      */
-    public static boolean isHtmlElement(final String value)
+    public final static boolean isHtmlElement(final String value)
     {
         return HTML_ELEMENTS.contains(value);
     }
@@ -204,7 +204,7 @@ class HTML
      * @param value String to check.
      * @return Returns <code>true</code> if the given String is a HTML block level tag.
      */
-    public static boolean isHtmlBlockElement(final String value)
+    public final static boolean isHtmlBlockElement(final String value)
     {
         return HTML_BLOCK_ELEMENTS.contains(value);
     }
@@ -213,7 +213,7 @@ class HTML
      * @param value String to check.
      * @return Returns <code>true</code> if the given String is an unsafe HTML tag.
      */
-    public static boolean isUnsafeHtmlElement(final String value)
+    public final static boolean isUnsafeHtmlElement(final String value)
     {
         return HTML_UNSAFE.contains(value);
     }

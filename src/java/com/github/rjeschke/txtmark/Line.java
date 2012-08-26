@@ -217,6 +217,28 @@ class Line
     }
 
     /**
+     * Counts the amount of 'ch' at the start of this line ignoring spaces.
+     * 
+     * @param ch
+     *            The char to count.
+     * @return Number of characters found.
+     * @since 0.7
+     */
+    private int countCharsStart(char ch)
+    {
+        int count = 0;
+        for(int i = 0; i < this.value.length(); i++)
+        {
+            final char c = this.value.charAt(i);
+            if(c == ' ')
+                continue;
+            if(c == ch)
+                count++;
+        }
+        return count;
+    }
+
+    /**
      * Gets this line's type.
      * 
      * @param extendedMode
@@ -239,22 +261,13 @@ class Line
 
         if(extendedMode)
         {
-            // FIXME this looks awful
-            if(this.value.length() - this.leading - this.trailing > 2)
+            if(this.value.length() - this.leading - this.trailing > 2 && this.value.charAt(this.leading) == '`')
             {
-                int c = 0;
-                for(int i = this.leading; i < this.value.length() - this.trailing; i++)
-                {
-                    if(this.value.charAt(i) == '`')
-                        c++;
-                    else
-                        break;
-                }
-                if(c >= 3)
+                if(this.countCharsStart('`') >= 3)
                     return LineType.FENCED_CODE;
             }
         }
-        
+
         if(this.value.length() - this.leading - this.trailing > 2
                 && (this.value.charAt(this.leading) == '*' || this.value.charAt(this.leading) == '-' || this.value
                         .charAt(this.leading) == '_'))
