@@ -590,7 +590,7 @@ class Utils
             final char c = fenceLine.charAt(i);
             if(!Character.isWhitespace(c) && c != '`')
             {
-                return fenceLine.substring(i + 1).trim();
+                return fenceLine.substring(i).trim();
             }
         }
         return "";

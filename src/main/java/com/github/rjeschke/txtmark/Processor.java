@@ -738,7 +738,7 @@ public class Processor
      * @param root
      *            The Block to process.
      */
-    private static void initListBlock(final Block root)
+    private void initListBlock(final Block root)
     {
         Line line = root.lines;
         line = line.next;
