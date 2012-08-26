@@ -425,7 +425,7 @@ class Emitter
      * @param start Starting position
      * @return The new position or -1 if this entity in invalid.
      */
-    private int checkEntity(final StringBuilder out, final String in, int start)
+    private static int checkEntity(final StringBuilder out, final String in, int start)
     {
         int pos = Utils.readUntil(out, in, start, ';');
         if(pos < 0 || out.length() < 3)
@@ -589,7 +589,7 @@ class Emitter
                 break;
             case ENTITY:
                 temp.setLength(0);
-                b = this.checkEntity(temp, in, pos);
+                b = checkEntity(temp, in, pos);
                 if(b > 0)
                 {
                     out.append(temp);
