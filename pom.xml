@@ -80,8 +80,6 @@
         <version>2.2</version>
       </extension>
     </extensions>
-    
-    <sourceDirectory>${basedir}/src/java</sourceDirectory>
 
   </build>
   

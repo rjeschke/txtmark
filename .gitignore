@@ -6,3 +6,6 @@ release/
 .project
 target/
 *~
+*.releaseBackup
+release.properties
+
