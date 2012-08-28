@@ -101,7 +101,7 @@ public class Configuration
         private Decorator decorator = new DefaultDecorator();
         private BlockEmitter codeBlockEmitter = null;
         private SpanEmitter specialLinkEmitter = null;
-        
+
         /**
          * Constructor.
          * 
@@ -206,7 +206,8 @@ public class Configuration
         /**
          * Sets the emitter for special link spans ([[ ... ]]).
          * 
-         * @param emitter The emitter.
+         * @param emitter
+         *            The emitter.
          * @return This builder.
          * @since 0.7
          */
@@ -215,7 +216,7 @@ public class Configuration
             this.specialLinkEmitter = emitter;
             return this;
         }
-        
+
         /**
          * Builds a configuration instance.
          * 

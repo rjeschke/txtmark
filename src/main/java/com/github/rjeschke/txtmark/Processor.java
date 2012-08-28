@@ -269,7 +269,8 @@ public class Processor
      *             if an IO error occurs
      * @see Configuration#DEFAULT
      */
-    public final static String process(final File file, final Decorator decorator, final boolean safeMode) throws IOException
+    public final static String process(final File file, final Decorator decorator, final boolean safeMode)
+            throws IOException
     {
         return process(file, Configuration.builder().setDecorator(decorator).setSafeMode(safeMode).build());
     }
@@ -305,7 +306,8 @@ public class Processor
      *             if an IO error occurs
      * @see Configuration#DEFAULT
      */
-    public final static String process(final File file, final String encoding, final boolean safeMode) throws IOException
+    public final static String process(final File file, final String encoding, final boolean safeMode)
+            throws IOException
     {
         return process(file, Configuration.builder().setEncoding(encoding).setSafeMode(safeMode).build());
     }
@@ -324,7 +326,8 @@ public class Processor
      *             if an IO error occurs
      * @see Configuration#DEFAULT
      */
-    public final static String process(final File file, final String encoding, final Decorator decorator) throws IOException
+    public final static String process(final File file, final String encoding, final Decorator decorator)
+            throws IOException
     {
         return process(file, Configuration.builder().setEncoding(encoding).setDecorator(decorator).build());
     }
@@ -869,7 +872,8 @@ public class Processor
                 {
                     if(line.getLineType(this.useExtensions) == LineType.FENCED_CODE)
                         break;
-                    // TODO ... is this really necessary? Maybe add a special flag?  
+                    // TODO ... is this really necessary? Maybe add a special
+                    // flag?
                     line = line.next;
                 }
                 if(line != null)

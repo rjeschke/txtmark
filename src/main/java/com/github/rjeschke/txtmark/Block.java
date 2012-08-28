@@ -36,7 +36,7 @@ class Block
     public String id = null;
     /** Block meta information */
     public String meta = "";
-    
+
     /** Constructor. */
     public Block()
     {

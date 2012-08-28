@@ -31,7 +31,7 @@ class Emitter
     private final Configuration config;
     /** Extension flag. */
     public boolean useExtensions = false;
-    
+
     /** Constructor. */
     public Emitter(final Configuration config)
     {
@@ -42,8 +42,10 @@ class Emitter
     /**
      * Adds a LinkRef to this set of LinkRefs.
      * 
-     * @param key The key/id.
-     * @param linkRef The LinkRef.
+     * @param key
+     *            The key/id.
+     * @param linkRef
+     *            The LinkRef.
      */
     public void addLinkRef(final String key, final LinkRef linkRef)
     {
@@ -53,8 +55,10 @@ class Emitter
     /**
      * Transforms the given block recursively into HTML.
      * 
-     * @param out The StringBuilder to write to.
-     * @param root The Block to process.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param root
+     *            The Block to process.
      */
     public void emit(final StringBuilder out, final Block root)
     {
@@ -156,8 +160,10 @@ class Emitter
     /**
      * Transforms lines into HTML.
      * 
-     * @param out The StringBuilder to write to.
-     * @param block The Block to process.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param block
+     *            The Block to process.
      */
     private void emitLines(final StringBuilder out, final Block block)
     {
@@ -181,9 +187,12 @@ class Emitter
     /**
      * Finds the position of the given Token in the given String.
      * 
-     * @param in The String to search on.
-     * @param start The starting character position.
-     * @param token The token to find.
+     * @param in
+     *            The String to search on.
+     * @param start
+     *            The starting character position.
+     * @param token
+     *            The token to find.
      * @return The position of the token or -1 if none could be found.
      */
     private int findToken(final String in, int start, MarkToken token)
@@ -201,10 +210,14 @@ class Emitter
     /**
      * Checks if there is a valid markdown link definition.
      * 
-     * @param out The StringBuilder containing the generated output.
-     * @param in Input String.
-     * @param start Starting position.
-     * @param token Either LINK or IMAGE.
+     * @param out
+     *            The StringBuilder containing the generated output.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
+     * @param token
+     *            Either LINK or IMAGE.
      * @return The new position or -1 if there is no valid markdown link.
      */
     private int checkLink(final StringBuilder out, final String in, int start, MarkToken token)
@@ -212,7 +225,7 @@ class Emitter
         boolean isAbbrev = false;
         int pos = start + (token == MarkToken.LINK ? 1 : 2);
         final StringBuilder temp = new StringBuilder();
-        
+
         temp.setLength(0);
         pos = Utils.readMdLinkId(temp, in, pos);
         if(pos < start)
@@ -355,12 +368,15 @@ class Emitter
     }
 
     /**
-     * Check if there is a valid HTML tag here. 
-     * This method also transforms auto links and mailto auto links.
+     * Check if there is a valid HTML tag here. This method also transforms auto
+     * links and mailto auto links.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String. 
-     * @param start Starting position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
      * @return The new position or -1 if nothing valid has been found.
      */
     private int checkHtml(final StringBuilder out, final String in, int start)
@@ -386,7 +402,7 @@ class Emitter
                 return pos;
             }
         }
-        
+
         // Check for mailto auto link
         temp.setLength(0);
         pos = Utils.readUntil(temp, in, start + 1, '@', ' ', '>', '\n');
@@ -406,23 +422,26 @@ class Emitter
                 return pos;
             }
         }
-        
+
         // Check for inline html
         if(start + 2 < in.length())
         {
             temp.setLength(0);
             return Utils.readXML(out, in, start, this.config.safeMode);
-        }        
-    
+        }
+
         return -1;
     }
-    
+
     /**
      * Check if this is a valid XML/HTML entity.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Starting position
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position
      * @return The new position or -1 if this entity in invalid.
      */
     private static int checkEntity(final StringBuilder out, final String in, int start)
@@ -465,18 +484,24 @@ class Emitter
             out.append(';');
             return HTML.isEntity(out.toString()) ? pos : -1;
         }
-        
+
         return pos;
     }
-    
+
     /**
-     * Recursively scans through the given line, taking care of any markdown stuff.
+     * Recursively scans through the given line, taking care of any markdown
+     * stuff.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Start position.
-     * @param token The matching Token (for e.g. '*')
-     * @return The position of the matching Token or -1 if token was NONE or no Token could be found.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Start position.
+     * @param token
+     *            The matching Token (for e.g. '*')
+     * @return The position of the matching Token or -1 if token was NONE or no
+     *         Token could be found.
      */
     private int recursiveEmitLine(final StringBuilder out, final String in, int start, MarkToken token)
     {
@@ -485,7 +510,9 @@ class Emitter
         while(pos < in.length())
         {
             final MarkToken mt = this.getToken(in, pos);
-            if(token != MarkToken.NONE && (mt == token || token == MarkToken.EM_STAR && mt == MarkToken.STRONG_STAR || token == MarkToken.EM_UNDERSCORE && mt == MarkToken.STRONG_UNDERSCORE))
+            if(token != MarkToken.NONE
+                    && (mt == token || token == MarkToken.EM_STAR && mt == MarkToken.STRONG_STAR || token == MarkToken.EM_UNDERSCORE
+                            && mt == MarkToken.STRONG_UNDERSCORE))
                 return pos;
 
             switch(mt)
@@ -666,14 +693,16 @@ class Emitter
     /**
      * Check if there is any markdown Token.
      * 
-     * @param in Input String.
-     * @param pos Starting position.
+     * @param in
+     *            Input String.
+     * @param pos
+     *            Starting position.
      * @return The Token.
      */
     private MarkToken getToken(final String in, final int pos)
     {
         final char c0 = pos > 0 ? in.charAt(pos - 1) : ' ';
-        final char c  = in.charAt(pos);
+        final char c = in.charAt(pos);
         final char c1 = pos + 1 < in.length() ? in.charAt(pos + 1) : ' ';
         final char c2 = pos + 2 < in.length() ? in.charAt(pos + 2) : ' ';
         final char c3 = pos + 3 < in.length() ? in.charAt(pos + 3) : ' ';
@@ -785,8 +814,10 @@ class Emitter
     /**
      * Writes a set of markdown lines into the StringBuilder.
      * 
-     * @param out The StringBuilder to write to.
-     * @param lines The lines to write.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param lines
+     *            The lines to write.
      */
     private void emitMarkedLines(final StringBuilder out, final Line lines)
     {
@@ -811,8 +842,10 @@ class Emitter
     /**
      * Writes a set of raw lines into the StringBuilder.
      * 
-     * @param out The StringBuilder to write to.
-     * @param lines The lines to write.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param lines
+     *            The lines to write.
      */
     private void emitRawLines(final StringBuilder out, final Line lines)
     {
@@ -869,9 +902,12 @@ class Emitter
     /**
      * Writes a code block into the StringBuilder.
      * 
-     * @param out The StringBuilder to write to.
-     * @param lines The lines to write.
-     * @param meta Meta information.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param lines
+     *            The lines to write.
+     * @param meta
+     *            Meta information.
      */
     private void emitCodeLines(final StringBuilder out, final Line lines, final String meta, final boolean removeIndent)
     {

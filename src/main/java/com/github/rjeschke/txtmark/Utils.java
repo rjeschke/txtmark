@@ -24,7 +24,7 @@ class Utils
 {
     /** Random number generator value. */
     private static int RND = (int)System.nanoTime();
-    
+
     /**
      * LCG random number generator.
      * 
@@ -34,12 +34,14 @@ class Utils
     {
         return (RND = RND * 1664525 + 1013904223) >>> 22;
     }
-    
+
     /**
      * Skips spaces in the given String.
      * 
-     * @param in Input String.
-     * @param start Starting position.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
      * @return The new position or -1 if EOL has been reached.
      */
     public final static int skipSpaces(final String in, final int start)
@@ -53,9 +55,12 @@ class Utils
     /**
      * Processed the given escape sequence.
      * 
-     * @param out The StringBuilder to write to.
-     * @param ch The character.
-     * @param pos Current parsing position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param ch
+     *            The character.
+     * @param pos
+     *            Current parsing position.
      * @return The new position.
      */
     public final static int escape(final StringBuilder out, final char ch, final int pos)
@@ -89,14 +94,18 @@ class Utils
             return pos;
         }
     }
-    
+
     /**
      * Reads characters until any 'end' character is encountered.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in The Input String.
-     * @param start Starting position.
-     * @param end End characters.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            The Input String.
+     * @param start
+     *            Starting position.
+     * @param end
+     *            End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
     public final static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
@@ -133,10 +142,14 @@ class Utils
     /**
      * Reads characters until the 'end' character is encountered.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in The Input String.
-     * @param start Starting position.
-     * @param end End characters.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            The Input String.
+     * @param start
+     *            Starting position.
+     * @param end
+     *            End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
     public final static int readUntil(final StringBuilder out, final String in, final int start, final char end)
@@ -164,9 +177,12 @@ class Utils
     /**
      * Reads a markdown link.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Starting position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
      * @return The new position or -1 if this is no valid markdown link.
      */
     public final static int readMdLink(final StringBuilder out, final String in, final int start)
@@ -211,9 +227,12 @@ class Utils
     /**
      * Reads a markdown link ID.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Starting position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
      * @return The new position or -1 if this is no valid markdown link ID.
      */
     public final static int readMdLinkId(final StringBuilder out, final String in, final int start)
@@ -253,12 +272,17 @@ class Utils
     }
 
     /**
-     * Reads characters until any 'end' character is encountered, ignoring escape sequences.
+     * Reads characters until any 'end' character is encountered, ignoring
+     * escape sequences.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in The Input String.
-     * @param start Starting position.
-     * @param end End characters.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            The Input String.
+     * @param start
+     *            Starting position.
+     * @param end
+     *            End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
     public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
@@ -286,12 +310,17 @@ class Utils
     }
 
     /**
-     * Reads characters until the end character is encountered, ignoring escape sequences.
+     * Reads characters until the end character is encountered, ignoring escape
+     * sequences.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in The Input String.
-     * @param start Starting position.
-     * @param end End characters.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            The Input String.
+     * @param start
+     *            Starting position.
+     * @param end
+     *            End characters.
      * @return The new position or -1 if no 'end' char was found.
      */
     public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
@@ -312,10 +341,14 @@ class Utils
     /**
      * Appends the given string encoding special HTML characters.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Input String starting position.
-     * @param end Input String end position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Input String starting position.
+     * @param end
+     *            Input String end position.
      */
     public final static void appendCode(final StringBuilder out, final String in, final int start, final int end)
     {
@@ -341,12 +374,17 @@ class Utils
     }
 
     /**
-     * Appends the given string encoding special HTML characters (used in HTML attribute values).
+     * Appends the given string encoding special HTML characters (used in HTML
+     * attribute values).
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Input String starting position.
-     * @param end Input String end position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Input String starting position.
+     * @param end
+     *            Input String end position.
      */
     public final static void appendValue(final StringBuilder out, final String in, final int start, final int end)
     {
@@ -380,8 +418,10 @@ class Utils
     /**
      * Append the given char as a decimal HTML entity.
      * 
-     * @param out The StringBuilder to write to.
-     * @param value The character.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param value
+     *            The character.
      */
     public final static void appendDecEntity(final StringBuilder out, final char value)
     {
@@ -389,12 +429,14 @@ class Utils
         out.append((int)value);
         out.append(';');
     }
-    
+
     /**
      * Append the given char as a hexadecimal HTML entity.
      * 
-     * @param out The StringBuilder to write to.
-     * @param value The character.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param value
+     *            The character.
      */
     public final static void appendHexEntity(final StringBuilder out, final char value)
     {
@@ -406,10 +448,14 @@ class Utils
     /**
      * Appends the given mailto link using obfuscation.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Input String starting position.
-     * @param end Input String end position.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Input String starting position.
+     * @param end
+     *            Input String end position.
      */
     public final static void appendMailto(final StringBuilder out, final String in, final int start, final int end)
     {
@@ -441,12 +487,14 @@ class Utils
             }
         }
     }
-    
+
     /**
      * Extracts the tag from an XML element.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input StringBuilder.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input StringBuilder.
      */
     public final static void getXMLTag(final StringBuilder out, final StringBuilder in)
     {
@@ -458,12 +506,14 @@ class Utils
             out.append(in.charAt(pos++));
         }
     }
-    
+
     /**
      * Extracts the tag from an XML element.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
      */
     public final static void getXMLTag(final StringBuilder out, final String in)
     {
@@ -479,80 +529,92 @@ class Utils
     /**
      * Reads an XML element.
      * 
-     * @param out The StringBuilder to write to.
-     * @param in Input String.
-     * @param start Starting position.
-     * @param safeMode Whether to escape unsafe HTML tags or not
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            Input String.
+     * @param start
+     *            Starting position.
+     * @param safeMode
+     *            Whether to escape unsafe HTML tags or not
      * @return The new position or -1 if this is no valid XML element.
      */
     public final static int readXML(final StringBuilder out, final String in, final int start, final boolean safeMode)
     {
         int pos;
         final boolean isCloseTag;
-        try {
+        try
+        {
             if(in.charAt(start + 1) == '/')
-	        {
-	            isCloseTag = true;
-	            pos = start + 2;
-	        }
-	        else if(in.charAt(start + 1) == '!')
-	        {
-	            out.append("<!");
-	            return start + 1;
-	        }
-	        else
-	        {
-	            isCloseTag = false;
-	            pos = start + 1;
-	        }
-	        if(safeMode)
-	        {
-	            final StringBuilder temp = new StringBuilder();
-	            pos = readRawUntil(temp, in, pos, ' ', '/', '>');
-	            if(pos == -1) return -1;
-	            final String tag = temp.toString().trim().toLowerCase();
-	            if(HTML.isUnsafeHtmlElement(tag))
-	            {
-	                out.append("&lt;");
-	                if(isCloseTag)
-	                    out.append('/');
-	                out.append(temp);
-	            }
-	        }
-	        else
-	        {
-	            out.append('<');
-	            if(isCloseTag)
-	                out.append('/');
-	            pos = readRawUntil(out, in, pos, ' ', '/', '>');
-	        }
-	        if(pos == -1) return -1;
-	        pos = readRawUntil(out, in, pos, '/', '>');
-	        if(in.charAt(pos) == '/')
-	        {
-	            out.append(" /");
-	            pos = readRawUntil(out, in, pos + 1, '>');
-	            if(pos == -1)
-	                return -1;
-	        }
-	        if(in.charAt(pos) == '>')
-	        {
-	            out.append('>');
-	            return pos;
-	        }
-        } catch (StringIndexOutOfBoundsException e) {
+            {
+                isCloseTag = true;
+                pos = start + 2;
+            }
+            else if(in.charAt(start + 1) == '!')
+            {
+                out.append("<!");
+                return start + 1;
+            }
+            else
+            {
+                isCloseTag = false;
+                pos = start + 1;
+            }
+            if(safeMode)
+            {
+                final StringBuilder temp = new StringBuilder();
+                pos = readRawUntil(temp, in, pos, ' ', '/', '>');
+                if(pos == -1)
+                    return -1;
+                final String tag = temp.toString().trim().toLowerCase();
+                if(HTML.isUnsafeHtmlElement(tag))
+                {
+                    out.append("&lt;");
+                    if(isCloseTag)
+                        out.append('/');
+                    out.append(temp);
+                }
+            }
+            else
+            {
+                out.append('<');
+                if(isCloseTag)
+                    out.append('/');
+                pos = readRawUntil(out, in, pos, ' ', '/', '>');
+            }
+            if(pos == -1)
+                return -1;
+            pos = readRawUntil(out, in, pos, '/', '>');
+            if(in.charAt(pos) == '/')
+            {
+                out.append(" /");
+                pos = readRawUntil(out, in, pos + 1, '>');
+                if(pos == -1)
+                    return -1;
+            }
+            if(in.charAt(pos) == '>')
+            {
+                out.append('>');
+                return pos;
+            }
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
             return -1;
         }
         return -1;
     }
-    
+
     /**
-     * Appends the given string to the given StringBuilder, replacing
-     * '&amp;', '&lt;' and '&gt;' by their respective HTML entities.
+     * Appends the given string to the given StringBuilder, replacing '&amp;',
+     * '&lt;' and '&gt;' by their respective HTML entities.
      * 
-     * @param out The StringBuilder to append to.
-     * @param value The string to append.
-     * @param offset The character offset into value from where to start
+     * @param out
+     *            The StringBuilder to append to.
+     * @param value
+     *            The string to append.
+     * @param offset
+     *            The character offset into value from where to start
      */
     public final static void codeEncode(StringBuilder out, String value, int offset)
     {
@@ -575,11 +637,12 @@ class Utils
             }
         }
     }
-    
+
     /**
      * Removes trailing <code>`</code> and trims spaces.
      * 
-     * @param fenceLine Fenced code block starting line
+     * @param fenceLine
+     *            Fenced code block starting line
      * @return Rest of the line after trimming and backtick removal
      * @since 0.7
      */
