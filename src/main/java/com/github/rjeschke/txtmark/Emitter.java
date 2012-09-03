@@ -691,6 +691,18 @@ class Emitter
     }
 
     /**
+     * Turns every whitespace character into a space character.
+     * 
+     * @param c
+     *            Character to check
+     * @return 32 is c was a whitespace, c otherwise
+     */
+    private static char whitespaceToSpace(char c)
+    {
+        return Character.isWhitespace(c) ? ' ' : c;
+    }
+
+    /**
      * Check if there is any markdown Token.
      * 
      * @param in
@@ -701,11 +713,11 @@ class Emitter
      */
     private MarkToken getToken(final String in, final int pos)
     {
-        final char c0 = pos > 0 ? in.charAt(pos - 1) : ' ';
-        final char c = in.charAt(pos);
-        final char c1 = pos + 1 < in.length() ? in.charAt(pos + 1) : ' ';
-        final char c2 = pos + 2 < in.length() ? in.charAt(pos + 2) : ' ';
-        final char c3 = pos + 3 < in.length() ? in.charAt(pos + 3) : ' ';
+        final char c0 = pos > 0 ? whitespaceToSpace(in.charAt(pos - 1)) : ' ';
+        final char c = whitespaceToSpace(in.charAt(pos));
+        final char c1 = pos + 1 < in.length() ? whitespaceToSpace(in.charAt(pos + 1)) : ' ';
+        final char c2 = pos + 2 < in.length() ? whitespaceToSpace(in.charAt(pos + 2)) : ' ';
+        final char c3 = pos + 3 < in.length() ? whitespaceToSpace(in.charAt(pos + 3)) : ' ';
 
         switch(c)
         {
