@@ -234,6 +234,8 @@ class Line
                 continue;
             if(c == ch)
                 count++;
+            else
+                break;
         }
         return count;
     }
