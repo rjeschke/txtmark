@@ -734,7 +734,7 @@ class Emitter
             }
             if(this.useExtensions)
             {
-                return c0 != ' ' && c0 != '_' && c1 != ' ' ? MarkToken.NONE : MarkToken.EM_UNDERSCORE;
+                return Character.isLetterOrDigit(c0) && c0 != '_' && Character.isLetterOrDigit(c1) ? MarkToken.NONE : MarkToken.EM_UNDERSCORE;
             }
             return c0 != ' ' || c1 != ' ' ? MarkToken.EM_UNDERSCORE : MarkToken.NONE;
         case '!':
