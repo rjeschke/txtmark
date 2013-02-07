@@ -639,11 +639,11 @@ class Utils
     }
 
     /**
-     * Removes trailing <code>`</code> and trims spaces.
+     * Removes trailing <code>`</code> or <code>~</code> and trims spaces.
      * 
      * @param fenceLine
      *            Fenced code block starting line
-     * @return Rest of the line after trimming and backtick removal
+     * @return Rest of the line after trimming and backtick or tilde removal
      * @since 0.7
      */
     public final static String getMetaFromFence(String fenceLine)
@@ -651,7 +651,7 @@ class Utils
         for(int i = 0; i < fenceLine.length(); i++)
         {
             final char c = fenceLine.charAt(i);
-            if(!Character.isWhitespace(c) && c != '`')
+            if(!Character.isWhitespace(c) && c != '`' && c != '~' )
             {
                 return fenceLine.substring(i).trim();
             }
