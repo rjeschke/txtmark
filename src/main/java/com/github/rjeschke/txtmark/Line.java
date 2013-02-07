@@ -138,6 +138,7 @@ class Line
                 case '_':
                 case '!':
                 case '`':
+                case '~':
                     sb.append(c);
                     pos++;
                     break;
@@ -263,9 +264,11 @@ class Line
 
         if(extendedMode)
         {
-            if(this.value.length() - this.leading - this.trailing > 2 && this.value.charAt(this.leading) == '`')
+            if(this.value.length() - this.leading - this.trailing > 2)
             {
-                if(this.countCharsStart('`') >= 3)
+                if(this.value.charAt(this.leading) == '`' && this.countCharsStart('`') >= 3)
+                    return LineType.FENCED_CODE;
+                if(this.value.charAt(this.leading) == '~' && this.countCharsStart('~') >= 3)
                     return LineType.FENCED_CODE;
             }
         }
