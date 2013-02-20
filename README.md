@@ -22,7 +22,7 @@ For an in-depth explanation of markdown have a look at the original [Markdown Sy
 
 ### Maven repository
 
-Txtmark is now available as a maven artifact. Have a look [here] (http://renejeschke.de/maven/).
+Txtmark is now available as a maven artifact without additional repository entries. Have a look [here] (https://oss.sonatype.org/index.html#nexus-search;quick~txtmark).
 
 ***
 
