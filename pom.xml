@@ -2,37 +2,45 @@
 
   <modelVersion>4.0.0</modelVersion>
   
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <groupId>com.github.rjeschke</groupId>
   <artifactId>txtmark</artifactId>
   <version>0.8-SNAPSHOT</version>
   <name>txtmark</name>
+  <description>Markdown parser for the JVM</description>
   <url>https://github.com/rjeschke/txtmark</url>
   <packaging>jar</packaging>
+  
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <scm>
-    <developerConnection>scm:git:ssh://git@github.com/rjeschke/txtmark.git</developerConnection>
+    <connection>scm:git:git@github.com:rjeschke/txtmark.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:rjeschke/txtmark.git</developerConnection>
+    <url>git@github.com:rjeschke/txtmark.git</url>
   </scm>
 
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>release-rj</id>
-      <name>Release repository</name>
-      <url>scp://maven.renejeschke.de/maven</url>
-      <layout>default</layout>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>true</uniqueVersion>
-      <id>snapshot-rj</id>
-      <name>Snapshot repository</name>
-      <url>scp://maven.renejeschke.de/maven-snapshots</url>
-      <layout>default</layout>
-    </snapshotRepository>
-  </distributionManagement>
+  <developers>
+    <developer>
+      <id>rjeschke</id>
+      <name>René Jeschke</name>
+      <email>rene_jeschke@yahoo.de</email>
+    </developer>
+  </developers>
 
   <build>
     <plugins>
@@ -72,19 +80,37 @@
         </executions>
       </plugin>
     </plugins>
-
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh</artifactId>
-        <version>2.2</version>
-      </extension>
-    </extensions>
-
   </build>
   
-  <dependencies>
-  </dependencies>
+  <profiles>
+    <profile>
+      <id>release-sign-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.1</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
 
