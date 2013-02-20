@@ -773,6 +773,7 @@ class Emitter
             case '_':
             case '!':
             case '`':
+            case '~':
             case '^':
                 return MarkToken.ESCAPE;
             default:
