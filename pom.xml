@@ -29,9 +29,9 @@
   </properties>
 
   <scm>
-    <connection>scm:git:git@github.com:rjeschke/txtmark.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:rjeschke/txtmark.git</developerConnection>
-    <url>git@github.com:rjeschke/txtmark.git</url>
+    <connection>scm:git:git@github.com/rjeschke/txtmark.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/rjeschke/txtmark.git</developerConnection>
+    <url>git@github.com/rjeschke/txtmark.git</url>
   </scm>
 
   <developers>
