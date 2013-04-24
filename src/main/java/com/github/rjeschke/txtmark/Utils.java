@@ -47,7 +47,7 @@ class Utils
     public final static int skipSpaces(final String in, final int start)
     {
         int pos = start;
-        while(pos < in.length() && (in.charAt(pos) == ' ' || in.charAt(pos) == '\n'))
+        while (pos < in.length() && (in.charAt(pos) == ' ' || in.charAt(pos) == '\n'))
             pos++;
         return pos < in.length() ? pos : -1;
     }
@@ -65,7 +65,7 @@ class Utils
      */
     public final static int escape(final StringBuilder out, final char ch, final int pos)
     {
-        switch(ch)
+        switch (ch)
         {
         case '\\':
         case '[':
@@ -111,26 +111,25 @@ class Utils
     public final static int readUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if(ch == '\\' && pos + 1 < in.length())
+            if (ch == '\\' && pos + 1 < in.length())
             {
                 pos = escape(out, in.charAt(pos + 1), pos);
             }
             else
             {
                 boolean endReached = false;
-                for(int n = 0; n < end.length; n++)
+                for (int n = 0; n < end.length; n++)
                 {
-                    if(ch == end[n])
+                    if (ch == end[n])
                     {
                         endReached = true;
                         break;
                     }
                 }
-                if(endReached)
-                    break;
+                if (endReached) break;
                 out.append(ch);
             }
             pos++;
@@ -155,17 +154,16 @@ class Utils
     public final static int readUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if(ch == '\\' && pos + 1 < in.length())
+            if (ch == '\\' && pos + 1 < in.length())
             {
                 pos = escape(out, in.charAt(pos + 1), pos);
             }
             else
             {
-                if(ch == end)
-                    break;
+                if (ch == end) break;
                 out.append(ch);
             }
             pos++;
@@ -189,33 +187,30 @@ class Utils
     {
         int pos = start;
         int counter = 1;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if(ch == '\\' && pos + 1 < in.length())
+            if (ch == '\\' && pos + 1 < in.length())
             {
                 pos = escape(out, in.charAt(pos + 1), pos);
             }
             else
             {
                 boolean endReached = false;
-                switch(ch)
+                switch (ch)
                 {
                 case '(':
                     counter++;
                     break;
                 case ' ':
-                    if(counter == 1)
-                        endReached = true;
+                    if (counter == 1) endReached = true;
                     break;
                 case ')':
                     counter--;
-                    if(counter == 0)
-                        endReached = true;
+                    if (counter == 0) endReached = true;
                     break;
                 }
-                if(endReached)
-                    break;
+                if (endReached) break;
                 out.append(ch);
             }
             pos++;
@@ -239,11 +234,11 @@ class Utils
     {
         int pos = start;
         int counter = 1;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
             boolean endReached = false;
-            switch(ch)
+            switch (ch)
             {
             case '\n':
                 out.append(' ');
@@ -254,17 +249,15 @@ class Utils
                 break;
             case ']':
                 counter--;
-                if(counter == 0)
+                if (counter == 0)
                     endReached = true;
-                else
-                    out.append(ch);
+                else out.append(ch);
                 break;
             default:
                 out.append(ch);
                 break;
             }
-            if(endReached)
-                break;
+            if (endReached) break;
             pos++;
         }
 
@@ -288,20 +281,19 @@ class Utils
     public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char... end)
     {
         int pos = start;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
             boolean endReached = false;
-            for(int n = 0; n < end.length; n++)
+            for (int n = 0; n < end.length; n++)
             {
-                if(ch == end[n])
+                if (ch == end[n])
                 {
                     endReached = true;
                     break;
                 }
             }
-            if(endReached)
-                break;
+            if (endReached) break;
             out.append(ch);
             pos++;
         }
@@ -310,8 +302,8 @@ class Utils
     }
 
     /**
-     * Reads characters until the end character is encountered, ignoring escape
-     * sequences.
+     * Reads characters until the end character is encountered, taking care of
+     * HTML/XML strings.
      * 
      * @param out
      *            The StringBuilder to write to.
@@ -326,11 +318,81 @@ class Utils
     public final static int readRawUntil(final StringBuilder out, final String in, final int start, final char end)
     {
         int pos = start;
-        while(pos < in.length())
+        while (pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if(ch == end)
+            if (ch == end) break;
+            out.append(ch);
+            pos++;
+        }
+
+        return (pos == in.length()) ? -1 : pos;
+    }
+
+    /**
+     * Reads characters until any 'end' character is encountered, ignoring
+     * escape sequences.
+     * 
+     * @param out
+     *            The StringBuilder to write to.
+     * @param in
+     *            The Input String.
+     * @param start
+     *            Starting position.
+     * @param end
+     *            End characters.
+     * @return The new position or -1 if no 'end' char was found.
+     */
+    public final static int readXMLUntil(final StringBuilder out, final String in, final int start, final char... end)
+    {
+        int pos = start;
+        boolean inString = false;
+        char stringChar = 0;
+        while (pos < in.length())
+        {
+            final char ch = in.charAt(pos);
+            if (inString)
+            {
+                if (ch == '\\')
+                {
+                    out.append(ch);
+                    pos++;
+                    if (pos < in.length())
+                    {
+                        out.append(ch);
+                        pos++;
+                    }
+                    continue;
+                }
+                if (ch == stringChar)
+                {
+                    inString = false;
+                    out.append(ch);
+                    pos++;
+                    continue;
+                }
+            }
+            switch (ch)
+            {
+            case '"':
+            case '\'':
+                inString = true;
+                stringChar = ch;
                 break;
+            }
+            if (!inString)
+            {
+                boolean endReached = false;
+                for (int n = 0; n < end.length; n++)
+                {
+                    if (ch == end[n])
+                    {
+                        endReached = true;
+                        break;
+                    }
+                }
+                if (endReached) break;
+            }
             out.append(ch);
             pos++;
         }
@@ -352,10 +414,10 @@ class Utils
      */
     public final static void appendCode(final StringBuilder out, final String in, final int start, final int end)
     {
-        for(int i = start; i < end; i++)
+        for (int i = start; i < end; i++)
         {
             final char c;
-            switch(c = in.charAt(i))
+            switch (c = in.charAt(i))
             {
             case '&':
                 out.append("&amp;");
@@ -388,10 +450,10 @@ class Utils
      */
     public final static void appendValue(final StringBuilder out, final String in, final int start, final int end)
     {
-        for(int i = start; i < end; i++)
+        for (int i = start; i < end; i++)
         {
             final char c;
-            switch(c = in.charAt(i))
+            switch (c = in.charAt(i))
             {
             case '&':
                 out.append("&amp;");
@@ -459,11 +521,11 @@ class Utils
      */
     public final static void appendMailto(final StringBuilder out, final String in, final int start, final int end)
     {
-        for(int i = start; i < end; i++)
+        for (int i = start; i < end; i++)
         {
             final char c;
             final int r = rnd();
-            switch(c = in.charAt(i))
+            switch (c = in.charAt(i))
             {
             case '&':
             case '<':
@@ -471,18 +533,16 @@ class Utils
             case '"':
             case '\'':
             case '@':
-                if(r < 512)
+                if (r < 512)
                     appendDecEntity(out, c);
-                else
-                    appendHexEntity(out, c);
+                else appendHexEntity(out, c);
                 break;
             default:
-                if(r < 32)
+                if (r < 32)
                     out.append(c);
-                else if(r < 520)
+                else if (r < 520)
                     appendDecEntity(out, c);
-                else
-                    appendHexEntity(out, c);
+                else appendHexEntity(out, c);
                 break;
             }
         }
@@ -499,9 +559,8 @@ class Utils
     public final static void getXMLTag(final StringBuilder out, final StringBuilder in)
     {
         int pos = 1;
-        if(in.charAt(1) == '/')
-            pos++;
-        while(Character.isLetterOrDigit(in.charAt(pos)))
+        if (in.charAt(1) == '/') pos++;
+        while (Character.isLetterOrDigit(in.charAt(pos)))
         {
             out.append(in.charAt(pos++));
         }
@@ -518,9 +577,8 @@ class Utils
     public final static void getXMLTag(final StringBuilder out, final String in)
     {
         int pos = 1;
-        if(in.charAt(1) == '/')
-            pos++;
-        while(Character.isLetterOrDigit(in.charAt(pos)))
+        if (in.charAt(1) == '/') pos++;
+        while (Character.isLetterOrDigit(in.charAt(pos)))
         {
             out.append(in.charAt(pos++));
         }
@@ -545,12 +603,12 @@ class Utils
         final boolean isCloseTag;
         try
         {
-            if(in.charAt(start + 1) == '/')
+            if (in.charAt(start + 1) == '/')
             {
                 isCloseTag = true;
                 pos = start + 2;
             }
-            else if(in.charAt(start + 1) == '!')
+            else if (in.charAt(start + 1) == '!')
             {
                 out.append("<!");
                 return start + 1;
@@ -560,39 +618,34 @@ class Utils
                 isCloseTag = false;
                 pos = start + 1;
             }
-            if(safeMode)
+            if (safeMode)
             {
                 final StringBuilder temp = new StringBuilder();
-                pos = readRawUntil(temp, in, pos, ' ', '/', '>');
-                if(pos == -1)
-                    return -1;
+                pos = readXMLUntil(temp, in, pos, ' ', '/', '>');
+                if (pos == -1) return -1;
                 final String tag = temp.toString().trim().toLowerCase();
-                if(HTML.isUnsafeHtmlElement(tag))
+                if (HTML.isUnsafeHtmlElement(tag))
                 {
                     out.append("&lt;");
-                    if(isCloseTag)
-                        out.append('/');
+                    if (isCloseTag) out.append('/');
                     out.append(temp);
                 }
             }
             else
             {
                 out.append('<');
-                if(isCloseTag)
-                    out.append('/');
-                pos = readRawUntil(out, in, pos, ' ', '/', '>');
+                if (isCloseTag) out.append('/');
+                pos = readXMLUntil(out, in, pos, ' ', '/', '>');
             }
-            if(pos == -1)
-                return -1;
-            pos = readRawUntil(out, in, pos, '/', '>');
-            if(in.charAt(pos) == '/')
+            if (pos == -1) return -1;
+            pos = readXMLUntil(out, in, pos, '/', '>');
+            if (in.charAt(pos) == '/')
             {
                 out.append(" /");
-                pos = readRawUntil(out, in, pos + 1, '>');
-                if(pos == -1)
-                    return -1;
+                pos = readXMLUntil(out, in, pos + 1, '>');
+                if (pos == -1) return -1;
             }
-            if(in.charAt(pos) == '>')
+            if (in.charAt(pos) == '>')
             {
                 out.append('>');
                 return pos;
@@ -618,10 +671,10 @@ class Utils
      */
     public final static void codeEncode(StringBuilder out, String value, int offset)
     {
-        for(int i = offset; i < value.length(); i++)
+        for (int i = offset; i < value.length(); i++)
         {
             final char c = value.charAt(i);
-            switch(c)
+            switch (c)
             {
             case '&':
                 out.append("&amp;");
@@ -648,10 +701,10 @@ class Utils
      */
     public final static String getMetaFromFence(String fenceLine)
     {
-        for(int i = 0; i < fenceLine.length(); i++)
+        for (int i = 0; i < fenceLine.length(); i++)
         {
             final char c = fenceLine.charAt(i);
-            if(!Character.isWhitespace(c) && c != '`' && c != '~' )
+            if (!Character.isWhitespace(c) && c != '`' && c != '~')
             {
                 return fenceLine.substring(i).trim();
             }
