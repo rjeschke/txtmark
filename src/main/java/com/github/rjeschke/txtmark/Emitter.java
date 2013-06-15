@@ -344,7 +344,7 @@ class Emitter
                 }
                 out.append('>');
                 this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
-                out.append("</a>");
+                this.config.decorator.closeLink(out);
             }
         }
         else
@@ -361,7 +361,7 @@ class Emitter
                 Utils.appendValue(out, comment, 0, comment.length());
                 out.append('"');
             }
-            out.append(" />");
+            this.config.decorator.closeImage(out);
         }
 
         return pos;
@@ -398,7 +398,7 @@ class Emitter
                 Utils.appendValue(out, link, 0, link.length());
                 out.append("\">");
                 Utils.appendValue(out, link, 0, link.length());
-                out.append("</a>");
+                this.config.decorator.closeLink(out);
                 return pos;
             }
         }
@@ -418,7 +418,7 @@ class Emitter
                 Utils.appendMailto(out, link, 0, link.length());
                 out.append("\">");
                 Utils.appendMailto(out, link, 0, link.length());
-                out.append("</a>");
+                this.config.decorator.closeLink(out);
                 return pos;
             }
         }
