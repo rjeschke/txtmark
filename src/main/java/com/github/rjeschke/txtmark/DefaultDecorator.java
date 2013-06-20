@@ -221,10 +221,24 @@ public class DefaultDecorator implements Decorator
         out.append("<a");
     }
 
+    /** @see com.github.rjeschke.txtmark.Decorator#closeLink(StringBuilder) */
+    @Override
+    public void closeLink(StringBuilder out)
+    {
+        out.append("</a>");
+    }
+
     /** @see com.github.rjeschke.txtmark.Decorator#openImage(StringBuilder) */
     @Override
     public void openImage(StringBuilder out)
     {
         out.append("<img");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeImage(StringBuilder) */
+    @Override
+    public void closeImage(StringBuilder out)
+    {
+        out.append(" />");
     }
 }

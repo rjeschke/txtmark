@@ -417,6 +417,22 @@ public interface Decorator
     public void openLink(final StringBuilder out);
 
     /**
+     * Called when a link is closed
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;/a&gt;");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeLink(final StringBuilder out);
+
+    /**
      * Called when an image is opened.
      * 
      * <p>
@@ -434,4 +450,20 @@ public interface Decorator
      *            The StringBuilder to write to.
      */
     public void openImage(final StringBuilder out);
+
+    /**
+     * Called when an image is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append(" /&gt;");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeImage(final StringBuilder out);
 }
