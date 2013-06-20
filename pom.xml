@@ -10,7 +10,7 @@
 
   <groupId>com.github.rjeschke</groupId>
   <artifactId>txtmark</artifactId>
-  <version>0.10</version>
+  <version>0.11-SNAPSHOT</version>
   <name>txtmark</name>
   <description>Markdown parser for the JVM</description>
   <url>https://github.com/rjeschke/txtmark</url>
