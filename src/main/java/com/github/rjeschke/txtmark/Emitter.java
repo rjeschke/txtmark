@@ -478,7 +478,7 @@ class Emitter
             for(int i = 1; i < out.length(); i++)
             {
                 final char c = out.charAt(i);
-                if((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
+                if(!Character.isLetterOrDigit(c))
                     return -1;
             }
             out.append(';');
