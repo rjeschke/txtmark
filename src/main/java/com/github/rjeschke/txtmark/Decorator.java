@@ -18,7 +18,7 @@ package com.github.rjeschke.txtmark;
 /**
  * Decorator interface.
  * 
- * @author René Jeschke <rene_jeschke@yahoo.de>
+ * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  */
 public interface Decorator
 {
@@ -30,7 +30,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;p>");</code>
+     * <code>out.append("&lt;p&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -46,7 +46,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/p>\n");</code>
+     * <code>out.append("&lt;/p&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -60,7 +60,7 @@ public interface Decorator
      * Default implementation is:
      * 
      * <pre>
-     * <code>out.append("&lt;blockquote>");</code>
+     * <code>out.append("&lt;blockquote&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -76,7 +76,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/blockquote>\n");</code>
+     * <code>out.append("&lt;/blockquote&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -92,7 +92,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;pre>&lt;code>");</code>
+     * <code>out.append("&lt;pre&gt;&lt;code&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -108,7 +108,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/code>&lt;/pre>\n");</code>
+     * <code>out.append("&lt;/code&gt;&lt;/pre&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -124,7 +124,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;code>");</code>
+     * <code>out.append("&lt;code&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -140,7 +140,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/code>");</code>
+     * <code>out.append("&lt;/code&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -165,6 +165,8 @@ public interface Decorator
      * 
      * @param out
      *            The StringBuilder to write to.
+     * @param level
+     * 			  The level to use.
      */
     public void openHeadline(final StringBuilder out, int level);
 
@@ -178,11 +180,13 @@ public interface Decorator
      * <pre>
      * <code> out.append("&lt;/h");
      * out.append(level);
-     * out.append(">\n");</code>
+     * out.append("&gt;\n");</code>
      * </pre>
      * 
      * @param out
      *            The StringBuilder to write to.
+     * @param level
+     * 			  The level to use.
      */
     public void closeHeadline(final StringBuilder out, int level);
 
@@ -194,7 +198,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;strong>");</code>
+     * <code>out.append("&lt;strong&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -210,7 +214,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/strong>");</code>
+     * <code>out.append("&lt;/strong&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -226,7 +230,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;em>");</code>
+     * <code>out.append("&lt;em&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -242,7 +246,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/em>");</code>
+     * <code>out.append("&lt;/em&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -258,7 +262,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;sup>");</code>
+     * <code>out.append("&lt;sup&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -274,7 +278,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/sup>");</code>
+     * <code>out.append("&lt;/sup&gt;");</code>
      * </pre>
      * 
      * @param out
@@ -290,7 +294,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;ol>\n");</code>
+     * <code>out.append("&lt;ol&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -306,7 +310,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/ol>\n");</code>
+     * <code>out.append("&lt;/ol&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -322,7 +326,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;ul>\n");</code>
+     * <code>out.append("&lt;ul&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -338,7 +342,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/ul>\n");</code>
+     * <code>out.append("&lt;/ul&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -373,7 +377,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;/li>\n");</code>
+     * <code>out.append("&lt;/li&gt;\n");</code>
      * </pre>
      * 
      * @param out
@@ -389,7 +393,7 @@ public interface Decorator
      * </p>
      * 
      * <pre>
-     * <code>out.append("&lt;hr />\n");</code>
+     * <code>out.append("&lt;hr /&gt;\n");</code>
      * </pre>
      * 
      * @param out

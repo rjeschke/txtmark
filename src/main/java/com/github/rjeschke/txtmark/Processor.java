@@ -36,7 +36,7 @@ import java.io.StringReader;
  * </code>
  * </pre>
  * 
- * @author René Jeschke <rene_jeschke@yahoo.de>
+ * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  */
 public class Processor
 {
@@ -110,8 +110,8 @@ public class Processor
     /**
      * Transforms an input file into HTML using the given Configuration.
      * 
-     * @param file
-     *            The File to process.
+     * @param file The File to process.
+     * @param configuration the Configuration
      * @return The processed String.
      * @throws IOException
      *             if an IO error occurs

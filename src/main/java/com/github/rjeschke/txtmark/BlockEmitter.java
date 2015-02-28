@@ -23,15 +23,15 @@ import java.util.List;
  * <pre>
  * <code>public void emitBlock(StringBuilder out, List&lt;String&gt; lines, String meta)
  * {
- *     out.append("&lt;pre>&lt;code>");
+ *     out.append("&lt;pre&gt;&lt;code&gt;");
  *     for(final String s : lines)
  *     {
- *         for(int i = 0; i < s.length(); i++)
+ *         for(int i = 0; i &lt; s.length(); i++)
  *         {
  *             final char c = s.charAt(i);
  *             switch(c)
  *             {
- *             case '&':
+ *             case '&amp;':
  *                 out.append("&amp;amp;");
  *                 break;
  *             case '&lt;':
@@ -47,13 +47,13 @@ import java.util.List;
  *         }
  *         out.append('\n');
  *     }
- *     out.append("&lt;/code>&lt;/pre>\n");
+ *     out.append("&lt;/code&gt;&lt;/pre&gt;\n");
  * }
  * </code>
  * </pre>
  * 
  * 
- * @author René Jeschke <rene_jeschke@yahoo.de>
+ * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  * @since 0.7
  */
 public interface BlockEmitter
