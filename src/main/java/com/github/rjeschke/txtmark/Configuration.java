@@ -18,7 +18,7 @@ package com.github.rjeschke.txtmark;
 /**
  * Txtmark configuration.
  * 
- * @author René Jeschke <rene_jeschke@yahoo.de>
+ * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  * @since 0.7
  */
 public class Configuration
@@ -90,7 +90,7 @@ public class Configuration
     /**
      * Configuration builder.
      * 
-     * @author René Jeschke <rene_jeschke@yahoo.de>
+     * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
      * @since 0.7
      */
     public static class Builder

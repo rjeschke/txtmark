@@ -19,7 +19,7 @@ package com.github.rjeschke.txtmark;
  * Default Decorator implementation.
  * 
  * <p>
- * Example for a user Decorator having a class attribute on &lt;p> tags.
+ * Example for a user Decorator having a class attribute on &lt;p&gt; tags.
  * </p>
  * 
  * <pre>
@@ -28,13 +28,13 @@ package com.github.rjeschke.txtmark;
  *     &#64;Override
  *     public void openParagraph(StringBuilder out)
  *     {
- *         out.append("&lt;p class=\"myclass\">");
+ *         out.append("&lt;p class=\"myclass\"&gt;");
  *     }
  * }
  * </code>
  * </pre>
  * 
- * @author René Jeschke <rene_jeschke@yahoo.de>
+ * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  */
 public class DefaultDecorator implements Decorator
 {
