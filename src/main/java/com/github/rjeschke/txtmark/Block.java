@@ -34,8 +34,13 @@ class Block
     public int hlDepth = 0;
     /** ID for headlines and list items */
     public String id = null;
+    /** value for ordered list items to specify list start */
+    public String olStart = null;
+
     /** Block meta information */
     public String meta = "";
+
+
 
     /** Constructor. */
     public Block()
@@ -118,7 +123,8 @@ class Block
                     line.value = line.value.substring(line.leading + 2);
                     break;
                 case OLIST:
-                    line.value = line.value.substring(line.value.indexOf('.') + 2);
+                    olStart = line.value.substring(0, line.value.indexOf('.'));
+                    line.value = line.value.substring(olStart.length() + 2);
                     break;
                 default:
                     line.value = line.value.substring(Math.min(line.leading, 4));

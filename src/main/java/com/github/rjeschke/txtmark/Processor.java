@@ -912,8 +912,7 @@ public class Processor
                 while(line != null)
                 {
                     final LineType t = line.getLineType(this.useExtensions);
-                    if(!line.isEmpty
-                            && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
+                    if(!line.isEmpty && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
                         break;
                     line = line.next;
                 }

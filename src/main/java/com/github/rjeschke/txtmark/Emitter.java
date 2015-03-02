@@ -97,7 +97,7 @@ class Emitter
             this.config.decorator.openUnorderedList(out);
             break;
         case ORDERED_LIST:
-            this.config.decorator.openOrderedList(out);
+            this.config.decorator.openOrderedList(out, root.blocks != null ? root.blocks.olStart : null);
             break;
         case LIST_ITEM:
             this.config.decorator.openListItem(out);

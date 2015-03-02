@@ -299,8 +299,10 @@ public interface Decorator
      * 
      * @param out
      *            The StringBuilder to write to.
+     * @param start
+     *           Explicitly sets the start value of the &lt;ol&gt starting the list count at something besides 1;
      */
-    public void openOrderedList(final StringBuilder out);
+    public void openOrderedList(final StringBuilder out, String start);
 
     /**
      * Called when an ordered list is closed.
