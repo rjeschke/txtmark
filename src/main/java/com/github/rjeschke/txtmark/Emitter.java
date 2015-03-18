@@ -1020,7 +1020,7 @@ class Emitter
             {
                 if (!line.isEmpty)
                 {
-                    for (int i = 4; i < line.value.length(); i++)
+                    for (int i = removeIndent ? 4 : 0; i < line.value.length(); i++)
                     {
                         final char c;
                         switch (c = line.value.charAt(i))
