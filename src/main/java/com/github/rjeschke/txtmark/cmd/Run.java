@@ -65,16 +65,18 @@ public final class Run
             System.exit(parseError ? 1 : 0);
         }
 
+        // Build configuration from command line arguments
         final Configuration.Builder cfgBuilder = Configuration.builder();
         cfgBuilder.setEncoding(ta.encoding)
                 .setEnablePanicMode(ta.panicMode)
-                .setSafeMode(ta.safeMode);
-
+                .setSafeMode(ta.safeMode)
+                .setAllowSpacesInFencedCodeBlockDelimiters(!ta.noFencedSpaced);
+        // Check for extended profile
         if (ta.forceExtendedProfile)
         {
             cfgBuilder.forceExtentedProfile();
         }
-
+        // Connect highlighter if any
         if (ta.highlighter != null && !ta.highlighter.isEmpty())
         {
             if (!new File(ta.highlighter).exists())
@@ -85,6 +87,7 @@ public final class Run
             cfgBuilder.setCodeBlockEmitter(new CodeBlockEmitter(ta.encoding, ta.highlighter));
         }
 
+        // Ready for action
         final Configuration config = cfgBuilder.build();
         boolean processOk = true;
         InputStream input = null;

@@ -29,6 +29,9 @@ final class TxtmarkArguments
     @CmdArgument(l = "safe-mode", isSwitch = true, desc = "enables safe mode")
     public boolean safeMode             = false;
 
+    @CmdArgument(l = "no-fenced-spaces", isSwitch = true, desc = "disables spaces in fenced code block delimiters")
+    public boolean noFencedSpaced       = false;
+
     @CmdArgument(l = "encoding", desc = "sets the IO encoding.")
     public String  encoding             = "UTF-8";
 
