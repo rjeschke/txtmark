@@ -1,5 +1,5 @@
 # Txtmark - Java markdown processor
-Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>  
+Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>  
 See LICENSE.txt for licensing information.
 
 ***
