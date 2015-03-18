@@ -286,6 +286,8 @@ except of two:
 
 ### Performance comparison of markdown processors for the JVM
 
+**Remarks:** These benchmarks are too old to be of any value. I leave them here as a reference, though.
+
 Based on [this benchmark suite](http://henkelmann.eu/2011/01/10/performance_comparison_of_markdown_processor_for_the_jvm).  
 
 Excerpt from the original post concerning this benchmark suite:
