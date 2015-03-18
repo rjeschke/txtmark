@@ -165,10 +165,15 @@ public class DefaultDecorator implements Decorator
         out.append("</sup>");
     }
 
-    /** @see com.github.rjeschke.txtmark.Decorator#openOrderedList(StringBuilder) */
+    /** @see com.github.rjeschke.txtmark.Decorator#openOrderedList(StringBuilder,String) */
     @Override
-    public void openOrderedList(StringBuilder out)
+    public void openOrderedList(StringBuilder out, String start)
     {
+        if(start != null && start.length() > 0) {
+            out.append("<ol start=\"");
+            out.append(start);
+            out.append("\">\n");
+        }else
         out.append("<ol>\n");
     }
 
