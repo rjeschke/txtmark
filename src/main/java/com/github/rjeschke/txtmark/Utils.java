@@ -682,12 +682,16 @@ class Utils
                 if (HTML.isUnsafeHtmlElement(tag))
                 {
                     out.append("&lt;");
-                    if (isCloseTag)
-                    {
-                        out.append('/');
-                    }
-                    out.append(temp);
                 }
+                else
+                {
+                    out.append("<");
+                }
+                if (isCloseTag)
+                {
+                    out.append('/');
+                }
+                out.append(temp);
             }
             else
             {
