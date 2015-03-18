@@ -24,6 +24,7 @@ package com.github.rjeschke.txtmark;
 public class Configuration
 {
     final boolean                     safeMode;
+    final boolean                     panicMode;
     final String                      encoding;
     final Decorator                   decorator;
     final BlockEmitter                codeBlockEmitter;
@@ -62,15 +63,11 @@ public class Configuration
 
     /**
      * Constructor.
-     *
-     * @param safeMode
-     * @param encoding
-     * @param decorator
      */
     Configuration(final boolean safeMode, final String encoding, final Decorator decorator,
             final BlockEmitter codeBlockEmitter,
             final boolean forceExtendedProfile, final SpanEmitter specialLinkEmitter,
-            final boolean allowSpacesInFencedDelimiters)
+            final boolean allowSpacesInFencedDelimiters, final boolean panicMode)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
@@ -79,6 +76,7 @@ public class Configuration
         this.forceExtendedProfile = forceExtendedProfile;
         this.specialLinkEmitter = specialLinkEmitter;
         this.allowSpacesInFencedDelimiters = allowSpacesInFencedDelimiters;
+        this.panicMode = panicMode;
     }
 
     /**
@@ -100,6 +98,7 @@ public class Configuration
     public static class Builder
     {
         private boolean      safeMode                      = false;
+        private boolean      panicMode                     = false;
         private boolean      forceExtendedProfile          = false;
         private boolean      allowSpacesInFencedDelimiters = true;
         private String       encoding                      = "UTF-8";
@@ -237,6 +236,34 @@ public class Configuration
         }
 
         /**
+         * This allows you to enable 'panicMode'. When 'panicMode' is enabled,
+         * every {@code <} encountered will then be translated into {@code &lt;}
+         *
+         * @param panic
+         *            whether to enable or not
+         * @return This builder.
+         * @sine 0.12
+         */
+        public Builder setEnablePanicMode(final boolean panic)
+        {
+            this.panicMode = panic;
+            return this;
+        }
+
+        /**
+         * This allows you to enable 'panicMode'. When 'panicMode' is enabled,
+         * every {@code <} encountered will then be translated into {@code &lt;}
+         *
+         * @return This builder.
+         * @sine 0.12
+         */
+        public Builder enablePanicMode()
+        {
+            this.panicMode = true;
+            return this;
+        }
+
+        /**
          * Builds a configuration instance.
          *
          * @return a Configuration instance
@@ -245,7 +272,8 @@ public class Configuration
         public Configuration build()
         {
             return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter,
-                    this.forceExtendedProfile, this.specialLinkEmitter, this.allowSpacesInFencedDelimiters);
+                    this.forceExtendedProfile, this.specialLinkEmitter, this.allowSpacesInFencedDelimiters,
+                    this.panicMode);
         }
     }
 }

@@ -631,8 +631,16 @@ public class Processor
                     break;
                 }
                 default:
-                    pos++;
-                    sb.append((char)c);
+                    if (c != '<' || !this.config.panicMode)
+                    {
+                        pos++;
+                        sb.append((char)c);
+                    }
+                    else
+                    {
+                        pos += 4;
+                        sb.append("&lt;");
+                    }
                     c = this.reader.read();
                     break;
                 }
