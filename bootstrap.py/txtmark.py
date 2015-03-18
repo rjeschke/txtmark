@@ -70,7 +70,7 @@ def get_snapshot_version(url, version):
             timestamp = line[11:-12]
         elif build_number == 0 and re.match("^<buildNumber>.*</buildNumber>$", line):
             build_number = int(line[13:-14])
-    return url + "/" + artifact + "-" + version[:version.find("-")] + "-" + timestamp + "-" + str(build_number) + ".jar" 
+    return url + "/" + artifact + "-" + version[:version.find("-")] + "-" + timestamp + "-" + str(build_number) + ".jar"
 
 
 def download(is_snap, version):
