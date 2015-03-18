@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,22 +17,22 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Decorator interface.
- * 
+ *
  * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  */
 public interface Decorator
 {
     /**
      * Called when a paragraph is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;p&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -40,15 +40,15 @@ public interface Decorator
 
     /**
      * Called when a paragraph is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/p&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -56,13 +56,13 @@ public interface Decorator
 
     /**
      * Called when a blockquote is opened.
-     * 
+     *
      * Default implementation is:
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;blockquote&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -70,15 +70,15 @@ public interface Decorator
 
     /**
      * Called when a blockquote is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/blockquote&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -86,15 +86,15 @@ public interface Decorator
 
     /**
      * Called when a code block is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;pre&gt;&lt;code&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -102,15 +102,15 @@ public interface Decorator
 
     /**
      * Called when a code block is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/code&gt;&lt;/pre&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -118,15 +118,15 @@ public interface Decorator
 
     /**
      * Called when a code span is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;code&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -134,15 +134,15 @@ public interface Decorator
 
     /**
      * Called when a code span is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/code&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -150,57 +150,57 @@ public interface Decorator
 
     /**
      * Called when a headline is opened.
-     * 
+     *
      * <p>
      * <strong>Note:</strong> Don't close the HTML tag!
      * </p>
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code> out.append("&lt;h");
      * out.append(level);</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param level
-     * 			  The level to use.
+     *            The level to use.
      */
     public void openHeadline(final StringBuilder out, int level);
 
     /**
      * Called when a headline is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code> out.append("&lt;/h");
      * out.append(level);
      * out.append("&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param level
-     * 			  The level to use.
+     *            The level to use.
      */
     public void closeHeadline(final StringBuilder out, int level);
 
     /**
      * Called when a strong span is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;strong&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -208,15 +208,15 @@ public interface Decorator
 
     /**
      * Called when a strong span is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/strong&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -224,15 +224,15 @@ public interface Decorator
 
     /**
      * Called when an emphasis span is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;em&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -240,15 +240,15 @@ public interface Decorator
 
     /**
      * Called when an emphasis span is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/em&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -256,15 +256,15 @@ public interface Decorator
 
     /**
      * Called when a superscript span is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;sup&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -272,15 +272,15 @@ public interface Decorator
 
     /**
      * Called when a superscript span is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/sup&gt;");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -288,15 +288,15 @@ public interface Decorator
 
     /**
      * Called when an ordered list is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;ol&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -304,15 +304,15 @@ public interface Decorator
 
     /**
      * Called when an ordered list is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/ol&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -320,15 +320,15 @@ public interface Decorator
 
     /**
      * Called when an unordered list is opened.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;ul&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -336,15 +336,15 @@ public interface Decorator
 
     /**
      * Called when an unordered list is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/ul&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -352,18 +352,18 @@ public interface Decorator
 
     /**
      * Called when a list item is opened.
-     * 
+     *
      * <p>
      * <strong>Note:</strong> Don't close the HTML tag!
      * </p>
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;li");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -371,15 +371,15 @@ public interface Decorator
 
     /**
      * Called when a list item is closed.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;/li&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -387,15 +387,15 @@ public interface Decorator
 
     /**
      * Called when a horizontal ruler is encountered.
-     * 
+     *
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;hr /&gt;\n");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -403,18 +403,18 @@ public interface Decorator
 
     /**
      * Called when a link is opened.
-     * 
+     *
      * <p>
      * <strong>Note:</strong> Don't close the HTML tag!
      * </p>
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;a");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */
@@ -438,18 +438,18 @@ public interface Decorator
 
     /**
      * Called when an image is opened.
-     * 
+     *
      * <p>
      * <strong>Note:</strong> Don't close the HTML tag!
      * </p>
      * <p>
      * Default implementation is:
      * </p>
-     * 
+     *
      * <pre>
      * <code>out.append("&lt;img");</code>
      * </pre>
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      */

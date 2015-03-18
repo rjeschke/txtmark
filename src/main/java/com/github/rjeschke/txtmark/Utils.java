@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Utilities.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 class Utils
@@ -27,7 +27,7 @@ class Utils
 
     /**
      * LCG random number generator.
-     * 
+     *
      * @return A pseudo random number between 0 and 1023
      */
     public final static int rnd()
@@ -37,7 +37,7 @@ class Utils
 
     /**
      * Skips spaces in the given String.
-     * 
+     *
      * @param in
      *            Input String.
      * @param start
@@ -48,13 +48,15 @@ class Utils
     {
         int pos = start;
         while (pos < in.length() && (in.charAt(pos) == ' ' || in.charAt(pos) == '\n'))
+        {
             pos++;
+        }
         return pos < in.length() ? pos : -1;
     }
 
     /**
      * Processed the given escape sequence.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param ch
@@ -97,7 +99,7 @@ class Utils
 
     /**
      * Reads characters until any 'end' character is encountered.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -129,7 +131,10 @@ class Utils
                         break;
                     }
                 }
-                if (endReached) break;
+                if (endReached)
+                {
+                    break;
+                }
                 out.append(ch);
             }
             pos++;
@@ -140,7 +145,7 @@ class Utils
 
     /**
      * Reads characters until the 'end' character is encountered.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -163,7 +168,10 @@ class Utils
             }
             else
             {
-                if (ch == end) break;
+                if (ch == end)
+                {
+                    break;
+                }
                 out.append(ch);
             }
             pos++;
@@ -174,7 +182,7 @@ class Utils
 
     /**
      * Reads a markdown link.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -203,14 +211,23 @@ class Utils
                     counter++;
                     break;
                 case ' ':
-                    if (counter == 1) endReached = true;
+                    if (counter == 1)
+                    {
+                        endReached = true;
+                    }
                     break;
                 case ')':
                     counter--;
-                    if (counter == 0) endReached = true;
+                    if (counter == 0)
+                    {
+                        endReached = true;
+                    }
                     break;
                 }
-                if (endReached) break;
+                if (endReached)
+                {
+                    break;
+                }
                 out.append(ch);
             }
             pos++;
@@ -221,7 +238,7 @@ class Utils
 
     /**
      * Reads a markdown link ID.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -250,14 +267,22 @@ class Utils
             case ']':
                 counter--;
                 if (counter == 0)
+                {
                     endReached = true;
-                else out.append(ch);
+                }
+                else
+                {
+                    out.append(ch);
+                }
                 break;
             default:
                 out.append(ch);
                 break;
             }
-            if (endReached) break;
+            if (endReached)
+            {
+                break;
+            }
             pos++;
         }
 
@@ -267,7 +292,7 @@ class Utils
     /**
      * Reads characters until any 'end' character is encountered, ignoring
      * escape sequences.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -293,7 +318,10 @@ class Utils
                     break;
                 }
             }
-            if (endReached) break;
+            if (endReached)
+            {
+                break;
+            }
             out.append(ch);
             pos++;
         }
@@ -304,7 +332,7 @@ class Utils
     /**
      * Reads characters until the end character is encountered, taking care of
      * HTML/XML strings.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -321,7 +349,10 @@ class Utils
         while (pos < in.length())
         {
             final char ch = in.charAt(pos);
-            if (ch == end) break;
+            if (ch == end)
+            {
+                break;
+            }
             out.append(ch);
             pos++;
         }
@@ -332,7 +363,7 @@ class Utils
     /**
      * Reads characters until any 'end' character is encountered, ignoring
      * escape sequences.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -391,7 +422,10 @@ class Utils
                         break;
                     }
                 }
-                if (endReached) break;
+                if (endReached)
+                {
+                    break;
+                }
             }
             out.append(ch);
             pos++;
@@ -402,7 +436,7 @@ class Utils
 
     /**
      * Appends the given string encoding special HTML characters.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -438,7 +472,7 @@ class Utils
     /**
      * Appends the given string encoding special HTML characters (used in HTML
      * attribute values).
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -479,7 +513,7 @@ class Utils
 
     /**
      * Append the given char as a decimal HTML entity.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param value
@@ -494,7 +528,7 @@ class Utils
 
     /**
      * Append the given char as a hexadecimal HTML entity.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param value
@@ -509,7 +543,7 @@ class Utils
 
     /**
      * Appends the given mailto link using obfuscation.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -534,15 +568,27 @@ class Utils
             case '\'':
             case '@':
                 if (r < 512)
+                {
                     appendDecEntity(out, c);
-                else appendHexEntity(out, c);
+                }
+                else
+                {
+                    appendHexEntity(out, c);
+                }
                 break;
             default:
                 if (r < 32)
+                {
                     out.append(c);
+                }
                 else if (r < 520)
+                {
                     appendDecEntity(out, c);
-                else appendHexEntity(out, c);
+                }
+                else
+                {
+                    appendHexEntity(out, c);
+                }
                 break;
             }
         }
@@ -550,7 +596,7 @@ class Utils
 
     /**
      * Extracts the tag from an XML element.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -559,7 +605,10 @@ class Utils
     public final static void getXMLTag(final StringBuilder out, final StringBuilder in)
     {
         int pos = 1;
-        if (in.charAt(1) == '/') pos++;
+        if (in.charAt(1) == '/')
+        {
+            pos++;
+        }
         while (Character.isLetterOrDigit(in.charAt(pos)))
         {
             out.append(in.charAt(pos++));
@@ -568,7 +617,7 @@ class Utils
 
     /**
      * Extracts the tag from an XML element.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -577,7 +626,10 @@ class Utils
     public final static void getXMLTag(final StringBuilder out, final String in)
     {
         int pos = 1;
-        if (in.charAt(1) == '/') pos++;
+        if (in.charAt(1) == '/')
+        {
+            pos++;
+        }
         while (Character.isLetterOrDigit(in.charAt(pos)))
         {
             out.append(in.charAt(pos++));
@@ -586,7 +638,7 @@ class Utils
 
     /**
      * Reads an XML element.
-     * 
+     *
      * @param out
      *            The StringBuilder to write to.
      * @param in
@@ -622,28 +674,47 @@ class Utils
             {
                 final StringBuilder temp = new StringBuilder();
                 pos = readXMLUntil(temp, in, pos, ' ', '/', '>');
-                if (pos == -1) return -1;
+                if (pos == -1)
+                {
+                    return -1;
+                }
                 final String tag = temp.toString().trim().toLowerCase();
                 if (HTML.isUnsafeHtmlElement(tag))
                 {
                     out.append("&lt;");
-                    if (isCloseTag) out.append('/');
-                    out.append(temp);
                 }
+                else
+                {
+                    out.append("<");
+                }
+                if (isCloseTag)
+                {
+                    out.append('/');
+                }
+                out.append(temp);
             }
             else
             {
                 out.append('<');
-                if (isCloseTag) out.append('/');
+                if (isCloseTag)
+                {
+                    out.append('/');
+                }
                 pos = readXMLUntil(out, in, pos, ' ', '/', '>');
             }
-            if (pos == -1) return -1;
+            if (pos == -1)
+            {
+                return -1;
+            }
             pos = readXMLUntil(out, in, pos, '/', '>');
             if (in.charAt(pos) == '/')
             {
                 out.append(" /");
                 pos = readXMLUntil(out, in, pos + 1, '>');
-                if (pos == -1) return -1;
+                if (pos == -1)
+                {
+                    return -1;
+                }
             }
             if (in.charAt(pos) == '>')
             {
@@ -651,7 +722,7 @@ class Utils
                 return pos;
             }
         }
-        catch (StringIndexOutOfBoundsException e)
+        catch (final StringIndexOutOfBoundsException e)
         {
             return -1;
         }
@@ -661,7 +732,7 @@ class Utils
     /**
      * Appends the given string to the given StringBuilder, replacing '&amp;',
      * '&lt;' and '&gt;' by their respective HTML entities.
-     * 
+     *
      * @param out
      *            The StringBuilder to append to.
      * @param value
@@ -669,7 +740,7 @@ class Utils
      * @param offset
      *            The character offset into value from where to start
      */
-    public final static void codeEncode(StringBuilder out, String value, int offset)
+    public final static void codeEncode(final StringBuilder out, final String value, final int offset)
     {
         for (int i = offset; i < value.length(); i++)
         {
@@ -693,13 +764,13 @@ class Utils
 
     /**
      * Removes trailing <code>`</code> or <code>~</code> and trims spaces.
-     * 
+     *
      * @param fenceLine
      *            Fenced code block starting line
      * @return Rest of the line after trimming and backtick or tilde removal
      * @since 0.7
      */
-    public final static String getMetaFromFence(String fenceLine)
+    public final static String getMetaFromFence(final String fenceLine)
     {
         for (int i = 0; i < fenceLine.length(); i++)
         {

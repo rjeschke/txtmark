@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ package com.github.rjeschke.txtmark;
 /**
  * An interface for emitting span elements. Currently only used for special
  * links.
- * 
+ *
  * @author René Jeschke (rene_jeschke@yahoo.de)
  */
 public interface SpanEmitter
 {
     /**
      * Emits a span element.
-     * 
+     *
      * @param out
      *            The StringBuilder to append to.
      * @param content

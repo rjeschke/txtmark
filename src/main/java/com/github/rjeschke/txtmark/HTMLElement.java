@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Enum of HTML tags.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 enum HTMLElement

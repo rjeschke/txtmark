@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,32 +26,32 @@ import java.io.StringReader;
 
 /**
  * Markdown processor class.
- * 
+ *
  * <p>
  * Example usage:
  * </p>
- * 
+ *
  * <pre>
  * <code>String result = Processor.process("This is ***TXTMARK***");
  * </code>
  * </pre>
- * 
+ *
  * @author René Jeschke &lt;rene_jeschke@yahoo.de&gt;
  */
 public class Processor
 {
     /** The reader. */
-    private final Reader reader;
+    private final Reader  reader;
     /** The emitter. */
     private final Emitter emitter;
     /** The Configuration. */
-    final Configuration config;
+    final Configuration   config;
     /** Extension flag. */
-    private boolean useExtensions = false;
+    private boolean       useExtensions = false;
 
     /**
      * Constructor.
-     * 
+     *
      * @param reader
      *            The input reader.
      */
@@ -65,7 +65,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML using the given Configuration.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param configuration
@@ -85,7 +85,7 @@ public class Processor
 
     /**
      * Transforms an input String into HTML using the given Configuration.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param configuration
@@ -100,7 +100,7 @@ public class Processor
         {
             return process(new StringReader(input), configuration);
         }
-        catch (IOException e)
+        catch (final IOException e)
         {
             // This _can never_ happen
             return null;
@@ -109,9 +109,11 @@ public class Processor
 
     /**
      * Transforms an input file into HTML using the given Configuration.
-     * 
-     * @param file The File to process.
-     * @param configuration the Configuration
+     *
+     * @param file
+     *            The File to process.
+     * @param configuration
+     *            the Configuration
      * @return The processed String.
      * @throws IOException
      *             if an IO error occurs
@@ -128,7 +130,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML using the given Configuration.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param configuration
@@ -148,7 +150,7 @@ public class Processor
 
     /**
      * Transforms an input String into HTML using the default Configuration.
-     * 
+     *
      * @param input
      *            The String to process.
      * @return The processed String.
@@ -161,7 +163,7 @@ public class Processor
 
     /**
      * Transforms an input String into HTML.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param safeMode
@@ -176,7 +178,7 @@ public class Processor
 
     /**
      * Transforms an input String into HTML.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param decorator
@@ -191,7 +193,7 @@ public class Processor
 
     /**
      * Transforms an input String into HTML.
-     * 
+     *
      * @param input
      *            The String to process.
      * @param decorator
@@ -208,7 +210,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML using the default Configuration.
-     * 
+     *
      * @param file
      *            The File to process.
      * @return The processed String.
@@ -223,7 +225,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param safeMode
@@ -240,7 +242,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param decorator
@@ -257,7 +259,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param decorator
@@ -277,7 +279,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -294,7 +296,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -314,7 +316,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -334,7 +336,7 @@ public class Processor
 
     /**
      * Transforms an input file into HTML.
-     * 
+     *
      * @param file
      *            The File to process.
      * @param encoding
@@ -357,7 +359,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @return The processed String.
@@ -372,7 +374,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param safeMode
@@ -389,7 +391,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param decorator
@@ -406,7 +408,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param decorator
@@ -426,7 +428,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -443,7 +445,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -463,7 +465,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -483,7 +485,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param input
      *            The InputStream to process.
      * @param encoding
@@ -506,7 +508,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML using the default Configuration.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @return The processed String.
@@ -521,7 +523,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param safeMode
@@ -538,7 +540,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param decorator
@@ -555,7 +557,7 @@ public class Processor
 
     /**
      * Transforms an input stream into HTML.
-     * 
+     *
      * @param reader
      *            The Reader to process.
      * @param decorator
@@ -578,7 +580,7 @@ public class Processor
      * <p>
      * Takes care of markdown link references.
      * </p>
-     * 
+     *
      * @return A Block containing all lines.
      * @throws IOException
      *             If an IO error occurred.
@@ -589,34 +591,38 @@ public class Processor
         final StringBuilder sb = new StringBuilder(80);
         int c = this.reader.read();
         LinkRef lastLinkRef = null;
-        while(c != -1)
+        while (c != -1)
         {
             sb.setLength(0);
             int pos = 0;
             boolean eol = false;
-            while(!eol)
+            while (!eol)
             {
-                switch(c)
+                switch (c)
                 {
                 case -1:
                     eol = true;
                     break;
                 case '\n':
                     c = this.reader.read();
-                    if(c == '\r')
+                    if (c == '\r')
+                    {
                         c = this.reader.read();
+                    }
                     eol = true;
                     break;
                 case '\r':
                     c = this.reader.read();
-                    if(c == '\n')
+                    if (c == '\n')
+                    {
                         c = this.reader.read();
+                    }
                     eol = true;
                     break;
                 case '\t':
                 {
                     final int np = pos + (4 - (pos & 3));
-                    while(pos < np)
+                    while (pos < np)
                     {
                         sb.append(' ');
                         pos++;
@@ -625,8 +631,16 @@ public class Processor
                     break;
                 }
                 default:
-                    pos++;
-                    sb.append((char)c);
+                    if (c != '<' || !this.config.panicMode)
+                    {
+                        pos++;
+                        sb.append((char)c);
+                    }
+                    else
+                    {
+                        pos += 4;
+                        sb.append("&lt;");
+                    }
                     c = this.reader.read();
                     break;
                 }
@@ -639,57 +653,63 @@ public class Processor
             // Check for link definitions
             boolean isLinkRef = false;
             String id = null, link = null, comment = null;
-            if(!line.isEmpty && line.leading < 4 && line.value.charAt(line.leading) == '[')
+            if (!line.isEmpty && line.leading < 4 && line.value.charAt(line.leading) == '[')
             {
                 line.pos = line.leading + 1;
                 // Read ID up to ']'
                 id = line.readUntil(']');
                 // Is ID valid and are there any more characters?
-                if(id != null && line.pos + 2 < line.value.length())
+                if (id != null && line.pos + 2 < line.value.length())
                 {
                     // Check for ':' ([...]:...)
-                    if(line.value.charAt(line.pos + 1) == ':')
+                    if (line.value.charAt(line.pos + 1) == ':')
                     {
                         line.pos += 2;
                         line.skipSpaces();
                         // Check for link syntax
-                        if(line.value.charAt(line.pos) == '<')
+                        if (line.value.charAt(line.pos) == '<')
                         {
                             line.pos++;
                             link = line.readUntil('>');
                             line.pos++;
                         }
                         else
+                        {
                             link = line.readUntil(' ', '\n');
+                        }
 
                         // Is link valid?
-                        if(link != null)
+                        if (link != null)
                         {
                             // Any non-whitespace characters following?
-                            if(line.skipSpaces())
+                            if (line.skipSpaces())
                             {
                                 final char ch = line.value.charAt(line.pos);
                                 // Read comment
-                                if(ch == '\"' || ch == '\'' || ch == '(')
+                                if (ch == '\"' || ch == '\'' || ch == '(')
                                 {
                                     line.pos++;
                                     comment = line.readUntil(ch == '(' ? ')' : ch);
                                     // Valid linkRef only if comment is valid
-                                    if(comment != null)
+                                    if (comment != null)
+                                    {
                                         isLinkRef = true;
+                                    }
                                 }
                             }
                             else
+                            {
                                 isLinkRef = true;
+                            }
                         }
                     }
                 }
             }
 
             // To make compiler happy: add != null checks
-            if(isLinkRef && id != null && link != null)
+            if (isLinkRef && id != null && link != null)
             {
-                if(id.toLowerCase().equals("$profile$"))
+                if (id.toLowerCase().equals("$profile$"))
                 {
                     this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
                     lastLinkRef = null;
@@ -700,31 +720,35 @@ public class Processor
                     final LinkRef lr = new LinkRef(link, comment, comment != null
                             && (link.length() == 1 && link.charAt(0) == '*'));
                     this.emitter.addLinkRef(id, lr);
-                    if(comment == null)
+                    if (comment == null)
+                    {
                         lastLinkRef = lr;
+                    }
                 }
             }
             else
             {
                 comment = null;
                 // Check for multi-line linkRef
-                if(!line.isEmpty && lastLinkRef != null)
+                if (!line.isEmpty && lastLinkRef != null)
                 {
                     line.pos = line.leading;
                     final char ch = line.value.charAt(line.pos);
-                    if(ch == '\"' || ch == '\'' || ch == '(')
+                    if (ch == '\"' || ch == '\'' || ch == '(')
                     {
                         line.pos++;
                         comment = line.readUntil(ch == '(' ? ')' : ch);
                     }
-                    if(comment != null)
+                    if (comment != null)
+                    {
                         lastLinkRef.title = comment;
+                    }
 
                     lastLinkRef = null;
                 }
 
                 // No multi-line linkRef, store line
-                if(comment == null)
+                if (comment == null)
                 {
                     line.pos = 0;
                     block.appendLine(line);
@@ -737,7 +761,7 @@ public class Processor
 
     /**
      * Initializes a list block by separating it into list item blocks.
-     * 
+     *
      * @param root
      *            The Block to process.
      */
@@ -745,10 +769,10 @@ public class Processor
     {
         Line line = root.lines;
         line = line.next;
-        while(line != null)
+        while (line != null)
         {
-            final LineType t = line.getLineType(this.useExtensions);
-            if((t == LineType.OLIST || t == LineType.ULIST)
+            final LineType t = line.getLineType(this.config);
+            if ((t == LineType.OLIST || t == LineType.ULIST)
                     || (!line.isEmpty && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST))))
             {
                 root.split(line.previous).type = BlockType.LIST_ITEM;
@@ -760,53 +784,64 @@ public class Processor
 
     /**
      * Recursively process the given Block.
-     * 
+     *
      * @param root
      *            The Block to process.
      * @param listMode
      *            Flag indicating that we're in a list item block.
      */
-    private void recurse(final Block root, boolean listMode)
+    private void recurse(final Block root, final boolean listMode)
     {
         Block block, list;
         Line line = root.lines;
 
-        if(listMode)
+        if (listMode)
         {
-            root.removeListIndent(this.useExtensions);
-            if(this.useExtensions && root.lines != null && root.lines.getLineType(this.useExtensions) != LineType.CODE)
+            root.removeListIndent(this.config);
+            if (this.useExtensions && root.lines != null && root.lines.getLineType(this.config) != LineType.CODE)
             {
                 root.id = root.lines.stripID();
             }
         }
 
-        while(line != null && line.isEmpty)
-            line = line.next;
-        if(line == null)
-            return;
-
-        while(line != null)
+        while (line != null && line.isEmpty)
         {
-            final LineType type = line.getLineType(this.useExtensions);
-            switch(type)
+            line = line.next;
+        }
+        if (line == null)
+        {
+            return;
+        }
+
+        while (line != null)
+        {
+            final LineType type = line.getLineType(this.config);
+            switch (type)
             {
             case OTHER:
             {
                 final boolean wasEmpty = line.prevEmpty;
-                while(line != null && !line.isEmpty)
+                while (line != null && !line.isEmpty)
                 {
-                    final LineType t = line.getLineType(this.useExtensions);
-                    if((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
+                    final LineType t = line.getLineType(this.config);
+                    if ((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
+                    {
                         break;
-                    if(this.useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
+                    }
+                    if (this.useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
+                    {
                         break;
-                    if(t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2 || t == LineType.HR
+                    }
+                    if (t == LineType.HEADLINE || t == LineType.HEADLINE1 || t == LineType.HEADLINE2
+                            || t == LineType.HR
                             || t == LineType.BQUOTE || t == LineType.XML)
+                    {
                         break;
+                    }
                     line = line.next;
                 }
                 final BlockType bt;
-                if(line != null && !line.isEmpty)
+                if (line != null && !line.isEmpty)
                 {
                     bt = (listMode && !wasEmpty) ? BlockType.NONE : BlockType.PARAGRAPH;
                     root.split(line.previous).type = bt;
@@ -823,7 +858,7 @@ public class Processor
                 break;
             }
             case CODE:
-                while(line != null && (line.isEmpty || line.leading > 3))
+                while (line != null && (line.isEmpty || line.leading > 3))
                 {
                     line = line.next;
                 }
@@ -832,7 +867,7 @@ public class Processor
                 block.removeSurroundingEmptyLines();
                 break;
             case XML:
-                if(line.previous != null)
+                if (line.previous != null)
                 {
                     // FIXME ... this looks wrong
                     root.split(line.previous);
@@ -842,11 +877,13 @@ public class Processor
                 line = root.lines;
                 break;
             case BQUOTE:
-                while(line != null)
+                while (line != null)
                 {
-                    if(!line.isEmpty
-                            && (line.prevEmpty && line.leading == 0 && line.getLineType(this.useExtensions) != LineType.BQUOTE))
+                    if (!line.isEmpty
+                            && (line.prevEmpty && line.leading == 0 && line.getLineType(this.config) != LineType.BQUOTE))
+                    {
                         break;
+                    }
                     line = line.next;
                 }
                 block = root.split(line != null ? line.previous : root.lineTail);
@@ -857,7 +894,7 @@ public class Processor
                 line = root.lines;
                 break;
             case HR:
-                if(line.previous != null)
+                if (line.previous != null)
                 {
                     // FIXME ... this looks wrong
                     root.split(line.previous);
@@ -868,53 +905,65 @@ public class Processor
                 break;
             case FENCED_CODE:
                 line = line.next;
-                while(line != null)
+                while (line != null)
                 {
-                    if(line.getLineType(this.useExtensions) == LineType.FENCED_CODE)
+                    if (line.getLineType(this.config) == LineType.FENCED_CODE)
+                    {
                         break;
+                    }
                     // TODO ... is this really necessary? Maybe add a special
                     // flag?
                     line = line.next;
                 }
-                if(line != null)
+                if (line != null)
+                {
                     line = line.next;
+                }
                 block = root.split(line != null ? line.previous : root.lineTail);
                 block.type = BlockType.FENCED_CODE;
                 block.meta = Utils.getMetaFromFence(block.lines.value);
                 block.lines.setEmpty();
-                if(block.lineTail.getLineType(this.useExtensions) == LineType.FENCED_CODE)
+                if (block.lineTail.getLineType(this.config) == LineType.FENCED_CODE)
+                {
                     block.lineTail.setEmpty();
+                }
                 block.removeSurroundingEmptyLines();
                 break;
             case HEADLINE:
             case HEADLINE1:
             case HEADLINE2:
-                if(line.previous != null)
+                if (line.previous != null)
                 {
                     root.split(line.previous);
                 }
-                if(type != LineType.HEADLINE)
+                if (type != LineType.HEADLINE)
                 {
                     line.next.setEmpty();
                 }
                 block = root.split(line);
                 block.type = BlockType.HEADLINE;
-                if(type != LineType.HEADLINE)
+                if (type != LineType.HEADLINE)
+                {
                     block.hlDepth = type == LineType.HEADLINE1 ? 1 : 2;
-                if(this.useExtensions)
+                }
+                if (this.useExtensions)
+                {
                     block.id = block.lines.stripID();
+                }
                 block.transfromHeadline();
                 root.removeLeadingEmptyLines();
                 line = root.lines;
                 break;
             case OLIST:
             case ULIST:
-                while(line != null)
+                while (line != null)
                 {
-                    final LineType t = line.getLineType(this.useExtensions);
-                    if(!line.isEmpty
+                    final LineType t = line.getLineType(this.config);
+                    if (!line.isEmpty
                             && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
+                    {
                         break;
+                    }
                     line = line.next;
                 }
                 list = root.split(line != null ? line.previous : root.lineTail);
@@ -923,9 +972,9 @@ public class Processor
                 list.lineTail.nextEmpty = false;
                 list.removeSurroundingEmptyLines();
                 list.lines.prevEmpty = list.lineTail.nextEmpty = false;
-                initListBlock(list);
+                this.initListBlock(list);
                 block = list.blocks;
-                while(block != null)
+                while (block != null)
                 {
                     this.recurse(block, true);
                     block = block.next;
@@ -941,7 +990,7 @@ public class Processor
 
     /**
      * Does all the processing.
-     * 
+     *
      * @return The processed String.
      * @throws IOException
      *             If an IO error occurred.
@@ -954,7 +1003,7 @@ public class Processor
 
         this.recurse(parent, false);
         Block block = parent.blocks;
-        while(block != null)
+        while (block != null)
         {
             this.emitter.emit(out, block);
             block = block.next;

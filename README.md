@@ -1,5 +1,5 @@
 # Txtmark - Java markdown processor
-Copyright (C) 2011 René Jeschke <rene_jeschke@yahoo.de>  
+Copyright (C) 2011-2015 René Jeschke <rene_jeschke@yahoo.de>  
 See LICENSE.txt for licensing information.
 
 ***
@@ -135,11 +135,19 @@ Just put this line into your Txtmark file like you would use reference links.
 
         ```
         This is code!
+        ```
+
         ~~~
+        Another code block
+        ~~~
+
+        ~~~
+        You can also mix flavours
+        ```
 
     Fenced code block delimiter lines do start with at least three of `` or `~
 
-    It is possible to add meta data to the beginning line. Everything trailing after `` or `~ is then cosidered meta data. These are all valid meta lines:
+    It is possible to add meta data to the beginning line. Everything trailing after `` or `~ is then considered meta data. These are all valid meta lines:
 
         ```python
         ~ ~ ~ ~ ~java
@@ -171,6 +179,8 @@ Just put this line into your Txtmark file like you would use reference links.
                 {
                     try
                     {
+                        // Utils#highlight(...) is not included with txtmark, it's sole purpose
+                        // is to show what the meta can be used for
                         out.append(Utils.highlight(lines, meta));
                         out.append('\n');
                     }
@@ -319,13 +329,6 @@ Benchmark system:
 [Actuarius] version: 0.2  
 [PegDown] version: 0.8.5.4  
 [Knockoff] version: 0.7.3-15  
-
-***
-
-### TODO
-
-*   Inline HTML control (configurable escaping of unallowed HTML tags)
-*   Code clean-ups
 
 ***
 
