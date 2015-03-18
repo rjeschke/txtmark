@@ -17,21 +17,21 @@ package com.github.rjeschke.txtmark;
 
 /**
  * A markdown link reference.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 class LinkRef
 {
     /** The link. */
-    public final String link;
+    public final String  link;
     /** The optional comment/title. */
-    public String title;
+    public String        title;
     /** Flag indicating that this is an abbreviation. */
     public final boolean isAbbrev;
 
     /**
      * Constructor.
-     * 
+     *
      * @param link
      *            The link.
      * @param title

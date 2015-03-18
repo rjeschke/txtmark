@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Block type enum.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 enum BlockType

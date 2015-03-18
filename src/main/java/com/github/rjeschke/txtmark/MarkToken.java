@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Markdown token enumeration.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 enum MarkToken

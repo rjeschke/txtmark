@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Line type enumeration.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 enum LineType

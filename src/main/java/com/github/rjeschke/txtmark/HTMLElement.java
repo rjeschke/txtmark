@@ -17,7 +17,7 @@ package com.github.rjeschke.txtmark;
 
 /**
  * Enum of HTML tags.
- * 
+ *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
 enum HTMLElement
