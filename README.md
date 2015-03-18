@@ -135,11 +135,19 @@ Just put this line into your Txtmark file like you would use reference links.
 
         ```
         This is code!
+        ```
+
         ~~~
+        Another code block
+        ~~~
+
+        ~~~
+        You can also mix flavours
+        ```
 
     Fenced code block delimiter lines do start with at least three of `` or `~
 
-    It is possible to add meta data to the beginning line. Everything trailing after `` or `~ is then cosidered meta data. These are all valid meta lines:
+    It is possible to add meta data to the beginning line. Everything trailing after `` or `~ is then considered meta data. These are all valid meta lines:
 
         ```python
         ~ ~ ~ ~ ~java
@@ -171,6 +179,8 @@ Just put this line into your Txtmark file like you would use reference links.
                 {
                     try
                     {
+                        // Utils#highlight(...) is not included with txtmark, it's sole purpose
+                        // is to show what the meta can be used for
                         out.append(Utils.highlight(lines, meta));
                         out.append('\n');
                     }
