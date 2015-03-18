@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Generic command line parser.
  *
- * This is a copy from neetutils-base.
+ * This is a copy from {@link https://github.com/rjeschke/neetutils-base}.
  *
  * @author René Jeschke (rene_jeschke@yahoo.de)
  */

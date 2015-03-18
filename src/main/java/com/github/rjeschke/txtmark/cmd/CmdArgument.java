@@ -23,6 +23,8 @@ import java.lang.annotation.Target;
 /**
  * Annotation for command line parsing.
  *
+ * This is a copy from {@link https://github.com/rjeschke/neetutils-base}.
+ *
  * @author René Jeschke (rene_jeschke@yahoo.de)
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -30,12 +32,14 @@ import java.lang.annotation.Target;
 @interface CmdArgument
 {
     /**
-     * Long name for argument. Default is 'none'. Either one or both of {@code l}, {@code s} need to be provided.
+     * Long name for argument. Default is 'none'. Either one or both of
+     * {@code l}, {@code s} need to be provided.
      */
     String l() default "";
 
     /**
-     * Short name (character) for argument. Default is 'none'. Either one or both of {@code l}, {@code s} need to be provided.
+     * Short name (character) for argument. Default is 'none'. Either one or
+     * both of {@code l}, {@code s} need to be provided.
      */
     char s() default '\0';
 
@@ -55,7 +59,8 @@ import java.lang.annotation.Target;
     Class<?> listType() default String.class;
 
     /**
-     * Set to {@code true} if this is a switch. Requires a {@code boolean} field which gets set to {@code true} when this argument is provided.
+     * Set to {@code true} if this is a switch. Requires a {@code boolean} field
+     * which gets set to {@code true} when this argument is provided.
      */
     boolean isSwitch() default false;
 
@@ -65,12 +70,15 @@ import java.lang.annotation.Target;
     boolean required() default false;
 
     /**
-     * Set to {@code true} to set this as a catch-all argument. Requires a {@code List} field and will parse all arguments following this switch into the list.
+     * Set to {@code true} to set this as a catch-all argument. Requires a
+     * {@code List} field and will parse all arguments following this switch
+     * into the list.
      */
     boolean catchAll() default false;
 
     /**
-     * Set to {@code false} to disable automatic default value printing for this argument.
+     * Set to {@code false} to disable automatic default value printing for this
+     * argument.
      */
     boolean printDefault() default true;
 }
