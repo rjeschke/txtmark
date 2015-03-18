@@ -23,7 +23,7 @@ import sys
 import subprocess
 
 group_id = "com.github.rjeschke"
-artifact = "txtmark" 
+artifact = "txtmark"
 jar_dest = os.path.join(os.path.expanduser("~"), ".txtmark_jar", "txtmark.jar")
 
 oss_snapshots = "https://oss.sonatype.org/content/repositories/snapshots"
@@ -38,7 +38,7 @@ def mkdirs(path):
         os.makedirs(path)
     except OSError as e:
         if e.errno != errno.EEXIST or not os.path.isdir(path):
-            raise        
+            raise
 
 
 def read_mvn_infos(url):
@@ -54,7 +54,7 @@ def read_mvn_infos(url):
             last_modified = long(line[13:-14])
         elif not latest and re.match("^<version>.+</version>$", line):
             version = line[9:-10]
-    
+
     if latest:
         return [latest, last_modified]
     return [version, last_modified]
@@ -71,7 +71,7 @@ def get_snapshot_version(url, version):
         elif build_number == 0 and re.match("^<buildNumber>.*</buildNumber>$", line):
             build_number = int(line[13:-14])
     return url + "/" + artifact + "-" + version[:version.find("-")] + "-" + timestamp + "-" + str(build_number) + ".jar" 
-        
+
 
 def download(is_snap, version):
     u = None
@@ -82,25 +82,30 @@ def download(is_snap, version):
 
     response = urllib2.urlopen(u)
     with open(jar_dest, "wb") as fd:
-        fd.write(response.read())     
+        fd.write(response.read())
 
 
-def fetch_artifact():
-    if not os.path.exists(jar_dest):
+def fetch_artifact(force_update):
+    if force_update or not os.path.exists(jar_dest):
         mkdirs(os.path.dirname(jar_dest))
         rel = read_mvn_infos(rel_url)
         snp = read_mvn_infos(snap_url)
-        
+
         if snp[1] > rel[1]:
             download(True, snp[0])
         else:
             download(False, rel[0])
-        
+
 
 if __name__ == "__main__":
-    fetch_artifact()
-    
+    force_update = False
+    if len(sys.argv) > 1:
+        force_update = sys.argv[1] == "-u" or sys.argv[1] == "--update"
+
+    fetch_artifact(force_update)
+
     cmd = ["java", "-cp", jar_dest, "com.github.rjeschke.txtmark.cmd.Run"]
-    cmd.extend(sys.argv[1:])
-    
+    cmd.extend(sys.argv[2 if force_update else 1:])
+
     exit(subprocess.call(cmd))
+
