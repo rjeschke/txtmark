@@ -242,7 +242,7 @@ public class Configuration
          * @param panic
          *            whether to enable or not
          * @return This builder.
-         * @sine 0.12
+         * @since 0.12
          */
         public Builder setEnablePanicMode(final boolean panic)
         {
@@ -255,7 +255,7 @@ public class Configuration
          * every {@code <} encountered will then be translated into {@code &lt;}
          *
          * @return This builder.
-         * @sine 0.12
+         * @since 0.12
          */
         public Builder enablePanicMode()
         {
