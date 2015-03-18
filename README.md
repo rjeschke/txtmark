@@ -11,7 +11,8 @@ See LICENSE.txt for licensing information.
         String result = txtmark.Processor.process("This is ***TXTMARK***");
     
 *   It is fast (see below)  
-    ... well, it is the fastest markdown processor on the JVM right now.
+    ... *well, it is the fastest markdown processor on the JVM right now.*
+    (This might be outdated, but txtmark is still flippin' fast.)
 
 *   It does not depend on other libraries, so classpathing `txtmark.jar` is
     sufficient to use Txtmark in your project.
@@ -22,7 +23,7 @@ For an in-depth explanation of markdown have a look at the original [Markdown Sy
 
 ### Maven repository
 
-Txtmark is now available as a maven artifact without additional repository entries. Have a look [here] (http://search.maven.org/#search|ga|1|txtmark).
+Txtmark is available on [maven central](http://search.maven.org/#search|ga|1|txtmark).
 
 ***
 
