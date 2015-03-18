@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2015 René Jeschke <rene_jeschke@yahoo.de>
+ * Copyright (C) 2015 René Jeschke <rene_jeschke@yahoo.de>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package com.github.rjeschke.txtmark.cmd;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -27,9 +28,9 @@ import java.util.List;
 import com.github.rjeschke.txtmark.Configuration;
 import com.github.rjeschke.txtmark.Processor;
 
-public class Run
+public final class Run
 {
-    public static void printUsage()
+    private final static void printUsage()
     {
         try
         {
@@ -72,6 +73,16 @@ public class Run
         if (ta.forceExtendedProfile)
         {
             cfgBuilder.forceExtentedProfile();
+        }
+
+        if (ta.highlighter != null && !ta.highlighter.isEmpty())
+        {
+            if (!new File(ta.highlighter).exists())
+            {
+                System.err.println("Program '" + ta.highlighter + "' not found");
+                System.exit(1);
+            }
+            cfgBuilder.setCodeBlockEmitter(new CodeBlockEmitter(ta.encoding, ta.highlighter));
         }
 
         final Configuration config = cfgBuilder.build();

@@ -15,7 +15,7 @@
  */
 package com.github.rjeschke.txtmark.cmd;
 
-class TxtmarkArguments
+final class TxtmarkArguments
 {
     @CmdArgument(l = "help", s = 'h', isSwitch = true, desc = "prints a summary of command line arguments.")
     public boolean printHelp            = false;
@@ -32,6 +32,9 @@ class TxtmarkArguments
     @CmdArgument(l = "encoding", desc = "sets the IO encoding.")
     public String  encoding             = "UTF-8";
 
-    @CmdArgument(l = "out-file", s = 'o', desc = "specifies output filename")
+    @CmdArgument(l = "out-file", s = 'o', desc = "specifies the output filename, writes to stdout otherwise")
     public String  outFile              = null;
+
+    @CmdArgument(l = "highlighter", desc = "specifies a program [meta in-file outfile] that should be used for highlighting fenced code blocks")
+    public String  highlighter          = null;
 }
