@@ -332,13 +332,6 @@ Benchmark system:
 
 ***
 
-### TODO
-
-*   Inline HTML control (configurable escaping of unallowed HTML tags)
-*   Code clean-ups
-
-***
-
 ### Mentioned/related projects
 
 [Markdown] is Copyright (C) 2004 by John Gruber  
