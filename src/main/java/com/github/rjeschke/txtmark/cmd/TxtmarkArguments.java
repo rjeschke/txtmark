@@ -38,6 +38,8 @@ final class TxtmarkArguments
     @CmdArgument(l = "out-file", s = 'o', desc = "specifies the output filename, writes to stdout otherwise")
     public String  outFile              = null;
 
-    @CmdArgument(l = "highlighter", desc = "specifies a program [meta in-file outfile] that should be used for highlighting fenced code blocks")
+    @CmdArgument(l = "highlighter", desc = "full path to a program taking three arguments [meta in-file out-file] "
+            + "that should be used for highlighting fenced code blocks. 'in-file' contains the text to be highlighted/escaped, "
+            + "the result is expected to be written to 'out-file'")
     public String  highlighter          = null;
 }
