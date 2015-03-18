@@ -130,6 +130,61 @@ Just put this line into your Txtmark file like you would use reference links.
     which will produce
     
         This is <abbr title="Fast distributed revision control system">Git</abbr>!
+
+*   Fenced code blocks
+
+        ```
+        This is code!
+        ~~~
+
+    Fenced code block delimiter lines do start with at least three of `` or `~
+
+    It is possible to add meta data to the beginning line. Everything trailing after `` or `~ is then cosidered meta data. These are all valid meta lines:
+
+        ```python
+        ~ ~ ~ ~ ~java
+        ``` ``` ``` this is even more meta
+
+    The meta information that you provide here can be used with a `BlockEmitter` to include e.g. syntax highlighted code blocks. Here's an example:
+
+        public class CodeBlockEmitter implements BlockEmitter
+        {
+            private static void append(StringBuilder out, List<String> lines)
+            {
+                out.append("<pre class=\"pre_no_hl\">");
+                for (final String l : lines)
+                {
+                    Utils.escapedAdd(out, l);
+                    out.append('\n');
+                }
+                out.append("</pre>");
+            }
+        
+            @Override
+            public void emitBlock(StringBuilder out, List<String> lines, String meta)
+            {
+                if (Strings.isEmpty(meta))
+                {
+                    append(out, lines);
+                }
+                else
+                {
+                    try
+                    {
+                        out.append(Utils.highlight(lines, meta));
+                        out.append('\n');
+                    }
+                    catch (final IOException e)
+                    {
+                        // Ignore or do something, still, pump out the lines
+                        append(out, lines);
+                    }
+                }
+            }
+        }
+
+    You can then set the `BlockEmitter` in the txtmark `Configuration` using `Configuration.Builder#setCodeBlockEmitter(BlockEmitter emitter)`.
+
         
 ***
 
