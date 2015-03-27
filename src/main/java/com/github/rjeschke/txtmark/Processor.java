@@ -981,6 +981,20 @@ public class Processor
                 }
                 list.expandListParagraphs();
                 break;
+            case TABLE:
+                line = line.next.next;//Skip Line(---|---|---|---)
+                while (line != null) {
+                    if (line.isEmpty || !line.value.contains("|")) {
+                        break;
+                    }
+                    line = line.next;
+                }
+                if (line != null) {
+                    line = line.next;
+                }
+                block = root.split(line != null ? line.previous : root.lineTail);
+                block.type = BlockType.TABLE;
+                break;
             default:
                 line = line.next;
                 break;

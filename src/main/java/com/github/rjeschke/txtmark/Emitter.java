@@ -179,6 +179,9 @@ class Emitter
         case FENCED_CODE:
             this.emitCodeLines(out, block.lines, block.meta, false);
             break;
+        case TABLE:
+            this.emitTableLines(out,block.lines);
+            break;
         case XML:
             this.emitRawLines(out, block.lines);
             break;
@@ -1044,5 +1047,48 @@ class Emitter
                 line = line.next;
             }
         }
+    }
+
+    /**
+     * Writes a table block into the StringBuilder.
+     *
+     * @param out The StringBuilder to write to.
+     *
+     * @param line The lines to write.
+     */
+    private void emitTableLines (StringBuilder out, Line line) {
+        String[] tableHead = line.value.split("\\|");
+        line = line.next.next;//Skip ---|---|---...
+
+        out.append("<table>");
+        // <thead><tr><th>xxx</th>...</tr></thead>
+        out.append("<tableHead><tr>");
+        for (String s : tableHead) {
+            out.append("<th>").append(s).append("</th>");
+        }
+        out.append("</tr></tableHead>");
+
+        // <tbody><tr><td>xxx</td>...</tr></tbody>
+        if(line != null && !line.isEmpty) {
+            out.append("<tbody>");
+            while (line != null) {
+                if (!line.isEmpty) {
+                    out.append("<tr>");
+                    String[] tds = line.value.split("\\|");
+
+                    for (int i = 0; i < tableHead.length; i++) {
+                        if(i<tds.length){
+                            out.append("<td>").append(tds[i]).append("</td>");
+                        }else{
+                            out.append("<td>").append("").append("</td>");
+                        }
+                    }
+                    out.append("</tr>");
+                }
+                line = line.next;
+            }
+            out.append("</tbody>");
+        }
+        out.append("</table>");
     }
 }

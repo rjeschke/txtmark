@@ -296,6 +296,12 @@ class Line
             return LineType.BQUOTE;
         }
 
+        if(this.leading == 0 && this.value.matches("(.+\\|)+.+") && this.next != null && this.next.value != null && this.next.value.matches("(-+\\|)*-*")){
+            //First Line Looks Like:xxx|xxx|xxx|xxx
+            //Second Line Looks Like:---|---|---|---
+            return LineType.TABLE;
+        }
+
         if (configuration.forceExtendedProfile)
         {
             if (this.value.length() - this.leading - this.trailing > 2)
