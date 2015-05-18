@@ -80,6 +80,7 @@ class Emitter
                 Utils.appendCode(out, root.id, 0, root.id.length());
                 out.append('"');
             }
+            if(!(config.decorator instanceof NullDecorator))
             out.append('>');
             break;
         case PARAGRAPH:
@@ -107,7 +108,8 @@ class Emitter
                 Utils.appendCode(out, root.id, 0, root.id.length());
                 out.append('"');
             }
-            out.append('>');
+            if(!(config.decorator instanceof NullDecorator))
+                out.append('>');
             break;
         }
 
@@ -841,7 +843,7 @@ class Emitter
             if(!line.isEmpty)
             {
                 in.append(line.value.substring(line.leading, line.value.length() - line.trailing));
-                if(line.trailing >= 2)
+                if(line.trailing >= config.newLineTriggerLength)
                     in.append("<br />");
             }
             if(line.next != null)
