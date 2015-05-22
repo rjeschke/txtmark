@@ -5,6 +5,7 @@ release/
 .classpath
 .project
 target/
+.idea
 *~
 *.releaseBackup
 release.properties
