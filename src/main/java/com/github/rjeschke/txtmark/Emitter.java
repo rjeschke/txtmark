@@ -599,7 +599,8 @@ class Emitter
                 {
                     out.append(in.charAt(pos));
                 }
-            	break; 
+            	break;
+            case EM_STAR:
             case EM_UNDERSCORE:
                 temp.setLength(0);
                 b = this.recursiveEmitLine(temp, in, pos + 1, mt);
