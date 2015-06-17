@@ -236,7 +236,7 @@ public class DefaultDecorator implements Decorator
     }
 
     /** @see com.github.rjeschke.txtmark.Decorator#closeImage(StringBuilder) */
-     @Override
+    @Override
     public void closeImage(final StringBuilder out)
     {
         out.append(" />");
