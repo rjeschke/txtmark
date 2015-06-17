@@ -25,6 +25,8 @@ enum MarkToken
     /** No token. */
     NONE,
     /** &#x2a; */
+    PLUS, 				// x+x
+    MINUS,				// x-x
     EM_STAR,            // x*x
     /** _ */
     EM_UNDERSCORE,      // x_x

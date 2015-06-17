@@ -518,9 +518,9 @@ final class CmdLineParser
                     throw new IOException("Illegal type: " + type.toString().toLowerCase());
                 }
             }
-            catch (final Throwable t)
+            catch (final Exception ex)
             {
-                throw new IOException("Parsing error for: " + this.toString() + "; '" + value + "'", t);
+                throw new IOException("Parsing error for: " + this.toString() + "; '" + value + "'", ex);
             }
         }
 

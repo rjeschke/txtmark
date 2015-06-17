@@ -241,4 +241,28 @@ public class DefaultDecorator implements Decorator
     {
         out.append(" />");
     }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openUnderlined(StringBuilder) */
+	@Override
+	public void openUnderlined(StringBuilder out) {
+		 out.append("<u>");
+	}
+
+	 /** @see com.github.rjeschke.txtmark.Decorator#closeUnderlined(StringBuilder) */
+	@Override
+	public void closeUnderlined(StringBuilder out) {
+		 out.append("</u>");
+	}
+
+	 /** @see com.github.rjeschke.txtmark.Decorator#openStrikethrough(StringBuilder) */
+	@Override
+	public void openStrikethrough(StringBuilder out) {
+		out.append("<s>");
+	}
+
+	 /** @see com.github.rjeschke.txtmark.Decorator#closeStrikethrough(StringBuilder) */
+	@Override
+	public void closeStrikethrough(StringBuilder out) {
+		out.append("</s>");
+	}
 }
