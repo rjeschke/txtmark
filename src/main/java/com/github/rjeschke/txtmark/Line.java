@@ -530,13 +530,14 @@ class Line
         {
             element = temp.toString();
             temp.setLength(0);
-            Utils.getXMLTag(temp, element);
-            tag = temp.toString().toLowerCase();
-            if (!HTML.isHtmlBlockElement(tag))
+            Utils.getXMLTag(temp, element, 0);
+            tag = temp.toString();
+            if (!HTML.isHtmlBlockElement(tag.toLowerCase()) && !Utils.isQName(tag))
             {
                 return false;
             }
-            if (tag.equals("hr"))
+            if (tag.equalsIgnoreCase("hr") ||
+                    ((element.length() > 2) && (element.charAt(element.length() - 2) == '/')))
             {
                 this.xmlEndLine = this;
                 return true;
@@ -563,9 +564,9 @@ class Line
                     {
                         element = temp.toString();
                         temp.setLength(0);
-                        Utils.getXMLTag(temp, element);
-                        tag = temp.toString().toLowerCase();
-                        if (HTML.isHtmlBlockElement(tag) && !tag.equals("hr"))
+                        Utils.getXMLTag(temp, element, 0);
+                        tag = temp.toString();
+                        if ((HTML.isHtmlBlockElement(tag.toLowerCase()) && !tag.equalsIgnoreCase("hr")) || Utils.isQName(tag))
                         {
                             if (element.charAt(1) == '/')
                             {
@@ -577,7 +578,10 @@ class Line
                             }
                             else
                             {
-                                tags.addLast(tag);
+                                if ((element.length() <= 2) || (element.charAt(element.length() - 2) != '/'))
+                                {
+                                    tags.addLast(tag);
+                                }
                             }
                         }
                         if (tags.size() == 0)

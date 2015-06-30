@@ -602,16 +602,44 @@ class Utils
      * @param in
      *            Input StringBuilder.
      */
-    public final static void getXMLTag(final StringBuilder out, final StringBuilder in)
+    public final static int getXMLTag(final StringBuilder out, final String in, final int start)
     {
-        int pos = 1;
-        if (in.charAt(1) == '/')
+        int pos = start + 1;
+        if (in.charAt(pos) == '/')
         {
             pos++;
         }
-        while (Character.isLetterOrDigit(in.charAt(pos)))
+
+        final int nmStart = pos;
+
+        // Read an NCName
+        if (isNameStartChar(in.charAt(pos)))
         {
-            out.append(in.charAt(pos++));
+            pos++;
+            while (isNameChar(in.charAt(pos)))
+            {
+                pos++;
+            }
+
+            // optional - read the remainder of a prefixed name (QName)
+            if (in.charAt(pos) == ':')
+            {
+                // Read the local part
+                if (isNameStartChar(in.charAt(pos)))
+                {
+                    pos++;
+                    while (isNameChar(in.charAt(pos)))
+                    {
+                        pos++;
+                    }
+                }
+            }
+            out.append(in, nmStart, pos);
+            return pos;
+        }
+        else
+        {
+            return -1;
         }
     }
 
@@ -625,15 +653,19 @@ class Utils
      */
     public final static void getXMLTag(final StringBuilder out, final String in)
     {
-        int pos = 1;
-        if (in.charAt(1) == '/')
-        {
-            pos++;
-        }
-        while (Character.isLetterOrDigit(in.charAt(pos)))
-        {
-            out.append(in.charAt(pos++));
-        }
+        getXMLTag(out, in, 0);
+    }
+
+    public final static boolean isNameStartChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '_';
+    }
+
+    public final static boolean isNameChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '-' || c == '_' || c == '.';
+    }
+
+    public final static boolean isQName(String name) {
+        return name.indexOf(':') > 0;
     }
 
     /**
@@ -673,19 +705,19 @@ class Utils
             if (safeMode)
             {
                 final StringBuilder temp = new StringBuilder();
-                pos = readXMLUntil(temp, in, pos, ' ', '/', '>');
+                pos = getXMLTag(temp, in, start);
                 if (pos == -1)
                 {
                     return -1;
                 }
-                final String tag = temp.toString().trim().toLowerCase();
-                if (HTML.isUnsafeHtmlElement(tag))
+                final String tag = temp.toString();
+                if (HTML.isUnsafeHtmlElement(tag.toLowerCase()))
                 {
                     out.append("&lt;");
                 }
                 else
                 {
-                    out.append("<");
+                    out.append('<');
                 }
                 if (isCloseTag)
                 {
@@ -700,7 +732,7 @@ class Utils
                 {
                     out.append('/');
                 }
-                pos = readXMLUntil(out, in, pos, ' ', '/', '>');
+                pos = getXMLTag(out, in, start);
             }
             if (pos == -1)
             {
