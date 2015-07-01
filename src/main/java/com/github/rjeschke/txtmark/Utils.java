@@ -604,7 +604,13 @@ class Utils
      */
     public final static int getXMLTag(final StringBuilder out, final String in, final int start)
     {
+        final int len = in.length();
         int pos = start + 1;
+
+        if (len < 3)
+        {
+            return -1;
+        }
         if (in.charAt(pos) == '/')
         {
             pos++;
@@ -612,26 +618,22 @@ class Utils
 
         final int nmStart = pos;
 
-        // Read an NCName
+        // Read a QName
         if (isNameStartChar(in.charAt(pos)))
         {
             pos++;
-            while (isNameChar(in.charAt(pos)))
+            while (pos < len && isQNameChar(in.charAt(pos)))
             {
                 pos++;
             }
 
-            // optional - read the remainder of a prefixed name (QName)
-            if (in.charAt(pos) == ':')
+            // Check for a legitimate separator
+            if (pos < len)
             {
-                // Read the local part
-                if (isNameStartChar(in.charAt(pos)))
+                final char c = in.charAt(pos);
+                if ((c != ' ') && (c != '/') && (c != '>'))
                 {
-                    pos++;
-                    while (isNameChar(in.charAt(pos)))
-                    {
-                        pos++;
-                    }
+                    return -1;
                 }
             }
             out.append(in, nmStart, pos);
@@ -662,6 +664,10 @@ class Utils
 
     public final static boolean isNameChar(char c) {
         return Character.isLetterOrDigit(c) || c == '-' || c == '_' || c == '.';
+    }
+
+    public final static boolean isQNameChar(char c) {
+        return Character.isLetterOrDigit(c) || c == '-' || c == '_' || c == '.' || c == ':';
     }
 
     public final static boolean isQName(String name) {
