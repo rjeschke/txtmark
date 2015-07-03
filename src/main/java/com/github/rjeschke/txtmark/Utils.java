@@ -696,7 +696,6 @@ class Utils
             if (in.charAt(start + 1) == '/')
             {
                 isCloseTag = true;
-                pos = start + 2;
             }
             else if (in.charAt(start + 1) == '!')
             {
@@ -706,7 +705,6 @@ class Utils
             else
             {
                 isCloseTag = false;
-                pos = start + 1;
             }
             if (safeMode)
             {
