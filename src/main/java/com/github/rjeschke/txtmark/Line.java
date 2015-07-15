@@ -349,7 +349,7 @@ class Line
 
         if (this.value.charAt(this.leading) == '<')
         {
-            if (this.checkHTML())
+            if (this.checkHTML(configuration.forceExtendedProfile))
             {
                 return LineType.XML;
             }
@@ -512,7 +512,7 @@ class Line
      *
      * @return <code>true</code> if it is a valid block.
      */
-    private boolean checkHTML()
+    private boolean checkHTML(boolean extendedProfile)
     {
         final LinkedList<String> tags = new LinkedList<String>();
         final StringBuilder temp = new StringBuilder();
@@ -532,7 +532,7 @@ class Line
             temp.setLength(0);
             Utils.getXMLTag(temp, element, 0);
             tag = temp.toString();
-            if (!HTML.isHtmlBlockElement(tag.toLowerCase()) && !Utils.isQName(tag))
+            if (!HTML.isHtmlBlockElement(tag.toLowerCase()) && (!extendedProfile || !Utils.isQName(tag)))
             {
                 return false;
             }
