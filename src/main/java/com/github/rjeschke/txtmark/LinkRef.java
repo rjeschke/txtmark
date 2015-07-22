@@ -20,7 +20,7 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-class LinkRef
+public class LinkRef
 {
     /** The link. */
     public final String  link;

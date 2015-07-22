@@ -26,7 +26,7 @@ import java.util.LinkedList;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-class Line
+public class Line
 {
     /** Current cursor position. */
     public int     pos;

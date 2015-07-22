@@ -10,3 +10,6 @@ target/
 release.properties
 *.pyc
 
+.idea
+*.iml
+*.ignore.*

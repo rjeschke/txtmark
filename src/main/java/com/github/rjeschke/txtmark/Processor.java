@@ -60,7 +60,7 @@ public class Processor
         this.reader = reader;
         this.config = config;
         this.useExtensions = config.forceExtendedProfile;
-        this.emitter = new Emitter(this.config);
+        this.emitter = config.emitter != null ? config.emitter : new HTMLEmitter(this.config);
     }
 
     /**
@@ -711,7 +711,7 @@ public class Processor
             {
                 if (id.toLowerCase().equals("$profile$"))
                 {
-                    this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
+                    this.emitter.useExtensions(this.useExtensions = link.toLowerCase().equals("extended"));
                     lastLinkRef = null;
                 }
                 else

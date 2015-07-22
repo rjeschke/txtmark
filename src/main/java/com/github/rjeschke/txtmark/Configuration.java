@@ -27,6 +27,7 @@ public class Configuration
     final boolean                     panicMode;
     final String                      encoding;
     final Decorator                   decorator;
+    final Emitter                     emitter;
     final BlockEmitter                codeBlockEmitter;
     final boolean                     forceExtendedProfile;
     final boolean                     allowSpacesInFencedDelimiters;
@@ -65,13 +66,14 @@ public class Configuration
      * Constructor.
      */
     Configuration(final boolean safeMode, final String encoding, final Decorator decorator,
-            final BlockEmitter codeBlockEmitter,
+            final Emitter emitter, final BlockEmitter codeBlockEmitter,
             final boolean forceExtendedProfile, final SpanEmitter specialLinkEmitter,
             final boolean allowSpacesInFencedDelimiters, final boolean panicMode)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
         this.decorator = decorator;
+        this.emitter = emitter;
         this.codeBlockEmitter = codeBlockEmitter;
         this.forceExtendedProfile = forceExtendedProfile;
         this.specialLinkEmitter = specialLinkEmitter;
@@ -103,6 +105,7 @@ public class Configuration
         private boolean      allowSpacesInFencedDelimiters = true;
         private String       encoding                      = "UTF-8";
         private Decorator    decorator                     = new DefaultDecorator();
+        private Emitter      emitter                       = null;
         private BlockEmitter codeBlockEmitter              = null;
         private SpanEmitter  specialLinkEmitter            = null;
 
@@ -191,6 +194,23 @@ public class Configuration
         }
 
         /**
+         * Sets the emitter.
+         *
+         * Default: <code>null</code>
+         *
+         * @param emitter
+         *            The Emitter
+         * @return This builder
+         * @see Emitter
+         * @since 0.14
+         */
+        public Builder setEmitter(final Emitter emitter)
+        {
+            this.emitter = emitter;
+            return this;
+        }
+
+        /**
          * Sets the code block emitter.
          *
          * Default: <code>null</code>
@@ -271,7 +291,7 @@ public class Configuration
          */
         public Configuration build()
         {
-            return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter,
+            return new Configuration(this.safeMode, this.encoding, this.decorator, this.emitter, this.codeBlockEmitter,
                     this.forceExtendedProfile, this.specialLinkEmitter, this.allowSpacesInFencedDelimiters,
                     this.panicMode);
         }

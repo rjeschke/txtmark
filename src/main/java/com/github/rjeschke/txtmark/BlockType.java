@@ -20,7 +20,7 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-enum BlockType
+public enum BlockType
 {
     /** Unspecified. Used for root block and list items without paragraphs. */
     NONE,

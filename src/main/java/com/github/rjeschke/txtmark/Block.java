@@ -15,12 +15,14 @@
  */
 package com.github.rjeschke.txtmark;
 
+import com.github.rjeschke.txtmark.dom.MarkdownDocument;
+
 /**
  * This class represents a block of lines.
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-class Block
+public class Block
 {
     /** This block's type. */
     public BlockType type    = BlockType.NONE;
@@ -49,6 +51,14 @@ class Block
     public boolean hasLines()
     {
         return this.lines != null;
+    }
+
+    /**
+     * @return <code>true</code> if this block contains sub blocks.
+     */
+    public boolean hasBlocks()
+    {
+        return this.blocks != null;
     }
 
     /**
