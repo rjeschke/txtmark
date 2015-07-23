@@ -536,7 +536,7 @@ class Line
             {
                 return false;
             }
-            if (tag.equals("hr"))
+            if (tag.equals("hr") || element.endsWith("/>"))
             {
                 this.xmlEndLine = this;
                 return true;
@@ -565,7 +565,7 @@ class Line
                         temp.setLength(0);
                         Utils.getXMLTag(temp, element);
                         tag = temp.toString().toLowerCase();
-                        if (HTML.isHtmlBlockElement(tag) && !tag.equals("hr"))
+                        if (HTML.isHtmlBlockElement(tag) && !tag.equals("hr") && !element.endsWith("/>"))
                         {
                             if (element.charAt(1) == '/')
                             {
