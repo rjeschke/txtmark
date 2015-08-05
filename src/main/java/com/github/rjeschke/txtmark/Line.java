@@ -296,6 +296,36 @@ class Line
             return LineType.BQUOTE;
         }
 
+        if(configuration.parseTable)
+        {
+            if(this.leading == 0 &&
+                    this.next != null &&
+                    this.next.value != null && this.next.value.matches("[| :-]+"))  //Second Line Looks Like:|---|:---:|---|---
+            {
+                //double check here
+                boolean isTable = true;
+                String[] items = this.next.value.split("\\|");
+                for (int i = 0; i <items.length; i++) {
+                    String item = items[i].trim();
+                    if("".equals(item)){
+                        if (i == 0 || i == items.length - 1) {
+                            continue;
+                        }
+                        isTable = false;
+                        break;
+                    }
+                    if(!item.matches("^:?-+:?$")){
+                        isTable = false ;
+                        break;
+                    }
+                }
+                if(isTable){
+                    return LineType.TABLE;
+                }
+            }
+        }
+
+
         if (configuration.forceExtendedProfile)
         {
             if (this.value.length() - this.leading - this.trailing > 2)

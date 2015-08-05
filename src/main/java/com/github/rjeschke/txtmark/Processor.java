@@ -981,6 +981,22 @@ public class Processor
                 }
                 list.expandListParagraphs();
                 break;
+            case TABLE:
+                int baseCols = (line.next.value.split("\\|")).length;
+                line = line.next.next;//Skip Line(---|---|---|---)
+                while (line != null)
+                {
+                    int curCols = line.value.split("\\|").length;
+                    if (line.isEmpty || !(baseCols==curCols))
+                    {
+                        break;
+                    }
+                    line = line.next;
+                }
+
+                block = root.split(line != null ? line.previous : root.lineTail);
+                block.type = BlockType.TABLE;
+                break;
             default:
                 line = line.next;
                 break;
