@@ -298,9 +298,8 @@ class Line
 
         if(configuration.parseTable)
         {
-            if(this.leading == 0 &&
-                    this.next != null &&
-                    this.next.value != null && this.next.value.matches("[| :-]+"))  //Second Line Looks Like:|---|:---:|---|---
+            if(this.next != null &&
+                    this.next.value != null && this.next.value.matches("^[| :-]+$"))  //Second Line Looks Like:|---|:---:|---|---
             {
                 //double check here
                 boolean isTable = true;

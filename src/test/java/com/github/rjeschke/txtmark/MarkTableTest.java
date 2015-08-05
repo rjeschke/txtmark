@@ -13,6 +13,11 @@ public class MarkTableTest {
             "| -------------  |:------------:|\n" +
             "| col1           | col2         |" ;
 
+    private final String markdownTable2 =
+            " header1        | header2      |\n" +
+                    " -------------  |:------------:|\n" +
+                    " col1           | col2         |" ;
+
     private final String expectedContent = "<table>\n" +
             "<thead><tr><th>header1</th><th>header2</th></tr></thead>\n" +
             "<tbody>\n" +
@@ -48,7 +53,10 @@ public class MarkTableTest {
                 .setEncoding("UTF-8")
                 .build();
         String parsedContent = Processor.process(markdownTable, renderConfig);
-        Assert.assertEquals(parsedContent,expectedContent);
+        Assert.assertEquals(expectedContent,parsedContent);
+
+        parsedContent = Processor.process(markdownTable2, renderConfig);
+        Assert.assertEquals(expectedContent,parsedContent);
     }
 
 }
