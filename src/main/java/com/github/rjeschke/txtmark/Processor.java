@@ -982,11 +982,11 @@ public class Processor
                 list.expandListParagraphs();
                 break;
             case TABLE:
-                int baseCols = (line.next.value.split("\\|")).length;
+                int baseCols = (line.next.value.trim().split("\\|")).length;
                 line = line.next.next;//Skip Line(---|---|---|---)
                 while (line != null)
                 {
-                    int curCols = line.value.split("\\|").length;
+                    int curCols = line.value.trim().split("\\|").length;
                     if (line.isEmpty || !(baseCols==curCols))
                     {
                         break;
