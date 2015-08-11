@@ -470,4 +470,69 @@ public interface Decorator
      *            The StringBuilder to write to.
      */
     public void closeImage(final StringBuilder out);
+    
+    /**
+     * Called when a word is underlined.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;u&gt;\n");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openUnderlined(final StringBuilder out);
+    
+    /**
+     * Called when an underlined word is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;/u&gt;\n");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeUnderlined(final StringBuilder out);
+    
+    /**
+     * Called when an word is strikethroughed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;s&gt;\n");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openStrikethrough(final StringBuilder out);
+    
+    /**
+     * Called when an strikethroughed word is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;s&gt;\n");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeStrikethrough(final StringBuilder out);
+
 }

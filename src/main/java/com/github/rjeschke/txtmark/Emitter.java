@@ -570,6 +570,36 @@ class Emitter
                     out.append(in.charAt(pos));
                 }
                 break;
+            case PLUS:
+                temp.setLength(0);
+                b = this.recursiveEmitLine(temp, in, pos + 1, mt);
+                if (b > 0)
+                {
+                    this.config.decorator.openUnderlined(out);
+                    out.append(temp);
+                    this.config.decorator.closeUnderlined(out);
+                    pos = b;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+            	break; 
+            case MINUS:
+                temp.setLength(0);
+                b = this.recursiveEmitLine(temp, in, pos + 1, mt);
+                if (b > 0)
+                {
+                    this.config.decorator.openStrikethrough(out);
+                    out.append(temp);
+                    this.config.decorator.closeStrikethrough(out);
+                    pos = b;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+            	break;
             case EM_STAR:
             case EM_UNDERSCORE:
                 temp.setLength(0);
@@ -764,6 +794,10 @@ class Emitter
 
         switch (c)
         {
+        case '+':
+            return c0 != ' ' || c1 != ' ' ? MarkToken.PLUS : MarkToken.NONE;
+        case '-':
+            return c0 != ' ' || c1 != ' ' ? MarkToken.MINUS : MarkToken.NONE;
         case '*':
             if (c1 == '*')
             {
