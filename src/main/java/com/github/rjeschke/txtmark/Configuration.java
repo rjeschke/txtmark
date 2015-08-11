@@ -24,6 +24,7 @@ package com.github.rjeschke.txtmark;
 public class Configuration
 {
     final boolean                     safeMode;
+    final boolean                     parseTable;
     final boolean                     panicMode;
     final String                      encoding;
     final Decorator                   decorator;
@@ -67,7 +68,7 @@ public class Configuration
     Configuration(final boolean safeMode, final String encoding, final Decorator decorator,
             final BlockEmitter codeBlockEmitter,
             final boolean forceExtendedProfile, final SpanEmitter specialLinkEmitter,
-            final boolean allowSpacesInFencedDelimiters, final boolean panicMode)
+            final boolean allowSpacesInFencedDelimiters, final boolean panicMode,final boolean parseTable)
     {
         this.safeMode = safeMode;
         this.encoding = encoding;
@@ -77,6 +78,20 @@ public class Configuration
         this.specialLinkEmitter = specialLinkEmitter;
         this.allowSpacesInFencedDelimiters = allowSpacesInFencedDelimiters;
         this.panicMode = panicMode;
+        this.parseTable = parseTable;
+    }
+
+    /**
+     * Constructor (just for forward compatible )
+     */
+    Configuration(final boolean safeMode, final String encoding, final Decorator decorator,
+                  final BlockEmitter codeBlockEmitter,
+                  final boolean forceExtendedProfile, final SpanEmitter specialLinkEmitter,
+                  final boolean allowSpacesInFencedDelimiters, final boolean panicMode)
+    {
+        this(safeMode,encoding,decorator,
+                codeBlockEmitter,forceExtendedProfile,specialLinkEmitter,
+                allowSpacesInFencedDelimiters,panicMode,false);
     }
 
     /**
@@ -101,6 +116,7 @@ public class Configuration
         private boolean      panicMode                     = false;
         private boolean      forceExtendedProfile          = false;
         private boolean      allowSpacesInFencedDelimiters = true;
+        private boolean      parseTable              = false;
         private String       encoding                      = "UTF-8";
         private Decorator    decorator                     = new DefaultDecorator();
         private BlockEmitter codeBlockEmitter              = null;
@@ -264,6 +280,19 @@ public class Configuration
         }
 
         /**
+         * This allows you to enable 'parseTable'. When 'parseTable' is enabled,
+         * it'll try to parse html table from markdown syntax
+         *
+         * @return This builder.
+         * @since 0.12
+         */
+        public Builder enableParseTable()
+        {
+            this.parseTable = true;
+            return this;
+        }
+
+        /**
          * Builds a configuration instance.
          *
          * @return a Configuration instance
@@ -273,7 +302,7 @@ public class Configuration
         {
             return new Configuration(this.safeMode, this.encoding, this.decorator, this.codeBlockEmitter,
                     this.forceExtendedProfile, this.specialLinkEmitter, this.allowSpacesInFencedDelimiters,
-                    this.panicMode);
+                    this.panicMode,this.parseTable);
         }
     }
 }

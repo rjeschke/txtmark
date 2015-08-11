@@ -43,5 +43,7 @@ enum BlockType
     /** An unordered list. */
     UNORDERED_LIST,
     /** A XML block. */
-    XML
+    XML,
+    /** A TABLE block. */
+    TABLE
 }

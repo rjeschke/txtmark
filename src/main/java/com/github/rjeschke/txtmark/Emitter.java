@@ -182,6 +182,9 @@ class Emitter
         case XML:
             this.emitRawLines(out, block.lines);
             break;
+        case TABLE:
+            this.emitTableLines(out,block.lines);
+            break;
         default:
             this.emitMarkedLines(out, block.lines);
             break;
@@ -1044,5 +1047,65 @@ class Emitter
                 line = line.next;
             }
         }
+    }
+
+    enum Align{
+        LEFT,CENTER,RIGHT
+    }
+
+    private void emitTableLines(StringBuilder out, Line line) {
+        String[] tableHead = line.value.split("\\|");
+        //TODO support align position
+        String[] alignHead = (line.next.value).split("\\|");
+        Align[]  aligns = new Align[alignHead.length];
+
+        line = line.next.next;//Skip ---|---|---...
+
+        out.append("<table>\n");
+
+        out.append("<thead><tr>");
+        for (int i = 0; i < tableHead.length; i++)
+        {
+            String text = tableHead[i].trim();
+            if("".equals(text))
+            {
+                if(i == 0 || (i == tableHead.length -1))
+                {
+                    continue;
+                }
+            }
+            out.append("<th>").append(text).append("</th>");
+        }
+        out.append("</tr></thead>");
+
+        if(line != null && !line.isEmpty)
+        {
+            out.append("\n<tbody>");
+            while (line != null)
+            {
+                if (!line.isEmpty)
+                {
+                    out.append("\n<tr>");
+                    String[] tds = line.value.split("\\|");
+
+                    for (int i = 0; i < tds.length; i++)
+                    {
+                        String text = tds[i].trim();
+                        if("".equals(text))
+                        {
+                            if(i == 0 || (i == tableHead.length -1))
+                            {
+                                continue;
+                            }
+                        }
+                        out.append("<td>").append(text).append("</td>");
+                    }
+                    out.append("</tr>");
+                }
+                line = line.next;
+            }
+            out.append("</tbody>");
+        }
+        out.append("\n</table>");
     }
 }
