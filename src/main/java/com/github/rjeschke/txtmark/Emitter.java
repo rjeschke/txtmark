@@ -17,6 +17,7 @@ package com.github.rjeschke.txtmark;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Emitter class responsible for generating HTML output.
@@ -111,6 +112,9 @@ class Emitter
             }
             out.append('>');
             break;
+        case TABLE:
+            this.config.decorator.openTable(out);
+            break;
         }
 
         if (root.hasLines())
@@ -158,6 +162,9 @@ class Emitter
         case LIST_ITEM:
             this.config.decorator.closeListItem(out);
             break;
+        case TABLE:
+            this.config.decorator.closeTable(out);
+            break;
         }
     }
 
@@ -181,6 +188,9 @@ class Emitter
             break;
         case XML:
             this.emitRawLines(out, block.lines);
+            break;
+        case TABLE:
+            this.emitTableLines(out, block.lines);
             break;
         default:
             this.emitMarkedLines(out, block.lines);
@@ -1091,6 +1101,39 @@ class Emitter
                 line = line.next;
             }
         }
+    }
+
+    private void emitTableLines(final StringBuilder out, final Line lines) {
+        Line line = lines;
+        if (line == null) {
+            return;
+        }
+        TableDef table = (TableDef)line.data;
+        Decorator decorator = this.config.decorator;
+        // emit header row
+        decorator.openTableHead(out);
+        decorator.openTableRow(out);
+        int i = 0;
+        for (String cellText : table.header) {
+            decorator.openTableHeader(out, table.getAlign(i++));
+            recursiveEmitLine(out, cellText, 0, MarkToken.NONE);
+            decorator.closeTableHeader(out);
+        }
+        decorator.closeTableRow(out);
+        decorator.closeTableHead(out);
+        // emit rows
+        decorator.openTableBody(out);
+        for (LinkedList<String> row : table.rows) {
+            decorator.openTableRow(out);
+            i = 0;
+            for (String cellText : row) {
+                decorator.openTableData(out, table.getAlign(i++));
+                recursiveEmitLine(out, cellText, 0, MarkToken.NONE);
+                decorator.closeTableData(out);
+            }
+            decorator.closeTableRow(out);
+        }
+        decorator.closeTableBody(out);
     }
 
     private static int checkGFMAutolink(final StringBuilder out, final String in, final int start) {

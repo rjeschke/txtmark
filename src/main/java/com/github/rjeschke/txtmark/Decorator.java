@@ -502,4 +502,200 @@ public interface Decorator
      *            The StringBuilder to write to.
      */
     public void closeImage(final StringBuilder out);
+
+    /**
+     * Called when a table is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<table>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openTable(final StringBuilder out);
+
+    /**
+     * Called when a table is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</table>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTable(final StringBuilder out);
+
+    /**
+     * Called when a table body is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<tbody>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openTableBody(final StringBuilder out);
+
+    /**
+     * Called when a table body is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</tbody>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTableBody(final StringBuilder out);
+
+    /**
+     * Called when a table head is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<thead>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openTableHead(final StringBuilder out);
+
+    /**
+     * Called when a table head is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</thead>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTableHead(final StringBuilder out);
+
+    /**
+     * Called when a table row is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<tr>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openTableRow(final StringBuilder out);
+
+    /**
+     * Called when a table row is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</tr>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTableRow(final StringBuilder out);
+
+    /**
+     * Called when a table data is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<td>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     * @param align one of null | left | center | right.
+     *            If null no align is set
+     */
+    public void openTableData(final StringBuilder out, final String align);
+
+    /**
+     * Called when a table data is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</td>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTableData(final StringBuilder out);
+
+    /**
+     * Called when a table header is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("<th>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     * @param align one of null | left | center | right.
+     *            If null no align is set
+     */
+    public void openTableHeader(final StringBuilder out, final String align);
+
+    /**
+     * Called when a table header is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("</th>");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeTableHeader(final StringBuilder out);
 }

@@ -255,4 +255,96 @@ public class DefaultDecorator implements Decorator
     {
         out.append(" />");
     }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTable(java.lang.StringBuilder) */
+    @Override
+    public void openTable(final StringBuilder out)
+    {
+        out.append("<table>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTable(java.lang.StringBuilder) */
+    @Override
+    public void closeTable(final StringBuilder out)
+    {
+        out.append("</table>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTableHead(java.lang.StringBuilder) */
+    @Override
+    public void openTableHead(final StringBuilder out)
+    {
+        out.append("<thead>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTableHead(java.lang.StringBuilder) */
+    @Override
+    public void closeTableHead(final StringBuilder out)
+    {
+        out.append("</thead>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTableBody(java.lang.StringBuilder) */
+    @Override
+    public void openTableBody(final StringBuilder out)
+    {
+        out.append("<tbody>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTableBody(java.lang.StringBuilder) */
+    @Override
+    public void closeTableBody(final StringBuilder out)
+    {
+        out.append("</tbody>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTableRow(java.lang.StringBuilder) */
+    @Override
+    public void openTableRow(final StringBuilder out)
+    {
+        out.append("<tr>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTableRow(java.lang.StringBuilder) */
+    @Override
+    public void closeTableRow(final StringBuilder out)
+    {
+        out.append("</tr>\n");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTableData(java.lang.StringBuilder,java.lang.String) */
+    @Override
+    public void openTableData(final StringBuilder out, final String align)
+    {
+        if (align == null) {
+            out.append("<td>");
+        } else {
+            out.append("<td style=\"text-align:").append(align).append(";\">");
+        }
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTableData(java.lang.StringBuilder) */
+    @Override
+    public void closeTableData(final StringBuilder out)
+    {
+        out.append("</td>");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#openTableHeader(java.lang.StringBuilder,java.lang.String) */
+    @Override
+    public void openTableHeader(final StringBuilder out, final String align)
+    {
+        if (align == null) {
+            out.append("<th>");
+        } else {
+            out.append("<th style=\"text-align:").append(align).append(";\">");
+        }
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeTableHeader(java.lang.StringBuilder) */
+    @Override
+    public void closeTableHeader(final StringBuilder out)
+    {
+        out.append("</th>");
+    }
 }

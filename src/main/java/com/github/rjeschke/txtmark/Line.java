@@ -42,6 +42,8 @@ class Line
     public boolean prevEmpty, nextEmpty;
     /** Final line of a XML block. */
     public Line    xmlEndLine;
+    /** additional data associated with that line if any */
+    public Object data = null;
 
     /** Constructor. */
     public Line()
@@ -364,6 +366,14 @@ class Line
             if ((this.next.value.charAt(0) == '=') && (this.next.countChars('=') > 0))
             {
                 return LineType.HEADLINE1;
+            }
+            if (configuration.forceExtendedProfile && (this.previous == null || this.previous.isEmpty))
+            {
+                TableDef table = TableDef.parse(this.value, this.next.value);
+                if (table != null) {
+                    this.data = table; // attach the table definition to be used later
+                    return LineType.TABLE;
+                }
             }
         }
 
