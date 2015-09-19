@@ -31,7 +31,7 @@ public class GFMTest
     private static final String   RES   = "/com/github/rjeschke/txtmark/testsuite/gfm/";
     private static final String[] TESTS =
     {
-            "GFM strikeout"
+            "GFM strikeout", "GFM Autolink"
     };
 
     private final static String readTextUTF_8(final InputStream in) throws IOException

@@ -1,0 +1,14 @@
+## Auto-link in paragraph
+This should be a link: http://example.com/hello-world.
+
+## Prevent autolink in links
+This should be a link: [http://example.com/hello-world](http://example.com/hello-world)
+
+## Prevent autolink in images
+![https://www.google.com/images/srpr/logo11w.png](https://www.google.com/images/srpr/logo11w.png)
+
+## Prevent autolink in XML tags
+This should be a link: <a href='http://example.com/hello-world'>http://example.com/hello-world</a>
+
+## Prevent autolink in code block
+	This shouldn't be a link: http://example.com/hello-world.

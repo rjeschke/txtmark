@@ -370,7 +370,7 @@ class Emitter
                     out.append('"');
                 }
                 out.append('>');
-                this.recursiveEmitLine(out, name, 0, MarkToken.NONE);
+                this.recursiveEmitLine(out, name, 0, MarkToken.LINK);
                 this.config.decorator.closeLink(out);
             }
         }
@@ -547,7 +547,7 @@ class Emitter
         while (pos < in.length())
         {
             final MarkToken mt = this.getToken(in, pos);
-            if (token != MarkToken.NONE
+            if (token != MarkToken.NONE && token != MarkToken.LINK
                     && (mt == token || token == MarkToken.EM_STAR && mt == MarkToken.STRONG_STAR || token == MarkToken.EM_UNDERSCORE
                             && mt == MarkToken.STRONG_UNDERSCORE))
             {
@@ -683,6 +683,29 @@ class Emitter
                 else
                 {
                     out.append("&amp;");
+                }
+                break;
+            case GFM_AUTOLINK:
+                if (token == MarkToken.LINK) {
+                    out.append(in.charAt(pos));
+                    break;
+                }
+                temp.setLength(0);
+                b = checkGFMAutolink(temp, in, pos);
+                if (b > 0)
+                {
+                    String url = temp.toString();
+                    this.config.decorator.openLink(out);
+                    out.append(" href=\"");
+                    Utils.appendValue(out, url, 0, url.length());
+                    out.append("\">");
+                    Utils.appendCode(out, url, 0, url.length());
+                    this.config.decorator.closeLink(out);
+                    pos += url.length()-1;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
                 }
                 break;
             case X_LINK_OPEN:
@@ -860,6 +883,10 @@ class Emitter
         default:
             if (this.useExtensions)
             {
+                if (c0 == ' ' && c == 'h' && c1 == 't' && c2 == 't' && c3 == 'p'
+                        && in.startsWith("://", (pos + 4 < in.length() && in.charAt(pos + 4) == 's') ? pos+5 : pos+4)) {
+                    return MarkToken.GFM_AUTOLINK;
+                }
                 switch (c)
                 {
                 case '-':
@@ -1065,4 +1092,66 @@ class Emitter
             }
         }
     }
+
+    private static int checkGFMAutolink(final StringBuilder out, final String in, final int start) {
+        int s = in.indexOf("://", start) + 3;
+        if (s == -1) {
+            return -1;
+        }
+
+        // find first non space preceding char
+        int i=start-1;
+        char c = 0;
+        while (i>-1) {
+            c = in.charAt(i);
+            if (!Character.isWhitespace(c)) {
+                break;
+            }
+            i--;
+        }
+        // the following characters are not allowed to precede the url
+        if (c == '>' || c == '<' || c == '(' ||c == '[' || c == '"' || c == '\'') {
+            return -1;
+        }
+
+        // The links cannot contains: ", ', ), <, > or spaces. I they end in \s*", \s*', \s*), >\s* or\s*< they are not treated as a link
+        // Also a link must start with a space (or at beginning of the line)
+        // to avoid conflicting with real markdown link definitions: [..](url "title")
+
+        int len = in.length();
+        c = 0;
+        i = s;
+        out.append(in, start, s);
+        while (i < len) {
+            c = in.charAt(i);
+            if (c == '>' || c == '<' || c=='"' || c=='\'' || c==')') {
+                return -1; // not an GFM auto link
+            }
+            if (Character.isWhitespace(c)) {
+                // get the first non space char
+                int k = Utils.skipSpaces(in, i+1);
+                if (k > -1) {
+                    c = in.charAt(i);
+                    if (c == '>' || c == '<' || c=='"' || c=='\'' || c==')') {
+                        return -1; // not an GFM auto link
+                    }
+                }
+                break;
+            }
+            out.append(c);
+            i++;
+        }
+
+        // remove any ending punctuation marks if needed
+        if (c == '.' || c == ',' || c == ';' || c == '?' || c == '!' || c == ':') {
+            out.setLength(out.length()-1);
+            i--;
+        }
+        if (i <= s) {
+            // invalid url
+            return -1;
+        }
+        return i;
+    }
+
 }

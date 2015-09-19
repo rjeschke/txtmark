@@ -46,6 +46,8 @@ enum MarkToken
     IMAGE,              // ![
     /** &amp; */
     ENTITY,             // &
+    /** https?://domain[/path][?query][#hash] */
+    GFM_AUTOLINK,       // https?://domain[/path][?query][#hash]
     /** \ */
     ESCAPE,             // \x
     /** Extended: ^ */
