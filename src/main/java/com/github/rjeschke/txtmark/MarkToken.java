@@ -32,6 +32,8 @@ enum MarkToken
     STRONG_STAR,        // x**x
     /** __ */
     STRONG_UNDERSCORE,  // x__x
+    /** ~~ */
+    STRIKEOUT,          // ~~
     /** ` */
     CODE_SINGLE,        // `
     /** `` */

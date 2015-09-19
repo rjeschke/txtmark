@@ -255,6 +255,38 @@ public interface Decorator
     public void closeEmphasis(final StringBuilder out);
 
     /**
+     * Called when a strikeout span is opened.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;del&gt;");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void openStrikeout(final StringBuilder out);
+
+    /**
+     * Called when a strikeout span is closed.
+     *
+     * <p>
+     * Default implementation is:
+     * </p>
+     *
+     * <pre>
+     * <code>out.append("&lt;/del&gt;");</code>
+     * </pre>
+     *
+     * @param out
+     *            The StringBuilder to write to.
+     */
+    public void closeStrikeout(final StringBuilder out);
+
+    /**
      * Called when a superscript span is opened.
      *
      * <p>

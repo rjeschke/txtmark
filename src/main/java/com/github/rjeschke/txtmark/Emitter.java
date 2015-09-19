@@ -602,6 +602,21 @@ class Emitter
                     out.append(in.charAt(pos));
                 }
                 break;
+            case STRIKEOUT:
+                temp.setLength(0);
+                b = this.recursiveEmitLine(temp, in, pos + 2, mt);
+                if (b > 0)
+                {
+                    this.config.decorator.openStrikeout(out);
+                    out.append(temp);
+                    this.config.decorator.closeStrikeout(out);
+                    pos = b + 1;
+                }
+                else
+                {
+                    out.append(in.charAt(pos));
+                }
+                break;
             case SUPER:
                 temp.setLength(0);
                 b = this.recursiveEmitLine(temp, in, pos + 1, mt);
@@ -781,6 +796,11 @@ class Emitter
                         : MarkToken.EM_UNDERSCORE;
             }
             return c0 != ' ' || c1 != ' ' ? MarkToken.EM_UNDERSCORE : MarkToken.NONE;
+        case '~':
+            if (this.useExtensions && c1 == '~') {
+                return MarkToken.STRIKEOUT;
+            }
+            return MarkToken.NONE;
         case '!':
             if (c1 == '[')
             {

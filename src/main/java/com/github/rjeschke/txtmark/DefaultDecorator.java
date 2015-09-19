@@ -151,6 +151,20 @@ public class DefaultDecorator implements Decorator
         out.append("</em>");
     }
 
+    /** @see com.github.rjeschke.txtmark.Decorator#openStrikeout(StringBuilder) */
+    @Override
+    public void openStrikeout(final StringBuilder out)
+    {
+        out.append("<del>");
+    }
+
+    /** @see com.github.rjeschke.txtmark.Decorator#closeStrikeout(StringBuilder) */
+    @Override
+    public void closeStrikeout(final StringBuilder out)
+    {
+        out.append("</del>");
+    }
+
     /** @see com.github.rjeschke.txtmark.Decorator#openSuper(StringBuilder) */
     @Override
     public void openSuper(final StringBuilder out)
