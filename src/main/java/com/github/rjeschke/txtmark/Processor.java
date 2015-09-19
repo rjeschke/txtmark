@@ -665,9 +665,12 @@ public class Processor
                     if (line.value.charAt(line.pos + 1) == ':')
                     {
                         line.pos += 2;
-                        line.skipSpaces();
+                        if (!line.skipSpaces())
+                        {
+                            isLinkRef = false;
+                        }
                         // Check for link syntax
-                        if (line.value.charAt(line.pos) == '<')
+                        else if (line.value.charAt(line.pos) == '<')
                         {
                             line.pos++;
                             link = line.readUntil('>');
