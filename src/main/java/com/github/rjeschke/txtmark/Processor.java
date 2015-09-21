@@ -54,13 +54,15 @@ public class Processor
      *
      * @param reader
      *            The input reader.
+     * @param emitter
+     *            The output emitter.
      */
-    private Processor(final Reader reader, final Configuration config)
+    private Processor(final Reader reader, final Emitter emitter, final Configuration config)
     {
         this.reader = reader;
+        this.emitter = emitter;
         this.config = config;
         this.useExtensions = config.forceExtendedProfile;
-        this.emitter = new Emitter(this.config);
     }
 
     /**
@@ -79,7 +81,29 @@ public class Processor
     public final static String process(final Reader reader, final Configuration configuration) throws IOException
     {
         final Processor p = new Processor(!(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader,
-                configuration);
+                new DefaultEmitter(configuration), configuration);
+        return p.process();
+    }
+
+    /**
+     * Transforms an input stream into HTML using the given Configuration and a custom emitter.
+     *
+     * @param reader
+     *            The Reader to process.
+     * @param emitter
+     *            The Emitter to write.
+     * @param configuration
+     *            The Configuration.
+     * @return The processed String.
+     * @throws IOException
+     *             if an IO error occurs
+     * @since 0.7
+     * @see Configuration
+     */
+    public final static String process(final Reader reader, final Emitter emitter, final Configuration configuration) throws IOException
+    {
+        final Processor p = new Processor(!(reader instanceof BufferedReader) ? new BufferedReader(reader) : reader,
+                emitter, configuration);
         return p.process();
     }
 
@@ -144,7 +168,7 @@ public class Processor
     public final static String process(final InputStream input, final Configuration configuration) throws IOException
     {
         final Processor p = new Processor(new BufferedReader(new InputStreamReader(input, configuration.encoding)),
-                configuration);
+                new DefaultEmitter(configuration), configuration);
         return p.process();
     }
 
@@ -711,7 +735,7 @@ public class Processor
             {
                 if (id.toLowerCase().equals("$profile$"))
                 {
-                    this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
+                    this.emitter.setUseExtensions(this.useExtensions = link.toLowerCase().equals("extended"));
                     lastLinkRef = null;
                 }
                 else

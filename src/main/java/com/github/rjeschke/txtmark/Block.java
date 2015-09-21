@@ -20,7 +20,7 @@ package com.github.rjeschke.txtmark;
  *
  * @author René Jeschke <rene_jeschke@yahoo.de>
  */
-class Block
+public class Block
 {
     /** This block's type. */
     public BlockType type    = BlockType.NONE;
