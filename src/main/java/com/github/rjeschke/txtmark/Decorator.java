@@ -149,6 +149,19 @@ public interface Decorator
     public void closeCodeSpan(final StringBuilder out);
 
     /**
+     * Called to append the content in a code span
+     * This will call {@link #openCodeSpan(StringBuilder)} then write the content and then call {@link #closeCodeSpan(StringBuilder)}
+     *
+     * TODO: better use a CodeSpanEmmiter?
+     *
+     * @param out
+     * @param in
+     * @param start
+     * @param end
+     */
+    public void appendCodeSpan(final StringBuilder out, final String in, final int start, final int end);
+
+    /**
      * Called when a headline is opened.
      *
      * <p>

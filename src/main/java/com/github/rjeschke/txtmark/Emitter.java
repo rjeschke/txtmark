@@ -559,7 +559,7 @@ class Emitter
             final MarkToken mt = this.getToken(in, pos);
             if (token != MarkToken.NONE && token != MarkToken.LINK
                     && (mt == token || token == MarkToken.EM_STAR && mt == MarkToken.STRONG_STAR || token == MarkToken.EM_UNDERSCORE
-                            && mt == MarkToken.STRONG_UNDERSCORE))
+                    && mt == MarkToken.STRONG_UNDERSCORE))
             {
                 return pos;
             }
@@ -659,9 +659,7 @@ class Emitter
                         {
                             b--;
                         }
-                        this.config.decorator.openCodeSpan(out);
-                        Utils.appendCode(out, in, a, b);
-                        this.config.decorator.closeCodeSpan(out);
+                        this.config.decorator.appendCodeSpan(out, in, a, b);
                     }
                 }
                 else

@@ -93,6 +93,14 @@ public class DefaultDecorator implements Decorator
         out.append("<code>");
     }
 
+    /** @see com.github.rjeschke.txtmark.Decorator#appendCodeSpan(StringBuilder) */
+    @Override
+    public void appendCodeSpan(final StringBuilder out, final String in, final int start, final int end) {
+        openCodeSpan(out);
+        Utils.appendCode(out, in, start, end);
+        closeCodeSpan(out);
+    }
+
     /** @see com.github.rjeschke.txtmark.Decorator#closeCodeSpan(StringBuilder) */
     @Override
     public void closeCodeSpan(final StringBuilder out)
