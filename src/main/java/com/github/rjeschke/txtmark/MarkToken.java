@@ -32,6 +32,8 @@ enum MarkToken
     STRONG_STAR,        // x**x
     /** __ */
     STRONG_UNDERSCORE,  // x__x
+    /** ~~ */
+    STRIKEOUT,          // ~~
     /** ` */
     CODE_SINGLE,        // `
     /** `` */
@@ -44,6 +46,8 @@ enum MarkToken
     IMAGE,              // ![
     /** &amp; */
     ENTITY,             // &
+    /** https?://domain[/path][?query][#hash] */
+    GFM_AUTOLINK,       // https?://domain[/path][?query][#hash]
     /** \ */
     ESCAPE,             // \x
     /** Extended: ^ */

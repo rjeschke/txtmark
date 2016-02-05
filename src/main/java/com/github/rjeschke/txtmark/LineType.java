@@ -39,5 +39,7 @@ enum LineType
     /** Start of a XML block. */
     XML,
     /** Fenced code block start/end */
-    FENCED_CODE
+    FENCED_CODE,
+    /** GFM table **/
+    TABLE
 }

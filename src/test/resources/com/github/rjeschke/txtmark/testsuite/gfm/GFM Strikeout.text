@@ -1,0 +1,19 @@
+Simple usage
+--
+Hello ~~hi~~ world!
+
+Mixed with strong
+--
+Hello **~~hi~~** world!
+Hello ~~*hi*~~ world!
+
+Inside code block
+--
+    Hello ~~hi~~ world!
+
+
+Inside GFM code block
+--
+```
+Hello ~~hi~~ world!
+```

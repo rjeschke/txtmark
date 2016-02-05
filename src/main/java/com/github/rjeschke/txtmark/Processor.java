@@ -665,9 +665,12 @@ public class Processor
                     if (line.value.charAt(line.pos + 1) == ':')
                     {
                         line.pos += 2;
-                        line.skipSpaces();
+                        if (!line.skipSpaces())
+                        {
+                            isLinkRef = false;
+                        }
                         // Check for link syntax
-                        if (line.value.charAt(line.pos) == '<')
+                        else if (line.value.charAt(line.pos) == '<')
                         {
                             line.pos++;
                             link = line.readUntil('>');
@@ -980,6 +983,25 @@ public class Processor
                     block = block.next;
                 }
                 list.expandListParagraphs();
+                break;
+            case TABLE:
+                TableDef table = (TableDef)line.data;
+                // skip the next line - which is the the table divider line
+                line = line.next.next;
+                while (line != null)
+                {
+                    if (line.isEmpty)
+                    {
+                        break;
+                    }
+                    if (!table.addRow(line.value)) {
+                        break;
+                    }
+                    line = line.next;
+                }
+                block = root.split(line != null ? line.previous : root.lineTail);
+                block.type = BlockType.TABLE;
+                line = root.lines;
                 break;
             default:
                 line = line.next;

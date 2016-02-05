@@ -42,6 +42,8 @@ class Line
     public boolean prevEmpty, nextEmpty;
     /** Final line of a XML block. */
     public Line    xmlEndLine;
+    /** additional data associated with that line if any */
+    public Object data = null;
 
     /** Constructor. */
     public Line()
@@ -365,6 +367,14 @@ class Line
             {
                 return LineType.HEADLINE1;
             }
+            if (configuration.forceExtendedProfile && (this.previous == null || this.previous.isEmpty))
+            {
+                TableDef table = TableDef.parse(this.value, this.next.value);
+                if (table != null) {
+                    this.data = table; // attach the table definition to be used later
+                    return LineType.TABLE;
+                }
+            }
         }
 
         return LineType.OTHER;
@@ -517,7 +527,7 @@ class Line
         final LinkedList<String> tags = new LinkedList<String>();
         final StringBuilder temp = new StringBuilder();
         int pos = this.leading;
-        if (this.value.charAt(this.leading + 1) == '!')
+        if (this.leading + 1 < this.value.length() && this.value.charAt(this.leading + 1) == '!')
         {
             if (this.readXMLComment(this, this.leading) > 0)
             {
