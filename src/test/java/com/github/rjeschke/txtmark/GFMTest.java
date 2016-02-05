@@ -30,9 +30,9 @@ public class GFMTest
     private static final Charset  UTF_8 = Charset.forName("UTF-8");
     private static final String   RES   = "/com/github/rjeschke/txtmark/testsuite/gfm/";
     private static final String[] TESTS =
-    {
-            "GFM strikeout", "GFM Autolink", "GFM Tables"
-    };
+        {
+        "GFM strikeout", "GFM Autolink", "GFM Tables"
+        };
 
     private final static String readTextUTF_8(final InputStream in) throws IOException
     {
@@ -105,7 +105,7 @@ public class GFMTest
             final InputStream cmpIn = GFMTest.class.getResourceAsStream(RES + name + ".html");
             if (txtIn == null || cmpIn == null)
             {
-                Assert.fail("Unmatched test resources");
+                Assert.fail("Unmatched test resources: "+name);
             }
 
             final String text = readTextUTF_8(txtIn);
