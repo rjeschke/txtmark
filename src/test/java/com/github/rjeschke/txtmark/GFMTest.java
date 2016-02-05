@@ -105,7 +105,18 @@ public class GFMTest
             final InputStream cmpIn = GFMTest.class.getResourceAsStream(RES + name + ".html");
             if (txtIn == null || cmpIn == null)
             {
-                Assert.fail("Unmatched test resources: "+name);
+                StringBuilder details = new StringBuilder();
+                details.append("Resource(s) not found: ");
+                if (txtIn == null) {
+                    details.append(RES + name + ".text");
+                }
+                if (cmpIn == null) {
+                    if (details.length() > 0) {
+                        details.append(", ");
+                    }
+                    details.append(RES + name + ".html");
+                }
+                Assert.fail("Unmatched test resources: '"+name+"' - "+details.toString());
             }
 
             final String text = readTextUTF_8(txtIn);
