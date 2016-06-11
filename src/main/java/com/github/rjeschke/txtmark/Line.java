@@ -44,15 +44,16 @@ class Line
     public Line    xmlEndLine;
 
     /** Constructor. */
-    public Line()
+    public Line(String value)
     {
-        //
+        this.value = value;
+        init();
     }
 
     /**
      * Calculates leading and trailing spaces. Also sets empty if needed.
      */
-    public void init()
+    private void init()
     {
         this.leading = 0;
         while (this.leading < this.value.length() && this.value.charAt(this.leading) == ' ')

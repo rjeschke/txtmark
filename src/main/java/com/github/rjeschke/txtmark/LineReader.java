@@ -9,38 +9,38 @@ import java.io.Reader;
 public class LineReader {
     private final Reader reader;
     private final Configuration config;
-    private int c;
+    private int nextChar;
 
     public LineReader(Reader reader, Configuration config) throws IOException {
         this.reader = reader;
         this.config = config;
-        this.c = reader.read();
+        this.nextChar = reader.read();
     }
 
     public boolean eof() {
-        return c == -1;
+        return nextChar == -1;
     }
 
-    public String read() throws IOException {
+    public Line read() throws IOException {
         final StringBuilder sb = new StringBuilder(80);
         int pos = 0;
         boolean eol = false;
         while (!eol) {
-            switch (c) {
+            switch (nextChar) {
                 case -1:
                     eol = true;
                     break;
                 case '\n':
-                    c = reader.read();
-                    if (c == '\r') {
-                        c = reader.read();
+                    nextChar = reader.read();
+                    if (nextChar == '\r') {
+                        nextChar = reader.read();
                     }
                     eol = true;
                     break;
                 case '\r':
-                    c = reader.read();
-                    if (c == '\n') {
-                        c = reader.read();
+                    nextChar = reader.read();
+                    if (nextChar == '\n') {
+                        nextChar = reader.read();
                     }
                     eol = true;
                     break;
@@ -50,21 +50,22 @@ public class LineReader {
                         sb.append(' ');
                         pos++;
                     }
-                    c = reader.read();
+                    nextChar = reader.read();
                     break;
                 }
                 default:
-                    if (c != '<' || !config.panicMode) {
+                    if (nextChar != '<' || !config.panicMode) {
                         pos++;
-                        sb.append((char) c);
+                        sb.append((char) nextChar);
                     } else {
                         pos += 4;
                         sb.append("&lt;");
                     }
-                    c = reader.read();
+                    nextChar = reader.read();
                     break;
             }
         }
-        return sb.toString();
+        return new Line(sb.toString());
+
     }
 }

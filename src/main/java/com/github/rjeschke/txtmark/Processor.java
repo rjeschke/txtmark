@@ -592,11 +592,7 @@ public class Processor
         LinkRef lastLinkRef = null;
         while (!lineReader.eof())
         {
-            String nextLine = lineReader.read();
-
-            final Line line = new Line();
-            line.value = nextLine;
-            line.init();
+            final Line line = lineReader.read();
 
             // Check for link definitions
             boolean isLinkRef = false;
