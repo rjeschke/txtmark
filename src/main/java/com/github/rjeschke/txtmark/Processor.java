@@ -59,8 +59,8 @@ public class Processor
     {
         this.reader = reader;
         this.config = config;
-        this.useExtensions = config.forceExtendedProfile;
-        this.emitter = new Emitter(this.config);
+        useExtensions = config.forceExtendedProfile;
+        emitter = new Emitter(config);
     }
 
     /**
@@ -588,66 +588,14 @@ public class Processor
     private Block readLines() throws IOException
     {
         final Block block = new Block();
-        final StringBuilder sb = new StringBuilder(80);
-        int c = this.reader.read();
+        LineReader lineReader = new LineReader(reader, config);
         LinkRef lastLinkRef = null;
-        while (c != -1)
+        while (!lineReader.eof())
         {
-            sb.setLength(0);
-            int pos = 0;
-            boolean eol = false;
-            while (!eol)
-            {
-                switch (c)
-                {
-                case -1:
-                    eol = true;
-                    break;
-                case '\n':
-                    c = this.reader.read();
-                    if (c == '\r')
-                    {
-                        c = this.reader.read();
-                    }
-                    eol = true;
-                    break;
-                case '\r':
-                    c = this.reader.read();
-                    if (c == '\n')
-                    {
-                        c = this.reader.read();
-                    }
-                    eol = true;
-                    break;
-                case '\t':
-                {
-                    final int np = pos + (4 - (pos & 3));
-                    while (pos < np)
-                    {
-                        sb.append(' ');
-                        pos++;
-                    }
-                    c = this.reader.read();
-                    break;
-                }
-                default:
-                    if (c != '<' || !this.config.panicMode)
-                    {
-                        pos++;
-                        sb.append((char)c);
-                    }
-                    else
-                    {
-                        pos += 4;
-                        sb.append("&lt;");
-                    }
-                    c = this.reader.read();
-                    break;
-                }
-            }
+            String nextLine = lineReader.read();
 
             final Line line = new Line();
-            line.value = sb.toString();
+            line.value = nextLine;
             line.init();
 
             // Check for link definitions
@@ -711,7 +659,7 @@ public class Processor
             {
                 if (id.toLowerCase().equals("$profile$"))
                 {
-                    this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
+                    emitter.useExtensions = useExtensions = link.toLowerCase().equals("extended");
                     lastLinkRef = null;
                 }
                 else
@@ -719,7 +667,7 @@ public class Processor
                     // Store linkRef and skip line
                     final LinkRef lr = new LinkRef(link, comment, comment != null
                             && (link.length() == 1 && link.charAt(0) == '*'));
-                    this.emitter.addLinkRef(id, lr);
+                    emitter.addLinkRef(id, lr);
                     if (comment == null)
                     {
                         lastLinkRef = lr;
@@ -771,7 +719,7 @@ public class Processor
         line = line.next;
         while (line != null)
         {
-            final LineType t = line.getLineType(this.config);
+            final LineType t = line.getLineType(config);
             if ((t == LineType.OLIST || t == LineType.ULIST)
                     || (!line.isEmpty && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST))))
             {
@@ -797,8 +745,8 @@ public class Processor
 
         if (listMode)
         {
-            root.removeListIndent(this.config);
-            if (this.useExtensions && root.lines != null && root.lines.getLineType(this.config) != LineType.CODE)
+            root.removeListIndent(config);
+            if (useExtensions && root.lines != null && root.lines.getLineType(config) != LineType.CODE)
             {
                 root.id = root.lines.stripID();
             }
@@ -815,7 +763,7 @@ public class Processor
 
         while (line != null)
         {
-            final LineType type = line.getLineType(this.config);
+            final LineType type = line.getLineType(config);
             switch (type)
             {
             case OTHER:
@@ -823,12 +771,12 @@ public class Processor
                 final boolean wasEmpty = line.prevEmpty;
                 while (line != null && !line.isEmpty)
                 {
-                    final LineType t = line.getLineType(this.config);
-                    if ((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
+                    final LineType t = line.getLineType(config);
+                    if ((listMode || useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
                     {
                         break;
                     }
-                    if (this.useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
+                    if (useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
                     {
                         break;
                     }
@@ -880,7 +828,7 @@ public class Processor
                 while (line != null)
                 {
                     if (!line.isEmpty
-                            && (line.prevEmpty && line.leading == 0 && line.getLineType(this.config) != LineType.BQUOTE))
+                            && (line.prevEmpty && line.leading == 0 && line.getLineType(config) != LineType.BQUOTE))
                     {
                         break;
                     }
@@ -890,7 +838,7 @@ public class Processor
                 block.type = BlockType.BLOCKQUOTE;
                 block.removeSurroundingEmptyLines();
                 block.removeBlockQuotePrefix();
-                this.recurse(block, false);
+                recurse(block, false);
                 line = root.lines;
                 break;
             case HR:
@@ -907,7 +855,7 @@ public class Processor
                 line = line.next;
                 while (line != null)
                 {
-                    if (line.getLineType(this.config) == LineType.FENCED_CODE)
+                    if (line.getLineType(config) == LineType.FENCED_CODE)
                     {
                         break;
                     }
@@ -923,7 +871,7 @@ public class Processor
                 block.type = BlockType.FENCED_CODE;
                 block.meta = Utils.getMetaFromFence(block.lines.value);
                 block.lines.setEmpty();
-                if (block.lineTail.getLineType(this.config) == LineType.FENCED_CODE)
+                if (block.lineTail.getLineType(config) == LineType.FENCED_CODE)
                 {
                     block.lineTail.setEmpty();
                 }
@@ -946,7 +894,7 @@ public class Processor
                 {
                     block.hlDepth = type == LineType.HEADLINE1 ? 1 : 2;
                 }
-                if (this.useExtensions)
+                if (useExtensions)
                 {
                     block.id = block.lines.stripID();
                 }
@@ -958,7 +906,7 @@ public class Processor
             case ULIST:
                 while (line != null)
                 {
-                    final LineType t = line.getLineType(this.config);
+                    final LineType t = line.getLineType(config);
                     if (!line.isEmpty
                             && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
                     {
@@ -972,11 +920,11 @@ public class Processor
                 list.lineTail.nextEmpty = false;
                 list.removeSurroundingEmptyLines();
                 list.lines.prevEmpty = list.lineTail.nextEmpty = false;
-                this.initListBlock(list);
+                initListBlock(list);
                 block = list.blocks;
                 while (block != null)
                 {
-                    this.recurse(block, true);
+                    recurse(block, true);
                     block = block.next;
                 }
                 list.expandListParagraphs();
@@ -998,17 +946,18 @@ public class Processor
     private String process() throws IOException
     {
         final StringBuilder out = new StringBuilder();
-        final Block parent = this.readLines();
+        final Block parent = readLines();
         parent.removeSurroundingEmptyLines();
 
-        this.recurse(parent, false);
+        recurse(parent, false);
         Block block = parent.blocks;
         while (block != null)
         {
-            this.emitter.emit(out, block);
+            emitter.emit(out, block);
             block = block.next;
         }
 
         return out.toString();
     }
+
 }
