@@ -59,8 +59,8 @@ public class Processor
     {
         this.reader = reader;
         this.config = config;
-        useExtensions = config.forceExtendedProfile;
-        emitter = new Emitter(config);
+        this.useExtensions = config.forceExtendedProfile;
+        this.emitter = new Emitter(this.config);
     }
 
     /**
@@ -659,7 +659,7 @@ public class Processor
             {
                 if (id.toLowerCase().equals("$profile$"))
                 {
-                    emitter.useExtensions = useExtensions = link.toLowerCase().equals("extended");
+                    this.emitter.useExtensions = this.useExtensions = link.toLowerCase().equals("extended");
                     lastLinkRef = null;
                 }
                 else
@@ -667,7 +667,7 @@ public class Processor
                     // Store linkRef and skip line
                     final LinkRef lr = new LinkRef(link, comment, comment != null
                             && (link.length() == 1 && link.charAt(0) == '*'));
-                    emitter.addLinkRef(id, lr);
+                    this.emitter.addLinkRef(id, lr);
                     if (comment == null)
                     {
                         lastLinkRef = lr;
@@ -719,7 +719,7 @@ public class Processor
         line = line.next;
         while (line != null)
         {
-            final LineType t = line.getLineType(config);
+            final LineType t = line.getLineType(this.config);
             if ((t == LineType.OLIST || t == LineType.ULIST)
                     || (!line.isEmpty && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST))))
             {
@@ -745,8 +745,8 @@ public class Processor
 
         if (listMode)
         {
-            root.removeListIndent(config);
-            if (useExtensions && root.lines != null && root.lines.getLineType(config) != LineType.CODE)
+            root.removeListIndent(this.config);
+            if (this.useExtensions && root.lines != null && root.lines.getLineType(this.config) != LineType.CODE)
             {
                 root.id = root.lines.stripID();
             }
@@ -763,7 +763,7 @@ public class Processor
 
         while (line != null)
         {
-            final LineType type = line.getLineType(config);
+            final LineType type = line.getLineType(this.config);
             switch (type)
             {
             case OTHER:
@@ -771,12 +771,12 @@ public class Processor
                 final boolean wasEmpty = line.prevEmpty;
                 while (line != null && !line.isEmpty)
                 {
-                    final LineType t = line.getLineType(config);
-                    if ((listMode || useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
+                    final LineType t = line.getLineType(this.config);
+                    if ((listMode || this.useExtensions) && (t == LineType.OLIST || t == LineType.ULIST))
                     {
                         break;
                     }
-                    if (useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
+                    if (this.useExtensions && (t == LineType.CODE || t == LineType.FENCED_CODE))
                     {
                         break;
                     }
@@ -828,7 +828,7 @@ public class Processor
                 while (line != null)
                 {
                     if (!line.isEmpty
-                            && (line.prevEmpty && line.leading == 0 && line.getLineType(config) != LineType.BQUOTE))
+                            && (line.prevEmpty && line.leading == 0 && line.getLineType(this.config) != LineType.BQUOTE))
                     {
                         break;
                     }
@@ -855,7 +855,7 @@ public class Processor
                 line = line.next;
                 while (line != null)
                 {
-                    if (line.getLineType(config) == LineType.FENCED_CODE)
+                    if (line.getLineType(this.config) == LineType.FENCED_CODE)
                     {
                         break;
                     }
@@ -871,7 +871,7 @@ public class Processor
                 block.type = BlockType.FENCED_CODE;
                 block.meta = Utils.getMetaFromFence(block.lines.value);
                 block.lines.setEmpty();
-                if (block.lineTail.getLineType(config) == LineType.FENCED_CODE)
+                if (block.lineTail.getLineType(this.config) == LineType.FENCED_CODE)
                 {
                     block.lineTail.setEmpty();
                 }
@@ -894,7 +894,7 @@ public class Processor
                 {
                     block.hlDepth = type == LineType.HEADLINE1 ? 1 : 2;
                 }
-                if (useExtensions)
+                if (this.useExtensions)
                 {
                     block.id = block.lines.stripID();
                 }
@@ -906,7 +906,7 @@ public class Processor
             case ULIST:
                 while (line != null)
                 {
-                    final LineType t = line.getLineType(config);
+                    final LineType t = line.getLineType(this.config);
                     if (!line.isEmpty
                             && (line.prevEmpty && line.leading == 0 && !(t == LineType.OLIST || t == LineType.ULIST)))
                     {
@@ -953,7 +953,7 @@ public class Processor
         Block block = parent.blocks;
         while (block != null)
         {
-            emitter.emit(out, block);
+            this.emitter.emit(out, block);
             block = block.next;
         }
 
