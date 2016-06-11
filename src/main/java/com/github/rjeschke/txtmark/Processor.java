@@ -838,7 +838,7 @@ public class Processor
                 block.type = BlockType.BLOCKQUOTE;
                 block.removeSurroundingEmptyLines();
                 block.removeBlockQuotePrefix();
-                recurse(block, false);
+                this.recurse(block, false);
                 line = root.lines;
                 break;
             case HR:
@@ -920,11 +920,11 @@ public class Processor
                 list.lineTail.nextEmpty = false;
                 list.removeSurroundingEmptyLines();
                 list.lines.prevEmpty = list.lineTail.nextEmpty = false;
-                initListBlock(list);
+                this.initListBlock(list);
                 block = list.blocks;
                 while (block != null)
                 {
-                    recurse(block, true);
+                    this.recurse(block, true);
                     block = block.next;
                 }
                 list.expandListParagraphs();
@@ -946,10 +946,10 @@ public class Processor
     private String process() throws IOException
     {
         final StringBuilder out = new StringBuilder();
-        final Block parent = readLines();
+        final Block parent = this.readLines();
         parent.removeSurroundingEmptyLines();
 
-        recurse(parent, false);
+        this.recurse(parent, false);
         Block block = parent.blocks;
         while (block != null)
         {
