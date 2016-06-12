@@ -588,67 +588,11 @@ public class Processor
     private Block readLines() throws IOException
     {
         final Block block = new Block();
-        final StringBuilder sb = new StringBuilder(80);
-        int c = this.reader.read();
+        LineReader lineReader = new LineReader(reader, config);
         LinkRef lastLinkRef = null;
-        while (c != -1)
+        while (!lineReader.eof())
         {
-            sb.setLength(0);
-            int pos = 0;
-            boolean eol = false;
-            while (!eol)
-            {
-                switch (c)
-                {
-                case -1:
-                    eol = true;
-                    break;
-                case '\n':
-                    c = this.reader.read();
-                    if (c == '\r')
-                    {
-                        c = this.reader.read();
-                    }
-                    eol = true;
-                    break;
-                case '\r':
-                    c = this.reader.read();
-                    if (c == '\n')
-                    {
-                        c = this.reader.read();
-                    }
-                    eol = true;
-                    break;
-                case '\t':
-                {
-                    final int np = pos + (4 - (pos & 3));
-                    while (pos < np)
-                    {
-                        sb.append(' ');
-                        pos++;
-                    }
-                    c = this.reader.read();
-                    break;
-                }
-                default:
-                    if (c != '<' || !this.config.panicMode)
-                    {
-                        pos++;
-                        sb.append((char)c);
-                    }
-                    else
-                    {
-                        pos += 4;
-                        sb.append("&lt;");
-                    }
-                    c = this.reader.read();
-                    break;
-                }
-            }
-
-            final Line line = new Line();
-            line.value = sb.toString();
-            line.init();
+            final Line line = lineReader.read();
 
             // Check for link definitions
             boolean isLinkRef = false;
@@ -1011,4 +955,5 @@ public class Processor
 
         return out.toString();
     }
+
 }
