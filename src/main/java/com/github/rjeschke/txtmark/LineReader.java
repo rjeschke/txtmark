@@ -6,7 +6,7 @@ import java.io.Reader;
 /**
  * Created by caosh on 2016/6/11.
  */
-public class LineReader {
+class LineReader {
     private final Reader reader;
     private final Configuration config;
     private int nextChar;
