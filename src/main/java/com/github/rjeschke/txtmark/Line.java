@@ -55,25 +55,8 @@ class Line
      */
     private void init()
     {
-        this.leading = 0;
-        while (this.leading < this.value.length() && this.value.charAt(this.leading) == ' ')
-        {
-            this.leading++;
-        }
-
-        if (this.leading == this.value.length())
-        {
-            this.setEmpty();
-        }
-        else
-        {
-            this.isEmpty = false;
-            this.trailing = 0;
-            while (this.value.charAt(this.value.length() - this.trailing - 1) == ' ')
-            {
-                this.trailing++;
-            }
-        }
+        initLeading();
+        initTailing();
     }
 
     /**
@@ -90,6 +73,17 @@ class Line
         if (this.leading == this.value.length())
         {
             this.setEmpty();
+        }
+    }
+
+    private void initTailing()
+    {
+        if (this.leading != this.value.length()) {
+            this.isEmpty = false;
+            this.trailing = 0;
+            while (this.value.charAt(this.value.length() - this.trailing - 1) == ' ') {
+                this.trailing++;
+            }
         }
     }
 
