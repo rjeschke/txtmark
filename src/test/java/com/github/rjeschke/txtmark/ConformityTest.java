@@ -21,25 +21,38 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.rjeschke.txtmark.Processor;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+@RunWith(Parameterized.class)
 public class ConformityTest
 {
     private static final Charset  UTF_8 = Charset.forName("UTF-8");
     private static final String   RES   = "/com/github/rjeschke/txtmark/testsuite/";
-    private static final String[] TESTS =
-    {
-            "Amps and angle encoding", "Auto links", "Backslash escapes", "Blockquotes with code blocks", "Code Blocks",
-            "Code Spans", "Hard-wrapped paragraphs with list-like lines", "Horizontal rules", "Images",
-            "Inline HTML (Advanced)", "Inline HTML (Simple)", "Inline HTML comments", "Links, inline style",
-            "Links, reference style", "Links, shortcut references", "Markdown Documentation - Basics",
-            "Markdown Documentation - Syntax", "Nested blockquotes", "Ordered and unordered lists",
-            "Strong and em together", "Tabs", "Tidyness",
-    };
+
+    private final String name;
+
+    public ConformityTest(String name) {
+        this.name = name;
+    }
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Collection<Object[]> parameters() {
+        return Arrays.asList(new Object[][]{
+                {"Amps and angle encoding"}, {"Auto links"}, {"Backslash escapes"}, {"Blockquotes with code blocks"}, {"Code Blocks"},
+                {"Code Spans"}, {"Hard-wrapped paragraphs with list-like lines"}, {"Horizontal rules"}, {"Images"},
+                {"Inline HTML (Advanced)"}, {"Inline HTML (Simple)"}, {"Inline HTML comments"}, {"Links, inline style"},
+                {"Links, reference style"}, {"Links, shortcut references"}, {"Markdown Documentation - Basics"},
+                {"Markdown Documentation - Syntax"}, {"Nested blockquotes"}, {"Ordered and unordered lists"},
+                {"Strong and em together"}, {"Tabs"}, {"Tidyness"},
+        });
+    }
 
     private final static String readTextUTF_8(final InputStream in) throws IOException
     {
@@ -106,37 +119,34 @@ public class ConformityTest
     @Test
     public void test() throws IOException
     {
-        for (final String name : TESTS)
+        final InputStream txtIn = ConformityTest.class.getResourceAsStream(RES + name + ".text");
+        final InputStream cmpIn = ConformityTest.class.getResourceAsStream(RES + name + ".html");
+        if (txtIn == null || cmpIn == null)
         {
-            final InputStream txtIn = ConformityTest.class.getResourceAsStream(RES + name + ".text");
-            final InputStream cmpIn = ConformityTest.class.getResourceAsStream(RES + name + ".html");
-            if (txtIn == null || cmpIn == null)
-            {
-                Assert.fail("Unmatched test resources");
-            }
+            Assert.fail("Unmatched test resources");
+        }
 
-            final String text = readTextUTF_8(txtIn);
-            final String compare = readTextUTF_8(cmpIn);
+        final String text = readTextUTF_8(txtIn);
+        final String compare = readTextUTF_8(cmpIn);
 
-            final String processed = Processor.process(text);
+        final String processed = Processor.process(text);
 
-            final String tCompare = tidy(compare);
-            final String tProcessed = tidy(processed);
+        final String tCompare = tidy(compare);
+        final String tProcessed = tidy(processed);
 
-            if (!tCompare.equals(tProcessed))
-            {
-                System.out.println("Test: " + name);
-                System.out.println("=============================================");
-                System.out.println(tProcessed);
-                System.out.println("---------------------------------------------");
-                System.out.println(tCompare);
-                System.out.println("=============================================");
-                System.out.println(processed);
-                System.out.println("---------------------------------------------");
-                System.out.println(compare);
-                System.out.println("=============================================");
-                Assert.fail("Test '" + name + "' failed");
-            }
+        if (!tCompare.equals(tProcessed))
+        {
+            System.out.println("Test: " + name);
+            System.out.println("=============================================");
+            System.out.println(tProcessed);
+            System.out.println("---------------------------------------------");
+            System.out.println(tCompare);
+            System.out.println("=============================================");
+            System.out.println(processed);
+            System.out.println("---------------------------------------------");
+            System.out.println(compare);
+            System.out.println("=============================================");
+            Assert.fail("Test '" + name + "' failed");
         }
     }
 }
