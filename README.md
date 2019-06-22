@@ -8,7 +8,7 @@ See LICENSE.txt for licensing information.
 
 *   It is easy to use:
 
-        String result = txtmark.Processor.process("This is ***TXTMARK***");
+        String result = com.github.rjeschke.txtmark.Processor.process("This is ***TXTMARK***");
     
 *   It is fast (see below)  
     ... *well, it is the fastest markdown processor on the JVM right now.*
